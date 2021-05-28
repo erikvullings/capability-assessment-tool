@@ -1,0 +1,442 @@
+{
+  "title": "Vragenlijst",
+  "description": "Neem de laatste vier weken als uitgangspunt bij het beantwoorden van de volgende vragen. Indien dit niet de eerste evaluatie is, dan zijn de antwoorden van de laatste keer reeds ingevuld. Geef dus vooral aan waar u een verandering hebt gemerkt.",
+  "sections": [
+    {
+      "title": "In hoeverre zijn de volgende stellingen op jou van toepassing?",
+      "questions": [
+        {
+          "id": "Q01_zin_betekenis",
+          "label": "Het werk dat ik doe, draagt bij aan wat ik belangrijk vind in mijn leven",
+          "type": "rating",
+          "min": 0,
+          "max": 10,
+          "ratings": { "0": "Helemaal niet", "10": "In zeer sterke mate" }
+        },
+        {
+          "id": "Q02_crafting_behoefte",
+          "label": "Dat wat mijn werk me biedt sluit goed aan op wat ik zoek in mijn werk",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q03_crafting_behoefte",
+          "label": "De waarden en de cultuur van mijn organisatie sluiten goed aan bij mijn persoonlijke waarden",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q04_crafting_behoefte",
+          "label": "Mijn kennis en vaardigheden sluiten goed aan bij de eisen van mijn werk",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q05_psycap",
+          "label": "Ik vertrouw erop dat ik een oplossing kan vinden als ik mij in een moeilijke situatie bevind in mijn werk.",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q06_psycap",
+          "label": "Ik bekijk mijn werk altijd van de zonnige kant",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q07_psycap",
+          "label": "Als er iets nieuws op mij afkomt op het werk weet ik altijd wel hoe ik daar mee om moet gaan",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q08_psycap",
+          "label": "Moeilijke momenten in het werk kan ik best aan, want ik heb al voor hetere vuren gestaan",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        }
+      ]
+    },
+    {
+      "title": "",
+      "questions": [
+        {
+          "id": "Q01_crafting",
+          "label": "Ik vroeg op mijn werk anderen om advies en/of feedback",
+          "type": "rating",
+          "min": 0,
+          "max": 10,
+          "ratings": { "0": "Helemaal niet", "10": "In zeer sterke mate" }
+        },
+        {
+          "id": "Q02_crafting",
+          "label": "Ik probeerde nieuwe dingen te leren op mijn werk",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q03_crafting",
+          "label": "Ik vroeg om meer taken, verantwoordelijkheden of uitdagende werkzaamheden",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q04_crafting",
+          "label": "Ik bedacht manieren om mijn werk makkelijker of efficiënter uit te voeren",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q05_crafting",
+          "label": "Ik dacht na over hoe mijn werk bijdraagt aan dat wat ik belangrijk vind in het leven",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q06_Effectieve_zelfsturing",
+          "label": "Ik werkte toe naar bepaalde doelen die ik voor mezelf gesteld heb",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q07_Effectieve_zelfsturing",
+          "label": "Ik hield bij in hoeverre ik door mij gestelde doelen behaalde",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q08_Extra_inspanning",
+          "label": "Ik nam op vrijwillige basis extra werkzaamheden op me",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q09_Extra_inspanning",
+          "label": "Ik nam vrijwillig taken op me die formeel geen onderdeel zijn van mijn functie",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q10_Extra_inspanning",
+          "label": "Ik besteedde op vrijwillige basis vrije tijd aan mijn werk",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q11_bevlogenheid",
+          "label": "Wanneer ik aan het werk was, voelde ik me fit en sterk",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q12_bevlogenheid",
+          "label": "Ik was enthousiast over mijn baan",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q13_bevlogenheid",
+          "label": "Ik ging helemaal op in mijn werk",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q14_Psych_loskomen_werk",
+          "label": "Na afloop van een werkdag nam ik afstand van mijn werk",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q15_Psych_loskomen_werk",
+          "label": "Na afloop van een werkdag kon ik de eisen van mijn werk loslaten",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        }
+      ]
+    },
+    {
+      "title": "Wellbeing Monitor p3",
+      "questions": [
+        {
+          "id": "Q16_belang_taakeisen_halen",
+          "label": "Ik vond het belangrijk om alle doelen (werkopdrachten) die bij mijn werk horen te behalen",
+          "type": "rating",
+          "min": 0,
+          "max": 10,
+          "ratings": { "0": "Helemaal niet", "10": "In zeer sterke mate" }
+        },
+        {
+          "id": "Q17_belang_taakeisen_halen",
+          "label": "Ik vond het belangrijk om goed te presteren in mijn werk",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q18_basic_needs",
+          "label": "Ik voelde me vrij om mijn werk te doen zoals ik denk dat het goed is",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q19_basic_needs",
+          "label": "Ik voelde me competent in mijn werk",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q20_basic_needs",
+          "label": "Ik voelde me verbonden met andere mensen op mijn werk",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q21_burnout",
+          "label": "Ik voelde me emotioneel uitgeput door mijn werk",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q22_burnout",
+          "label": "Aan het einde van een werkdag voelde ik me leeg",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q23_veilig_psychsoc_klimaat",
+          "label": "Ik ervaarde een veilig psychosociaal werkklimaat",
+          "description": "_In een veilig psychosociaal werkklimaat kunnen medewerkers zich kwetsbaar opstellen, problemen en moeilijke onderwerpen ter sprake brengen en ervaren zij sociale steun._",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        }
+      ]
+    },
+    {
+      "title": "Wellbeing Monitor p4",
+      "questions": [
+        {
+          "id": "Q01_taakeisen",
+          "label": "Hoe beoordeel je de intensiteit van je taakeisen?",
+          "description": "_Taakeisen zijn werkkenmerken die energie en/of inspanning van je vragen (werkbelasting). Voorbeelden hiervan zijn de hoeveelheid, de complexiteit, tijdsdruk, emotionele situaties en rol(on)duidelijkheid._",
+          "type": "rating",
+          "min": 0,
+          "max": 10,
+          "ratings": { "0": "Zeer lage intensiteit", "10": "Zeer hoge intensiteit" }
+        },
+        {
+          "id": "Q02_taakeisen_uitdaging",
+          "label": "In hoeverre hebben taakeisen je in positieve zin uitgedaagd?",
+          "type": "rating",
+          "min": 0,
+          "max": 10,
+          "ratings": { "0": "Helemaal niet", "10": "In zeer sterke mate" }
+        },
+        {
+          "id": "Q03_taakeisen_obstakel",
+          "label": "In hoeverre zaten taakeisen je in de weg bij het behalen van je doelen?",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q04_werkhulpbronnen",
+          "label": "In hoeverre had je beschikking over werkhulpbronnen?",
+          "description": "_Werkhulpbronnen zijn werkkenmerken die helpen bij het omgaan met werkbelasting. Voorbeelden hiervan zijn autonomie, feedback, en ontwikkelmogelijkheden_",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q05_positieve_ervaringen_werk",
+          "label": "In welke mate had je positieve ervaringen op het werk?",
+          "description": "_Positieve ervaringen op het werk zijn ervaringen op het werk die een gevoel van enthousiasme en/of voldoening oproepen, zoals het krijgen van waardering of ergens bedreven in raken._",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        },
+        {
+          "id": "Q06_zelfondermijnend_gedrag",
+          "label": "In hoeverre vertoonde je zelfondermijnend gedrag?",
+          "description": "_Zelfondermijnend gedrag is niet functioneel gedrag dat je werk in de weg kan zitten. Denk bijvoorbeeld aan het maken van fouten, slecht of onduidelijk communiceren of je afreageren op anderen._",
+          "type": "rating",
+          "min": 0,
+          "max": 10
+        }
+      ]
+    },
+    {
+      "title": "Wellbeing Monitor p5",
+      "questions": [
+        {
+          "id": "Q07_inspanning_capaciteit",
+          "label": "Als je aan jouw maximale vermogen om inspanningen te leveren 10 punten geeft, hoeveel punten zou je dan geven aan jouw vermogen in de afgelopen vier weken?",
+          "description": "_Minimale vermogen betekent dat je geheel niet in staat was om te werken._",
+          "type": "rating",
+          "min": 0,
+          "max": 10,
+          "ratings": { "0": "Minimale vermogen", "10": "Maximale vermogen" }
+        },
+        {
+          "id": "Q08_inspanning_geleverd",
+          "label": "Hoeveel inspanning heb je op je werk geleverd?",
+          "type": "rating",
+          "min": 0,
+          "max": 10,
+          "ratings": { "0": "Minimale inspanning", "10": "Maximale inspanning" }
+        },
+        {
+          "id": "Q09_gezklachten",
+          "label": "In hoeverre werd je door langdurige gezondheidsklachten belemmerd bij het uitvoeren van je werk?",
+          "type": "rating",
+          "min": 0,
+          "max": 10,
+          "ratings": { "0": "n.v.t./geen belemmering", "10": "Maximale belemmering" }
+        },
+        {
+          "id": "Q10_leefstijl",
+          "label": "Hoe beoordeel je jouw leefstijl?  (denk hierbij aan factoren zoals slaap, voeding, beweging, alcohol- en middelengebruik)",
+          "type": "rating",
+          "min": 0,
+          "max": 10,
+          "ratings": { "0": "Zeer gezond", "10": "Zeer ongezond" }
+        }
+      ]
+    },
+    {
+      "title": "Wellbeing Monitor p6",
+      "description": "Ook de volgende stellingen gaan steeds over de afgelopen vier weken.\n\nDe volgende stellingen bevatten de begrippen ‘levensgebeurtenissen’, ‘zin/betekenis van jouw werk’ en ‘leefstijl’. Hiermee wordt het volgende bedoeld:\n\n- Levensgebeurtenissen: emotionele gebeurtenissen of veranderingen in jouw leven, zoals een verhuizing, nieuwe relatie, ziekte, ontslag/nieuwe baan partner, ziekte/sterfgeval dierbare, zwangerschap, geboorte van kind\n- Zin/betekenis van jouw werk: de mate waarin jouw werk bijdraagt aan wat je belangrijk vindt in jouw leven (bijv. financieel, maatschappelijk, sociaal)\n- Leefstijl: factoren zoals slaap, voeding, beweging, alcohol- en middelengebruik",
+      "questions": [
+        {
+          "id": "Q01_life_events_zin",
+          "label": "In hoeverre hebben **levensgebeurtenissen** de mate waarin je jouw werk als **zinvol/betekenisvol** ervaart beïnvloed?",
+          "type": "rating",
+          "min": 0,
+          "max": 5,
+          "ratings": {
+            "0": "Sterk negatief",
+            "1": "Negatief",
+            "2": "Neutraal",
+            "3": "Positief",
+            "4": "Sterk positief",
+            "5": "N.v.t."
+          }
+        },
+        {
+          "id": "Q02_life_events_leefstijl",
+          "label": "In hoeverre hebben **levensgebeurtenissen** jouw leefstijl beïnvloed?",
+          "type": "rating",
+          "min": 0,
+          "max": 5
+        }
+      ]
+    },
+    {
+      "title": "Wellbeing Monitor p7",
+      "description": "Ook de volgende stellingen gaan steeds over de afgelopen vier weken.\n\nDe volgende stelling bevat de begrippen ‘organisatorische middelen’ en'job craften'. Hiermee wordt het volgende bedoeld:\n\n- Organisatorische middelen: middelen in de organisatie die kunnen helpen bij het behalen van werkdoelen, het omgaan met werkbelasting, en het realiseren van persoonlijke groei en ontwikkeling (bijv. ontwikkelbudget, coaching, andere HR-praktijken)\n- Job craften: op eigen initiatief maken van kleine aanpassingen in jouw werk om het (beter) te laten aansluiten bij wat je in het werk waardeert, goed kunt of wilt bereiken. Bijvoorbeeld: op eigen initiatief nieuwe taken oppakken, taken uitbesteden/laten vallen of (sociale) steun zoeken bij jouw collega's/leidinggevende",
+      "questions": [
+        {
+          "id": "Q03_org_midd_craften",
+          "label": "In hoeverre hebben organisatorische middelen jouw mogelijkheden om te 'job craften' beïnvloed?",
+          "type": "rating",
+          "min": 0,
+          "max": 4,
+          "ratings": {
+            "0": "Sterk negatief",
+            "1": "Negatief",
+            "2": "Neutraal",
+            "3": "Positief",
+            "4": "Sterk positief"
+          }
+        }
+      ]
+    },
+    {
+      "title": "Wellbeing Monitor p8",
+      "description": "Ook de volgende stellingen gaan steeds over de afgelopen vier weken.\n\nDe volgende stellingen bevatten de begrippen ‘aspecten in jouw privéleven’, ‘herstel’ en ‘psychologisch loskomen van je werk’. Hiermee wordt het volgende bedoeld:\n- Aspecten in jouw privéleven: zoals hobby's, sociaal contact, verbondenheid met anderen (bijv. buurt/vereniging), (mantel)zorgtaken, financiële/relationele kwesties, connectiviteit/continue bereikbaarheid.\n- Psychologisch loskomen van jouw werk: het werk mentaal/emotioneel loslaten en niet meer met werkgerelateerde zaken bezig zijn buiten werktijd.\n- Herstel: het bijkomen/opnieuw opladen van de dagelijkse inspanningen op jouw werk",
+      "questions": [
+        {
+          "id": "Q04_energiegevers_loskomen",
+          "label": "In hoeverre hebben **aspecten in jouw privéleven** invloed gehad op de mate waarin je **psychologisch kon loskomen** van je werk?",
+          "type": "rating",
+          "min": 0,
+          "max": 4,
+          "ratings": {
+            "0": "Sterk negatief",
+            "1": "Negatief",
+            "2": "Neutraal",
+            "3": "Positief",
+            "4": "Sterk positief"
+          }
+        },
+        {
+          "id": "Q05_energiegevers_herstellen",
+          "label": "In hoeverre hebben **aspecten in jouw privéleven** invloed gehad op de mate waarin je kon **herstellen** van je werk?",
+          "type": "rating",
+          "min": 0,
+          "max": 4
+        }
+      ]
+    },
+    {
+      "title": "Wellbeing Monitor p9",
+      "description": "Ook de volgende stellingen gaan steeds over de afgelopen vier weken.\n\nDe volgende stellingen bevatten de begrippen ‘werkhulpbronnen’, ‘taakeisen’ en ‘veilig psychosociaal werkklimaat’. Hiermee wordt het volgende bedoeld:\n- Werkhulpbronnen: werkkenmerken die helpen bij het omgaan met werkbelasting. Voorbeelden hiervan zijn autonomie, feedback, en ontwikkelmogelijkheden\n- Taakeisen: werkkenmerken die energie en/of inspanning van je vragen (werkbelasting). Voorbeelden hiervan zijn de hoeveelheid werk, complexiteit, tijdsdruk, emotionele situaties en rol(on)duidelijkheid\n- Veilig psychosociaal werkklimaat: een klimaat waarin medewerkers zich kwetsbaar kunnen opstellen, problemen en moeilijke onderwerpen ter sprake kunnen brengen en sociale steun ervaren",
+      "questions": [
+        {
+          "id": "Q06_leider_hulpbronnen",
+          "label": "In hoeverre heeft leiderschap invloed gehad op de beschikbaarheid van jouw werkhulpbronnen?",
+          "type": "rating",
+          "min": 0,
+          "max": 4,
+          "ratings": {
+            "0": "Sterk negatief",
+            "1": "Negatief",
+            "2": "Neutraal",
+            "3": "Positief",
+            "4": "Sterk positief"
+          }
+        },
+        {
+          "id": "Q07_leider_taakeisen",
+          "label": "In hoeverre heeft leiderschap invloed gehad op de intensiteit van jouw taakeisen?",
+          "type": "rating",
+          "min": 0,
+          "max": 4
+        },
+        {
+          "id": "Q08_leider_veiligklimaat",
+          "label": "In hoeverre heeft leiderschap invloed gehad op de mate waarin je een veilig psychosociaal werkklimaat ervaarde?",
+          "type": "rating",
+          "min": 0,
+          "max": 4
+        }
+      ]
+    }
+  ]
+}

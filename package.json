@@ -1,0 +1,32 @@
+{
+  "name": "capability-assessment-tool",
+  "version": "0.0.1",
+  "private": "true",
+  "description": "SPA for a capability-assessment-tool dashboard",
+  "main": "index.js",
+  "scripts": {
+    "clean": "pnpm recursive run cleanup",
+    "start": "pnpm recursive run dev",
+    "update": "pnpm recursive run update",
+    "build": "pnpm recursive run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erikvullings/capability-assessment-tool.git"
+  },
+  "bugs": {
+    "url": "https://github.com/erikvullings/capability-assessment-tool/issues"
+  },
+  "homepage": "https://github.com/erikvullings/capability-assessment-tool#readme",
+  "author": "Erik Vullings <erik.vullings@tno.nl> (http://www.tno.nl)",
+  "keywords": [
+    "TNO",
+    "capability development",
+    "capability assessment",
+    "roadmap"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "pnpm": "^6.4.0"
+  }
+}

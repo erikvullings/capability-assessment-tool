@@ -1,0 +1,164 @@
+{
+  "sections": [
+    {
+      "title": "Achtergrondgegevens",
+      "description": "Deze vragen hoeven slechts eenmalig beantwoord te worden.",
+      "questions": [
+        {
+          "id": "Q01_leeftijd",
+          "label": "Wat is je leeftijd?",
+          "type": "radio",
+          "options": [
+            { "id": "Jonger dan 20 jaar", "label": "Jonger dan 20 jaar" },
+            { "id": "20 tot 30 jaar", "label": "20 tot 30 jaar" },
+            { "id": "30 tot 40 jaar", "label": "30 tot 40 jaar" },
+            { "id": "40 tot 50 jaar", "label": "40 tot 50 jaar" },
+            { "id": "50 tot 60 jaar", "label": "50 tot 60 jaar" },
+            { "id": "60 jaar of ouder", "label": "60 jaar of ouder" },
+            { "id": "Wil ik niet zeggen", "label": "Wil ik niet zeggen" }
+          ]
+        },
+        {
+          "id": "Q02_geslacht",
+          "label": "Wat is je geslacht?",
+          "type": "radio",
+          "options": [
+            { "id": "man", "label": "Man" },
+            { "id": "vrouw", "label": "Vrouw" },
+            { "id": "overig", "label": "Overig" },
+            { "id": "Wil ik niet zeggen", "label": "Wil ik niet zeggen" }
+          ]
+        },
+        {
+          "id": "Q03_dienstjaren",
+          "label": "Hoe lang werk je bij jouw huidige werkgever?",
+          "type": "radio",
+          "options": [
+            { "id": "Korter dan 1 jaar", "label": "Korter dan 1 jaar" },
+            { "id": "1 tot 5 jaar", "label": "1 tot 5 jaar" },
+            { "id": "5 tot 10 jaar", "label": "5 tot 10 jaar" },
+            { "id": "10 tot 20 jaar", "label": "10 tot 20 jaar" },
+            { "id": "20 jaar of langer", "label": "20 jaar of langer" },
+            { "id": "Wil ik niet zeggen", "label": "Wil ik niet zeggen" }
+          ]
+        },
+        {
+          "id": "Q04_vaste_dienst",
+          "label": "Ben je op dit moment in vaste dienst?",
+          "type": "radio",
+          "options": [
+            { "id": "Ja", "label": "Ja" },
+            { "id": "Nee", "label": "Nee" },
+            { "id": "Deels vast, deels tijdelijk", "label": "Deels vast, deels tijdelijk" },
+            { "id": "Wil ik niet zeggen", "label": "Wil ik niet zeggen" }
+          ]
+        },
+        {
+          "id": "Q05_vast_aantal_uren",
+          "show": ["Q04_vaste_dienst=Ja", "Q04_vaste_dienst=Deels"],
+          "label": "Ben je in dienst voor een vast aantal uren?",
+          "type": "radio",
+          "options": [
+            { "id": "Ja", "label": "Ja" },
+            { "id": "Nee", "label": "Nee" },
+            { "id": "N.v.t., niet in dienst", "label": "N.v.t., niet in dienst" },
+            { "id": "Wil ik niet zeggen", "label": "Wil ik niet zeggen" }
+          ]
+        },
+        {
+          "id": "Q05_vast_aantal_uren_aantal",
+          "label": "Voor hoeveel uur per week ben je in vaste dienst?",
+          "type": "number",
+          "show": "Q05_vast_aantal_uren=Ja"
+        },
+        {
+          "id": "Q06_werklocatie",
+          "label": "Waar werkte je de afgelopen vier weken?",
+          "type": "radio",
+          "options": [
+            { "id": "Vooral op mijn eigen woonadres", "label": "Vooral op mijn eigen woonadres" },
+            {
+              "id": "Vooral op locatie van de werkgever",
+              "label": "Vooral op locatie van de werkgever"
+            },
+            { "id": "Vooral op locatie van de klant", "label": "Vooral op locatie van de klant" },
+            {
+              "id": "Zowel op mijn eigen woonadres als op een locatie van de werkgever",
+              "label": "Zowel op mijn eigen woonadres als op een locatie van de werkgever"
+            },
+            {
+              "id": "Zowel op mijn eigen woonadres als op een locatie van de klant",
+              "label": "Zowel op mijn eigen woonadres als op een locatie van de klant"
+            },
+            {
+              "id": "Zowel op locatie van de werkgever als op locatie van de klant",
+              "label": "Zowel op locatie van de werkgever als op locatie van de klant"
+            },
+            { "id": "Wil ik niet zeggen", "label": "Wil ik niet zeggen" }
+          ]
+        },
+        {
+          "id": "Q07_ploeg",
+          "label": "Werkte je de afgelopen vier weken in ploegendienst of wisseldienst?",
+          "type": "radio",
+          "options": [
+            { "id": "Ja", "label": "Ja" },
+            { "id": "Nee", "label": "Nee" },
+            { "id": "Wil ik niet zeggen", "label": "Wil ik niet zeggen" }
+          ]
+        },
+        {
+          "id": "Q08_bereik",
+          "label": "Had je de afgelopen vier weken diensten waarbij je elk moment bereikbaar, beschikbaar of oproepbaar moest zijn?",
+          "type": "radio",
+          "options": [
+            { "id": "Ja", "label": "Ja" },
+            { "id": "Nee", "label": "Nee" },
+            { "id": "Wil ik niet zeggen", "label": "Wil ik niet zeggen" }
+          ]
+        },
+        {
+          "id": "Q09_nacht",
+          "label": "Werkte je de afgelopen vier weken wel eens ’s nachts, dat wil zeggen tussen 12 uur ’s nachts en 6 uur ’s morgens?",
+          "type": "radio",
+          "options": [
+            { "id": "Ja", "label": "Ja" },
+            { "id": "Nee", "label": "Nee" },
+            { "id": "Wil ik niet zeggen", "label": "Wil ik niet zeggen" }
+          ]
+        },
+        {
+          "id": "Q10_samenstelling_huishouden",
+          "label": "Hoe is jouw huishouden samengesteld?",
+          "type": "radio",
+          "options": [
+            {
+              "id": "Gehuwd of samenwonend zonder thuiswonende kinderen",
+              "label": "Gehuwd of samenwonend zonder thuiswonende kinderen"
+            },
+            {
+              "id": "Gehuwd of samenwonend met thuiswonende kinderen",
+              "label": "Gehuwd of samenwonend met thuiswonende kinderen"
+            },
+            { "id": "Eénouder-huishouden", "label": "Eénouder-huishouden" },
+            { "id": "Alleenstaand", "label": "Alleenstaand" },
+            { "id": "Samenwonend met huisgenoten", "label": "Samenwonend met huisgenoten" },
+            { "id": "Anders", "label": "Anders" },
+            { "id": "Wil ik niet zeggen", "label": "Wil ik niet zeggen" }
+          ]
+        },
+        {
+          "id": "Q11_nacht",
+          "label": "Was jij de afgelopen vier weken mantelzorger?",
+          "description": "_Mantelzorgers zijn mensen die langdurig en onbetaald zorgen voor een chronisch zieke, gehandicapte of hulpbehoevende persoon uit hun omgeving. Dit kan een partner, kind of ouder zijn, maar ook een ander familielid, vriend of kennis._",
+          "type": "radio",
+          "options": [
+            { "id": "Ja", "label": "Ja" },
+            { "id": "Nee", "label": "Nee" },
+            { "id": "Wil ik niet zeggen", "label": "Wil ik niet zeggen" }
+          ]
+        }
+      ]
+    }
+  ]
+}
