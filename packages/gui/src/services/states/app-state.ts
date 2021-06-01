@@ -1,6 +1,7 @@
 import Stream from 'mithril/stream';
 import { dashboardSvc } from '..';
 import { Dashboards } from '../../models';
+import { defaultCapabilityModel, ICapabilityModel } from '../../models/capability-model';
 import { IAppModel, UpdateStream } from '../meiosis';
 /** Application state */
 
@@ -12,7 +13,7 @@ export interface IAppStateModel {
     isSearching: boolean;
     searchQuery?: string;
     page?: Dashboards;
-    catModel?: any;
+    catModel: ICapabilityModel;
   };
 }
 
@@ -25,6 +26,7 @@ export interface IAppStateActions {
     params?: { [key: string]: string | number | undefined },
     query?: { [key: string]: string | number | undefined }
   ) => void;
+  saveModel: (cat: ICapabilityModel) => void;
 }
 
 export interface IAppState {
@@ -34,7 +36,11 @@ export interface IAppState {
 
 // console.log(`API server: ${process.env.SERVER}`);
 
-const cm = localStorage.getItem(catModelKey);
+const cm = localStorage.getItem(catModelKey) || JSON.stringify(defaultCapabilityModel);
+const catModel = JSON.parse(cm);
+// TODO: DURING DEV
+catModel.form = defaultCapabilityModel.form;
+catModel.data = defaultCapabilityModel.data;
 
 export const appStateMgmt = {
   initial: {
@@ -43,7 +49,7 @@ export const appStateMgmt = {
       apiService: process.env.SERVER || window.location.origin,
       isSearching: false,
       searchQuery: '',
-      catModel: cm ? JSON.parse(cm) : undefined,
+      catModel,
     },
   },
   actions: (update, _states) => {
@@ -55,6 +61,9 @@ export const appStateMgmt = {
       changePage: (page, params, query) => {
         dashboardSvc && dashboardSvc.switchTo(page, params, query);
         update({ app: { page } });
+      },
+      saveModel: (cat) => {
+        localStorage.setItem(catModelKey, JSON.stringify(cat));
       },
     };
   },

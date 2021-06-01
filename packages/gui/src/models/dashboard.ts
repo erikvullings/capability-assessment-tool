@@ -19,5 +19,7 @@ export enum Dashboards {
   HOME = 'HOME',
   ABOUT = 'ABOUT',
   HELP = 'HELP',
+  SETTINGS = 'SETTINGS',
+  LEXICON = 'LEXICON',
   CAT = 'CAT',
 }

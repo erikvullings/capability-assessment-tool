@@ -1,25 +1,61 @@
 import m from 'mithril';
-import { render } from 'mithril-ui-form';
+import { Tabs, ITabItem } from 'mithril-materialized';
+import { LayoutForm } from 'mithril-ui-form';
 import { Dashboards } from '../models';
+import { ICapabilityModel } from '../models/capability-model';
 import { MeiosisComponent } from '../services';
-
-const md = `#### Innovation in Workplace Wellbeing
-
-##### Doel van het onderzoek
-
-Ontwikkeling van een innovatief Workplace Wellbeing Dashboard
-
-In Nederland hebben op dit moment meer dan 1,3 miljoen mensen last van chronische stress klachten. Over de afgelopen 10 jaar stijgen deze aantallen nog steeds ondanks de vele aandacht en initiatieven. Dit is zorgelijk. Langdurige stress kan leiden tot burn-out, welvaartziektes, en problemen op het werk. Organisaties hebben daarom behoefte om beter te kunnen sturen op behoud van wellbeing van hun werknemers. TNO, Deloitte en Zilveren Kruis ontwikkelen hiervoor een innovatief Wellbeing Dashboard. Het dashboard bevat een simulatiemodel waarin alle (f)actoren die bijdragen aan behoud van wellbeing van een individu op het werk is samengevat. Sinds 2020 doen DSM, Achmea en Gemeente Amsterdam actief mee aan deze ontwikkeling.
-
-Met het Dashboard zal het mogelijk zijn om via simulaties onderzoek te doen naar effecten van veranderingen op het werk in bv. gedrag, cultuur, hulpbronnen, of interventie-programma’s op de wellbeing van werkenden.Hiervoor hebben we data en kennis nodig over de veranderingen door de tijd heen.
-
-Vraag de onderzoeker [Heleen Wortelboer](mailto:heleen.wortelboer@tno.nl) om uitleg als u nog vragen heeft.`;
+import { CircularSpinner } from './ui';
 
 export const CatPage: MeiosisComponent = () => ({
   oninit: ({
     attrs: {
       actions: { setPage },
     },
-  }) => setPage(Dashboards.ABOUT),
-  view: () => m('.row', m.trust(render(md))),
+  }) => setPage(Dashboards.CAT),
+  view: ({
+    attrs: {
+      state: {
+        app: { catModel = { form: [], data: {} } as ICapabilityModel },
+      },
+      actions: { saveModel },
+    },
+  }) => {
+    const { form, data = {} } = catModel;
+    if (!form) return m(CircularSpinner);
+    const sections = form.filter((i) => i.type === 'section').filter((i) => i.id !== 'settings');
+    const tabs = [
+      {
+        title: 'Overview',
+        vnode: m('.overview', m('p', 'Overview')),
+      } as ITabItem,
+      ...sections.map(
+        (s) =>
+          ({
+            title: s.label,
+            vnode: m(LayoutForm, {
+              form,
+              obj: data,
+              section: s.id,
+              onchange: () => {
+                console.log(JSON.stringify(catModel, null, 2));
+                saveModel(catModel);
+              },
+            }),
+          } as ITabItem)
+      ),
+    ];
+    return m(
+      '.row',
+      { style: 'height: 95vh' },
+      m(Tabs, { tabs, tabWidth: 'fill' })
+      // m(LayoutForm, {
+      //   form,
+      //   obj: data,
+      //   onchange: () => {
+      //     console.log('Data updated');
+      //     saveModel(catModel);
+      //   },
+      // })
+    );
+  },
 });

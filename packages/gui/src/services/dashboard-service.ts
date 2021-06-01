@@ -2,7 +2,7 @@ import m, { RouteDefs } from 'mithril';
 import { Dashboards, IDashboard } from '../models';
 import { actions, states } from './meiosis';
 import { Layout } from '../components/layout';
-import { AboutPage, HomePage, CatPage } from '../components';
+import { AboutPage, HomePage, CatPage, SettingsPage, LexiconPage } from '../components';
 
 class DashboardService {
   private dashboards!: ReadonlyArray<IDashboard>;
@@ -88,10 +88,18 @@ export const dashboardSvc: DashboardService = new DashboardService([
   {
     id: Dashboards.CAT,
     title: 'CAT',
-    icon: 'dashboard',
+    icon: 'apps',
     route: '/cat',
-    visible: false,
+    visible: true,
     component: CatPage,
+  },
+  {
+    id: Dashboards.LEXICON,
+    title: 'LEXICON',
+    icon: 'book',
+    route: '/lexicon',
+    visible: true,
+    component: LexiconPage,
   },
   {
     id: Dashboards.ABOUT,
@@ -100,5 +108,13 @@ export const dashboardSvc: DashboardService = new DashboardService([
     route: '/about',
     visible: true,
     component: AboutPage,
+  },
+  {
+    id: Dashboards.SETTINGS,
+    title: 'Settings',
+    icon: 'settings',
+    route: '/settings',
+    visible: true,
+    component: SettingsPage,
   },
 ]);
