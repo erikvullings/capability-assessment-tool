@@ -24,7 +24,7 @@ export const HomePage: MeiosisComponent = () => ({
             className: 'btn-large',
             label: 'Start here',
             onclick: () => {
-              dashboardSvc.switchTo(Dashboards.CAT);
+              dashboardSvc.switchTo(Dashboards.CAPABILITY);
             },
           }),
         ]
@@ -63,7 +63,7 @@ export const HomePage: MeiosisComponent = () => ({
                 m('h5.center', 'Develop'),
                 m(
                   'p.light',
-                  'Start working on developing your capabilites, alone or with other organisations, and create your roadmap.'
+                  'Start working on developing your capabilities, alone or with other organisations, and create your roadmap.'
                 ),
               ])
             ),

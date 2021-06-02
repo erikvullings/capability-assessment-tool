@@ -17,9 +17,10 @@ export interface IDashboard {
 
 export enum Dashboards {
   HOME = 'HOME',
-  ABOUT = 'ABOUT',
-  HELP = 'HELP',
-  SETTINGS = 'SETTINGS',
+  OVERVIEW = 'OVERVIEW',
+  CAPABILITY = 'CAPABILITY',
   LEXICON = 'LEXICON',
-  CAT = 'CAT',
+  ABOUT = 'ABOUT',
+  SETTINGS = 'SETTINGS',
+  HELP = 'HELP',
 }

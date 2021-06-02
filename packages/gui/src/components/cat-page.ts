@@ -11,7 +11,7 @@ export const CatPage: MeiosisComponent = () => ({
     attrs: {
       actions: { setPage },
     },
-  }) => setPage(Dashboards.CAT),
+  }) => setPage(Dashboards.CAPABILITY),
   view: ({
     attrs: {
       state: {
@@ -22,16 +22,29 @@ export const CatPage: MeiosisComponent = () => ({
   }) => {
     const { form, data = {} } = catModel;
     if (!form) return m(CircularSpinner);
+    const { capabilities = [] } = data;
+    const index = m.route.param('index');
+    const id = m.route.param('id');
+    const capability = id
+      ? capabilities.filter((cap) => cap.id === id).shift()
+      : index
+      ? capabilities.length > +index
+        ? capabilities[+index]
+        : capabilities[0]
+      : capabilities[0];
+    if (!capability) return m(CircularSpinner);
+
     const sections = form.filter((i) => i.type === 'section').filter((i) => i.id !== 'settings');
     const tabs = [
       {
         title: 'Overview',
-        vnode: m('.overview', m('p', 'Overview')),
+        vnode: m('.overview', [m('h5', capability.label)]),
       } as ITabItem,
       ...sections.map(
         (s) =>
           ({
             title: s.label,
+            active: typeof index !== 'undefined' && s.id === 'prepare',
             vnode: m(LayoutForm, {
               form,
               obj: data,
@@ -44,18 +57,6 @@ export const CatPage: MeiosisComponent = () => ({
           } as ITabItem)
       ),
     ];
-    return m(
-      '.row',
-      { style: 'height: 95vh' },
-      m(Tabs, { tabs, tabWidth: 'fill' })
-      // m(LayoutForm, {
-      //   form,
-      //   obj: data,
-      //   onchange: () => {
-      //     console.log('Data updated');
-      //     saveModel(catModel);
-      //   },
-      // })
-    );
+    return m('.row', { style: 'height: 95vh' }, m(Tabs, { tabs, tabWidth: 'fill' }));
   },
 });

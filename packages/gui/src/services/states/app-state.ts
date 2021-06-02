@@ -26,6 +26,11 @@ export interface IAppStateActions {
     params?: { [key: string]: string | number | undefined },
     query?: { [key: string]: string | number | undefined }
   ) => void;
+  createRoute: (
+    page: Dashboards,
+    params?: { [key: string]: string | number | undefined },
+    query?: { [key: string]: string | number | undefined }
+  ) => void;
   saveModel: (cat: ICapabilityModel) => void;
 }
 
@@ -62,6 +67,7 @@ export const appStateMgmt = {
         dashboardSvc && dashboardSvc.switchTo(page, params, query);
         update({ app: { page } });
       },
+      createRoute: (page, params) => dashboardSvc && dashboardSvc.route(page, params),
       saveModel: (cat) => {
         localStorage.setItem(catModelKey, JSON.stringify(cat));
       },

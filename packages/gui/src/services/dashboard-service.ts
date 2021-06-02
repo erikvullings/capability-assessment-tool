@@ -2,7 +2,14 @@ import m, { RouteDefs } from 'mithril';
 import { Dashboards, IDashboard } from '../models';
 import { actions, states } from './meiosis';
 import { Layout } from '../components/layout';
-import { AboutPage, HomePage, CatPage, SettingsPage, LexiconPage } from '../components';
+import {
+  AboutPage,
+  HomePage,
+  CatPage,
+  SettingsPage,
+  LexiconPage,
+  OverviewPage,
+} from '../components';
 
 class DashboardService {
   private dashboards!: ReadonlyArray<IDashboard>;
@@ -24,9 +31,11 @@ class DashboardService {
     return dashboard ? dashboard.route : this.dashboards[0].route;
   }
 
-  public route(dashboardId: Dashboards) {
+  public route(dashboardId: Dashboards, query?: { [key: string]: string | number | undefined }) {
     const dashboard = this.dashboards.filter((d) => d.id === dashboardId).shift();
-    return dashboard ? dashboard.route : this.defaultRoute;
+    return dashboard
+      ? '#!' + dashboard.route + (query ? '?' + m.buildQueryString(query) : '')
+      : this.defaultRoute;
   }
 
   public href(dashboardId: Dashboards, params = '' as string | number) {
@@ -86,10 +95,18 @@ export const dashboardSvc: DashboardService = new DashboardService([
     component: HomePage,
   },
   {
-    id: Dashboards.CAT,
-    title: 'CAT',
+    id: Dashboards.OVERVIEW,
+    title: 'Overview',
     icon: 'apps',
-    route: '/cat',
+    route: '/overview',
+    visible: true,
+    component: OverviewPage,
+  },
+  {
+    id: Dashboards.CAPABILITY,
+    title: 'Capability',
+    icon: 'extension',
+    route: '/capability',
     visible: true,
     component: CatPage,
   },

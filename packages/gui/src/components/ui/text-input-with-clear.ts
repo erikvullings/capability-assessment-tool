@@ -3,6 +3,7 @@ import { debounce, uniqueId } from '../../utils';
 
 export const TextInputWithClear: FactoryComponent<{
   label: string;
+  id?: string;
   initialValue?: string;
   placeholder?: string;
   className?: string;
@@ -18,8 +19,8 @@ export const TextInputWithClear: FactoryComponent<{
   let debouncedOnInput: Function | undefined;
 
   return {
-    oninit: ({ attrs: { oninput } }) => {
-      id = uniqueId();
+    oninit: ({ attrs: { oninput, id } }) => {
+      id = id || uniqueId();
       debouncedOnInput = oninput && debounce(oninput, 500);
     },
     view: ({
@@ -59,7 +60,7 @@ export const TextInputWithClear: FactoryComponent<{
           'label',
           {
             for: id,
-            className: initialValue ? 'active' : undefined,
+            className: initialValue || placeholder ? 'active' : undefined,
             oncreate: ({ dom }) => (labelElement = dom as HTMLLabelElement),
           },
           label
@@ -71,7 +72,7 @@ export const TextInputWithClear: FactoryComponent<{
               'opacity: 0; float: right; position: relative; top: -55px; transition: opacity 0.2s linear;',
             onclick: () => {
               input.value = '';
-              labelElement.classList.remove('active');
+              !placeholder && labelElement.classList.remove('active');
               clearButton.style.opacity = '0';
               onchange && onchange('');
               oninput && oninput('');

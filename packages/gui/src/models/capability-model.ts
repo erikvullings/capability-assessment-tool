@@ -1,11 +1,36 @@
 import { UIForm } from 'mithril-ui-form';
 
+export interface ICapabilityDataModel {
+  partners?: IPartner[];
+  categories?: ICategory[];
+  capabilities?: ICapability[];
+  lexicon?: ILabelled[];
+}
+
 export interface ICapabilityModel {
   form: UIForm;
-  data: Record<string, any>;
-  // data: {
-  //   partners: Array<{ id: string, label: string, type: '' }>
-  // };
+  // data: Record<string, any>;
+  data: ICapabilityDataModel;
+}
+
+export interface ILabelled {
+  id: string;
+  label: string;
+}
+
+export interface ICategory extends ILabelled {
+  subcategories: ILabelled[];
+}
+
+export interface ICapability extends ILabelled {
+  categoryId: string;
+  subcategoryId: string;
+  desc?: string;
+  partnerIds?: string[];
+}
+
+export interface IPartner extends ILabelled {
+  typeId: string;
 }
 
 export const defaultCapabilityModel = {
@@ -74,7 +99,7 @@ export const defaultCapabilityModel = {
           className: 'col m12',
         },
         {
-          id: 'capabilityPartners',
+          id: 'partnerIds',
           label: 'Partners',
           type: 'select',
           multiple: true,
@@ -147,135 +172,104 @@ export const defaultCapabilityModel = {
     },
   ] as UIForm,
   data: {
-    categoryTypes: [
-      { id: 'primary', label: 'Primary' },
-      { id: 'enabling', label: 'Enabling' },
-      { id: 'preparatory', label: 'Preparatory' },
-    ],
-    categories: [
-      {
-        id: 'IV',
-        label: 'Investigate',
-        type: 'primary',
-        subcategories: [
-          { id: 'IV1', label: 'Entity' },
-          { id: 'IV2', label: 'Platform' },
-          { id: 'IV3', label: 'Infrastructure' },
-          { id: 'IV4', label: 'OSINT' },
-          { id: 'IV5', label: 'Financial' },
-        ],
-      },
-      {
-        id: 'PV',
-        label: 'Prevent',
-        type: 'primary',
-        subcategories: [
-          { id: 'PV1', label: 'Monitoring' },
-          { id: 'PV2', label: 'Deterrence' },
-          { id: 'PV3', label: 'Prevent money laundering' },
-        ],
-      },
-      {
-        id: 'PI',
-        label: 'Disrupt & Intervene',
-        type: 'primary',
-        subcategories: [
-          { id: 'DI1', label: 'Platform disruption' },
-          { id: 'DI2', label: 'Undercover work' },
-          { id: 'DI3', label: 'Takedowns' },
-          { id: 'DI4', label: 'Offensive work' },
-          { id: 'DI5', label: 'Confiscate valuta' },
-        ],
-      },
-      {
-        id: 'FA',
-        label: 'Find & Arrest',
-        type: 'primary',
-        subcategories: [
-          { id: 'FA1', label: 'Digital forensics' },
-          { id: 'FA1', label: 'Arrest' },
-        ],
-      },
-      {
-        id: 'PE',
-        label: 'Prosecute & Evidence',
-        type: 'primary',
-        subcategories: [
-          { id: 'PE1', label: 'Digital evidence' },
-          { id: 'PE2', label: 'Physical evidence' },
-          { id: 'PE3', label: 'Making evidence understandable in court' },
-          { id: 'PE4', label: 'Provide supportive documentation' },
-        ],
-      },
-      {
-        id: 'IN',
-        label: 'Intelligence',
-        type: 'enabling',
-        subcategories: [
-          { id: 'IN1', label: 'Data collection & processing' },
-          { id: 'IN2', label: 'Data analysis' },
-          { id: 'IN3', label: 'Real time intelligence' },
-        ],
-      },
-      {
-        id: 'CD',
-        label: 'Coordinate',
-        type: 'enabling',
-        subcategories: [
-          { id: 'CD1', label: 'Lead' },
-          { id: 'CD2', label: 'Target identification' },
-          { id: 'CD3', label: 'Planning & coordination' },
-        ],
-      },
-      {
-        id: 'CL',
-        label: 'Collaborate',
-        type: 'enabling',
-        subcategories: [
-          { id: 'CL1', label: 'Standardisation' },
-          { id: 'CL2', label: 'Joint investigations' },
-          { id: 'CL3', label: 'Create non-LEA network' },
-          { id: 'CL4', label: 'Partner management' },
-        ],
-      },
-      {
-        id: 'PP',
-        label: 'Prepare',
-        type: 'preparatory',
-        subcategories: [
-          { id: 'PP1', label: 'Monitoring' },
-          { id: 'PP2', label: 'Trend identification' },
-          { id: 'PP3', label: 'Research & development' },
-          { id: 'PP4', label: 'Legislative & institutional framework' },
-          { id: 'PP5', label: 'Strategic foresight' },
-        ],
-      },
-      {
-        id: 'TR',
-        label: 'Training',
-        type: 'preparatory',
-        subcategories: [
-          { id: 'TR1', label: 'Skill training' },
-          { id: 'TR2', label: 'Education' },
-          { id: 'TR3', label: 'Evaluate' },
-        ],
-      },
-      {
-        id: 'LO',
-        label: 'Logistics',
-        type: 'preparatory',
-        subcategories: [
-          { id: 'LO1', label: 'Technical augmentation' },
-          { id: 'LO2', label: 'Material purchase & maintenance' },
-          { id: 'LO3', label: 'Sustainable personnel' },
-          { id: 'LO4', label: 'OPSEC' },
-        ],
-      },
-    ],
     stakeholderTypes: [
       { id: 'st1', label: 'Government' },
       { id: 'st2', label: 'Public safety' },
       { id: 'st3', label: 'First response' },
+    ],
+    categories: [
+      {
+        id: 'C1',
+        label: 'Primary',
+        subcategories: [
+          { id: 'P1', label: 'Investigate' },
+          { id: 'P2', label: 'Prevent' },
+          { id: 'P3', label: 'Disrupt & Intervene' },
+          { id: 'P4', label: 'Find & Arrest' },
+          { id: 'P5', label: 'Prosecute & Evidence' },
+        ],
+      },
+      {
+        id: 'C2',
+        label: 'Enabling',
+        subcategories: [
+          { id: 'E1', label: 'Intelligence' },
+          { id: 'E2', label: 'Coordinate' },
+          { id: 'E3', label: 'Collaborate' },
+        ],
+      },
+      {
+        id: 'C3',
+        label: 'Preparatory',
+        subcategories: [
+          { id: 'Y1', label: 'Intelligence' },
+          { id: 'Y2', label: 'Coordinate' },
+          { id: 'Y3', label: 'Collaborate' },
+        ],
+      },
+    ],
+    capabilities: [
+      { id: 'IV1', categoryId: 'C1', subcategoryId: 'P1', label: 'Entity' },
+      { id: 'IV2', categoryId: 'C1', subcategoryId: 'P1', label: 'Platform' },
+      { id: 'IV3', categoryId: 'C1', subcategoryId: 'P1', label: 'Infrastructure' },
+      { id: 'IV4', categoryId: 'C1', subcategoryId: 'P1', label: 'OSINT' },
+      { id: 'IV5', categoryId: 'C1', subcategoryId: 'P1', label: 'Financial' },
+      { id: 'PV1', categoryId: 'C1', subcategoryId: 'P2', label: 'Monitoring' },
+      { id: 'PV2', categoryId: 'C1', subcategoryId: 'P2', label: 'Deterrence' },
+      { id: 'PV3', categoryId: 'C1', subcategoryId: 'P2', label: 'Prevent money laundering' },
+      { id: 'DI1', categoryId: 'C1', subcategoryId: 'P3', label: 'Platform disruption' },
+      { id: 'DI2', categoryId: 'C1', subcategoryId: 'P3', label: 'Undercover work' },
+      { id: 'DI3', categoryId: 'C1', subcategoryId: 'P3', label: 'Takedowns' },
+      { id: 'DI4', categoryId: 'C1', subcategoryId: 'P3', label: 'Offensive work' },
+      { id: 'DI5', categoryId: 'C1', subcategoryId: 'P3', label: 'Confiscate valuta' },
+      { id: 'FA1', categoryId: 'C1', subcategoryId: 'P4', label: 'Digital forensics' },
+      { id: 'FA1', categoryId: 'C1', subcategoryId: 'P4', label: 'Arrest' },
+      { id: 'PE1', categoryId: 'C1', subcategoryId: 'P5', label: 'Digital evidence' },
+      { id: 'PE2', categoryId: 'C1', subcategoryId: 'P5', label: 'Physical evidence' },
+      {
+        id: 'PE3',
+        categoryId: 'C1',
+        subcategoryId: 'P5',
+        label: 'Making evidence understandable in court',
+      },
+      {
+        id: 'PE4',
+        categoryId: 'C1',
+        subcategoryId: 'P5',
+        label: 'Provide supportive documentation',
+      },
+      { id: 'IN1', categoryId: 'C2', subcategoryId: 'E1', label: 'Data collection & processing' },
+      { id: 'IN2', categoryId: 'C2', subcategoryId: 'E1', label: 'Data analysis' },
+      { id: 'IN3', categoryId: 'C2', subcategoryId: 'E1', label: 'Real time intelligence' },
+      { id: 'CD1', categoryId: 'C2', subcategoryId: 'E2', label: 'Lead' },
+      { id: 'CD2', categoryId: 'C2', subcategoryId: 'E2', label: 'Target identification' },
+      { id: 'CD3', categoryId: 'C2', subcategoryId: 'E2', label: 'Planning & coordination' },
+      { id: 'CL1', categoryId: 'C2', subcategoryId: 'E3', label: 'Standardisation' },
+      { id: 'CL2', categoryId: 'C2', subcategoryId: 'E3', label: 'Joint investigations' },
+      { id: 'CL3', categoryId: 'C2', subcategoryId: 'E3', label: 'Create non-LEA network' },
+      { id: 'CL4', categoryId: 'C2', subcategoryId: 'E3', label: 'Partner management' },
+      { id: 'PP1', categoryId: 'C3', subcategoryId: 'Y1', label: 'Monitoring' },
+      { id: 'PP2', categoryId: 'C3', subcategoryId: 'Y1', label: 'Trend identification' },
+      { id: 'PP3', categoryId: 'C3', subcategoryId: 'Y1', label: 'Research & development' },
+      {
+        id: 'PP4',
+        categoryId: 'C3',
+        subcategoryId: 'Y1',
+        label: 'Legislative & institutional framework',
+      },
+      { id: 'PP5', categoryId: 'C3', subcategoryId: 'Y1', label: 'Strategic foresight' },
+      { id: 'TR1', categoryId: 'C3', subcategoryId: 'Y2', label: 'Skill training' },
+      { id: 'TR2', categoryId: 'C3', subcategoryId: 'Y2', label: 'Education' },
+      { id: 'TR3', categoryId: 'C3', subcategoryId: 'Y2', label: 'Evaluate' },
+      { id: 'LO1', categoryId: 'C3', subcategoryId: 'Y3', label: 'Technical augmentation' },
+      {
+        id: 'LO2',
+        categoryId: 'C3',
+        subcategoryId: 'Y3',
+        label: 'Material purchase & maintenance',
+      },
+      { id: 'LO3', categoryId: 'C3', subcategoryId: 'Y3', label: 'Sustainable personnel' },
+      { id: 'LO4', categoryId: 'C3', subcategoryId: 'Y3', label: 'OPSEC' },
     ],
     lexicon: [
       {
