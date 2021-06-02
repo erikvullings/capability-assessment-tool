@@ -15,7 +15,7 @@ export const CatPage: MeiosisComponent = () => ({
   view: ({
     attrs: {
       state: {
-        app: { catModel = { form: [], data: {} } as ICapabilityModel },
+        app: { catModel = { form: [], settings: [], data: {} } as ICapabilityModel },
       },
       actions: { saveModel },
     },
@@ -34,7 +34,7 @@ export const CatPage: MeiosisComponent = () => ({
       : capabilities[0];
     if (!capability) return m(CircularSpinner);
 
-    const sections = form.filter((i) => i.type === 'section').filter((i) => i.id !== 'settings');
+    const sections = form.filter((i) => i.type === 'section');
     const tabs = [
       {
         title: 'Overview',
@@ -47,7 +47,8 @@ export const CatPage: MeiosisComponent = () => ({
             active: typeof index !== 'undefined' && s.id === 'prepare',
             vnode: m(LayoutForm, {
               form,
-              obj: data,
+              obj: capability,
+              context: data,
               section: s.id,
               onchange: () => {
                 console.log(JSON.stringify(catModel, null, 2));

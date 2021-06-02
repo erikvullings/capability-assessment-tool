@@ -9,6 +9,7 @@ export interface ICapabilityDataModel {
 
 export interface ICapabilityModel {
   form: UIForm;
+  settings: UIForm;
   // data: Record<string, any>;
   data: ICapabilityDataModel;
 }
@@ -37,6 +38,148 @@ export const defaultCapabilityModel = {
   form: [
     { id: 'prepare', label: 'Preparations', type: 'section' },
     {
+      id: 'categoryId',
+      label: 'Category',
+      type: 'select',
+      options: 'categories',
+      className: 'col s12 m3',
+    },
+    {
+      id: 'subcategoryId',
+      label: 'Subcategory',
+      type: 'select',
+      options: 'categories.categoryId.subcategories',
+      className: 'col s12 m3',
+    },
+    {
+      id: 'label',
+      label: 'Capability',
+      type: 'text',
+      className: 'col s12 m4',
+    },
+    {
+      id: 'id',
+      label: 'ID',
+      type: 'text',
+      className: 'col s12 m2',
+    },
+    {
+      id: 'desc',
+      label: 'Description',
+      placeholder: 'Describe the capability in detail.',
+      type: 'textarea',
+      className: 'col s12',
+    },
+    {
+      id: 'goal',
+      label: 'Group goal',
+      type: 'textarea',
+      placeholder: 'What are the long and short term goals that you want to achieve as a group.',
+      className: 'col s12',
+    },
+    // {
+    //   id: 'partnerIds',
+    //   label: 'Partners',
+    //   type: 'select',
+    //   multiple: true,
+    //   options: 'partners',
+    //   className: 'col m12',
+    // },
+    {
+      id: 'capabilityPartners',
+      label: 'Partners',
+      pageSize: 5,
+      repeat: true,
+      type: [
+        {
+          id: 'partnerId',
+          label: 'Partner',
+          type: 'select',
+          options: 'partners',
+          className: 'col s4 m2',
+        },
+        {
+          id: 'goal',
+          label: 'Goals',
+          placeholder: 'Specify long and short term goals',
+          type: 'textarea',
+          className: 'col s8 m10',
+        },
+      ],
+      className: 'col m12',
+    },
+    {
+      id: 'documentation',
+      label: 'Documentation',
+      repeat: true,
+      pageSize: 5,
+      type: [
+        {
+          id: 'documentId',
+          label: 'Document ID',
+          type: 'text',
+          className: 'col s3 m2',
+        },
+        {
+          id: 'label',
+          label: 'Title',
+          type: 'text',
+          className: 'col s6 m6',
+        },
+        {
+          id: 'link',
+          label: 'URL',
+          type: 'url',
+          className: 'col s3 m4',
+        },
+      ],
+      className: 'col m12',
+    },
+    { id: 'assess', label: 'Assessment', type: 'section' },
+    { id: 'develop', label: 'Development', type: 'section' },
+  ] as UIForm,
+  settings: [
+    {
+      id: 'categories',
+      label: 'Categories for capabilities',
+      repeat: true,
+      pageSize: 1,
+      propertyFilter: 'label',
+      sortProperty: 'id',
+      type: [
+        { id: 'id', type: 'text', className: 'col s4 m3' },
+        { id: 'label', type: 'text', label: 'Name', className: 'col s8 m9' },
+        { id: 'desc', type: 'textarea', label: 'Description', className: 'col s12' },
+        {
+          id: 'subcategories',
+          label: 'Subcategories',
+          repeat: true,
+          pageSize: 1,
+          propertyFilter: 'label',
+          sortProperty: 'id',
+          tabindex: 2,
+          className: 'col offset-s2 s10',
+          type: [
+            { id: 'id', type: 'text', className: 'col s4 m3' },
+            { id: 'label', type: 'text', label: 'Name', className: 'col s8 m9' },
+            { id: 'desc', type: 'textarea', label: 'Description', className: 'col s12' },
+          ],
+        },
+      ],
+    },
+    {
+      id: 'stakeholderTypes',
+      label: 'Stakeholder types',
+      repeat: true,
+      pageSize: 1,
+      propertyFilter: 'label',
+      sortProperty: 'id',
+      type: [
+        { id: 'id', type: 'text', className: 'col s4 m3' },
+        { id: 'label', type: 'text', label: 'Name', className: 'col s8 m9' },
+      ],
+    },
+    {
       id: 'partners',
       label: 'Partner organisations',
       repeat: true,
@@ -59,128 +202,21 @@ export const defaultCapabilityModel = {
         },
       ],
     },
-    {
-      id: 'capabilities',
-      label: 'Capabilities',
-      repeat: true,
-      pageSize: 1,
-      propertyFilter: 'label',
-      type: [
-        {
-          id: 'id',
-          label: 'ID',
-          type: 'text',
-          className: 'col s12 m2',
-        },
-        {
-          id: 'name',
-          label: 'Name',
-          type: 'text',
-          className: 'col s12 m4',
-        },
-        {
-          id: 'categoryId',
-          label: 'Category',
-          type: 'select',
-          options: 'categories',
-          className: 'col s12 m3',
-        },
-        {
-          id: 'subcategoryId',
-          label: 'Subcategory',
-          type: 'select',
-          options: 'categories.categoryId.subcategories',
-          className: 'col s12 m3',
-        },
-        {
-          id: 'desc',
-          label: 'Description',
-          type: 'textarea',
-          className: 'col m12',
-        },
-        {
-          id: 'partnerIds',
-          label: 'Partners',
-          type: 'select',
-          multiple: true,
-          options: 'partners',
-          className: 'col m12',
-        },
-      ],
-    },
-    { id: 'assess', label: 'Assessment', type: 'section' },
-    { id: 'develop', label: 'Development', type: 'section' },
-    { id: 'settings', label: 'Settings', type: 'section' },
-    {
-      id: 'categoryTypes',
-      label: 'Category types',
-      repeat: true,
-      pageSize: 1,
-      propertyFilter: 'label',
-      sortProperty: 'id',
-      type: [
-        { id: 'id', type: 'text', className: 'col s4 m3' },
-        { id: 'label', type: 'text', label: 'Name', className: 'col s8 m9' },
-      ],
-    },
-    {
-      id: 'categories',
-      label: 'Categories for capabilities',
-      repeat: true,
-      pageSize: 1,
-      propertyFilter: 'label',
-      sortProperty: 'id',
-      type: [
-        { id: 'id', type: 'text', className: 'col s4 m3' },
-        { id: 'label', type: 'text', label: 'Name', className: 'col s8 m6' },
-        {
-          id: 'type',
-          type: 'select',
-          label: 'Type',
-          className: 'col s8 m3',
-          options: 'categoryTypes',
-        },
-        { id: 'desc', type: 'textarea', label: 'Description', className: 'col s12' },
-        {
-          id: 'subcategories',
-          label: 'Subcategories',
-          repeat: true,
-          pageSize: 1,
-          propertyFilter: 'label',
-          sortProperty: 'id',
-          tabindex: 2,
-          className: 'col offset-s4 s8',
-          type: [
-            { id: 'id', type: 'text', className: 'col s4 m3' },
-            { id: 'label', type: 'text', label: 'Name', className: 'col s8 m9' },
-            { id: 'desc', type: 'textarea', label: 'Description', className: 'col s12' },
-          ],
-        },
-      ],
-    },
-    {
-      id: 'stakeholderTypes',
-      label: 'Stakeholder types',
-      repeat: true,
-      pageSize: 1,
-      propertyFilter: 'label',
-      sortProperty: 'id',
-      type: [
-        { id: 'id', type: 'text', className: 'col s4 m3' },
-        { id: 'label', type: 'text', label: 'Name', className: 'col s8 m9' },
-      ],
-    },
   ] as UIForm,
   data: {
     stakeholderTypes: [
-      { id: 'st1', label: 'Government' },
-      { id: 'st2', label: 'Public safety' },
-      { id: 'st3', label: 'First response' },
+      { id: 'ST1', label: 'Government' },
+      { id: 'ST2', label: 'Public safety' },
+      { id: 'ST3', label: 'First response' },
+    ],
+    partners: [
+      { id: 'P1', label: 'NCTV', typeId: 'ST1' },
+      { id: 'P2', label: 'IFV', typeId: 'ST2' },
     ],
     categories: [
       {
         id: 'C1',
-        label: 'Primary',
+        label: 'Primary capabilities',
         subcategories: [
           { id: 'P1', label: 'Investigate' },
           { id: 'P2', label: 'Prevent' },
@@ -191,7 +227,7 @@ export const defaultCapabilityModel = {
       },
       {
         id: 'C2',
-        label: 'Enabling',
+        label: 'Enabling capabilities',
         subcategories: [
           { id: 'E1', label: 'Intelligence' },
           { id: 'E2', label: 'Coordinate' },
@@ -200,7 +236,7 @@ export const defaultCapabilityModel = {
       },
       {
         id: 'C3',
-        label: 'Preparatory',
+        label: 'Preparatory capabilities',
         subcategories: [
           { id: 'Y1', label: 'Intelligence' },
           { id: 'Y2', label: 'Coordinate' },

@@ -13,21 +13,20 @@ export const SettingsPage: MeiosisComponent = () => ({
   view: ({
     attrs: {
       state: {
-        app: { catModel = { form: [], data: {} } as ICapabilityModel },
+        app: { catModel = { form: [], settings: [], data: {} } as ICapabilityModel },
       },
       actions: { saveModel },
     },
   }) => {
-    const { form, data = {} } = catModel;
-
+    const { settings = [], data = {} } = catModel;
+    console.log(catModel);
     return [
       m(
         '.row',
         { style: 'height: 95vh' },
         m(LayoutForm, {
-          form,
+          form: settings,
           obj: data,
-          section: 'settings',
           onchange: () => {
             console.log('Settings updated');
             saveModel(catModel);

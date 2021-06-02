@@ -56,7 +56,20 @@ export const OverviewPage: MeiosisComponent = () => {
       console.log(stakeholderFilter);
       console.log(stakeholderId);
 
-      return m('.row', { style: 'margin-top: 1em;' }, [
+      const maxItems =
+        categories && capabilities
+          ? categories.reduce((acc, cur) => {
+              const height = cur.subcategories
+                ? cur.subcategories.reduce((acc2, sc) => {
+                    const count = capabilities.filter((cap) => cap.subcategoryId === sc.id).length;
+                    return Math.max(acc2, count);
+                  }, 0)
+                : 0;
+              return Math.max(acc, height);
+            }, 0)
+          : 0;
+
+      return m('.row', [
         m(
           '.col.s12.l3',
           m(
@@ -81,7 +94,7 @@ export const OverviewPage: MeiosisComponent = () => {
                   });
                 },
               }),
-              m('h4.primary-text', { style: 'margin-left: 0.5em;' }, 'Filter capabilities'),
+              m('h5', { style: 'margin-left: 0.5em;' }, 'Filters'),
               [
                 m(TextInputWithClear, {
                   key,
@@ -125,7 +138,7 @@ export const OverviewPage: MeiosisComponent = () => {
             categories.map(({ label, subcategories }, i) =>
               m('.category', [
                 i > 0 && m('.divider'),
-                m('.section', [
+                m(i > 0 ? '.section' : 'div', [
                   m('h5', label),
                   subcategories &&
                     subcategories.length > 0 &&
@@ -134,38 +147,46 @@ export const OverviewPage: MeiosisComponent = () => {
                       subcategories.map((sc) =>
                         m(
                           '.col.s12.m4',
-                          m('.card', { style: `background: ${colors[i]}` }, [
-                            m('.card-content.white-text', [
-                              m(
-                                'span.card-title.black-text.white.center-align',
-                                { style: 'padding: 0.4rem' },
-                                m('strong', sc.label)
-                              ),
-                              capabilities &&
-                                capabilities.length > 0 &&
+                          m(
+                            '.card',
+                            {
+                              style: `background: ${colors[i % colors.length]}; height: ${
+                                80 + maxItems * 32
+                              }px`,
+                            },
+                            [
+                              m('.card-content.white-text', [
                                 m(
-                                  'ul',
-                                  capabilities
-                                    .filter((cap) => cap.subcategoryId === sc.id)
-                                    .filter(filterText)
-                                    .map((cap) =>
-                                      m(
-                                        'li',
+                                  'span.card-title.black-text.white.center-align',
+                                  { style: 'padding: 0.4rem' },
+                                  m('strong', sc.label)
+                                ),
+                                capabilities &&
+                                  capabilities.length > 0 &&
+                                  m(
+                                    'ul',
+                                    capabilities
+                                      .filter((cap) => cap.subcategoryId === sc.id)
+                                      .filter(filterText)
+                                      .map((cap) =>
                                         m(
-                                          'a.white-text',
-                                          {
-                                            alt: cap.label,
-                                            href: createRoute(Dashboards.CAPABILITY, {
-                                              id: cap.id,
-                                            }),
-                                          },
-                                          cap.label
+                                          'li',
+                                          m(
+                                            'a.white-text.truncate',
+                                            {
+                                              alt: cap.label,
+                                              href: createRoute(Dashboards.CAPABILITY, {
+                                                id: cap.id,
+                                              }),
+                                            },
+                                            cap.label
+                                          )
                                         )
                                       )
-                                    )
-                                ),
-                            ]),
-                          ])
+                                  ),
+                              ]),
+                            ]
+                          )
                         )
                       )
                     ),

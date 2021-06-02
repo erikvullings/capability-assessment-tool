@@ -32,7 +32,7 @@ export const LexiconPage: MeiosisComponent = () => ({
   view: ({
     attrs: {
       state: {
-        app: { catModel = { form: [], data: {} } as ICapabilityModel },
+        app: { catModel = { form: [], settings: [], data: {} } as ICapabilityModel },
       },
       actions: { saveModel },
     },

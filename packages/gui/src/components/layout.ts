@@ -81,7 +81,7 @@ export const Layout: MeiosisComponent = () => ({
           ])
         )
       ),
-      m('.container', children),
+      m('.container', { style: 'padding-top: 1rem' }, children),
     ]);
   },
 });

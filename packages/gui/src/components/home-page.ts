@@ -24,7 +24,7 @@ export const HomePage: MeiosisComponent = () => ({
             className: 'btn-large',
             label: 'Start here',
             onclick: () => {
-              dashboardSvc.switchTo(Dashboards.CAPABILITY);
+              dashboardSvc.switchTo(Dashboards.OVERVIEW);
             },
           }),
         ]
