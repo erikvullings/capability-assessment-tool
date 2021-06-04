@@ -43,6 +43,7 @@ export const CatPage: MeiosisComponent = () => ({
       ...sections.map(
         (s) =>
           ({
+            id: s.id,
             title: s.label,
             active: typeof index !== 'undefined' && s.id === 'prepare',
             vnode: m(LayoutForm, {
@@ -51,13 +52,19 @@ export const CatPage: MeiosisComponent = () => ({
               context: data,
               section: s.id,
               onchange: () => {
-                console.log(JSON.stringify(catModel, null, 2));
+                console.log(
+                  JSON.stringify(
+                    catModel.data.capabilities ? catModel.data.capabilities[0] : '',
+                    null,
+                    2
+                  )
+                );
                 saveModel(catModel);
               },
             }),
           } as ITabItem)
       ),
     ];
-    return m('.row', { style: 'height: 95vh' }, m(Tabs, { tabs, tabWidth: 'fill' }));
+    return m('.row', { style: 'height: 90vh' }, m(Tabs, { tabs, tabWidth: 'fill' }));
   },
 });

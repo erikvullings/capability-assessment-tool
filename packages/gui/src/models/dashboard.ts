@@ -19,7 +19,7 @@ export enum Dashboards {
   HOME = 'HOME',
   OVERVIEW = 'OVERVIEW',
   CAPABILITY = 'CAPABILITY',
-  LEXICON = 'LEXICON',
+  TAXONOMY = 'TAXONOMY',
   ABOUT = 'ABOUT',
   SETTINGS = 'SETTINGS',
   HELP = 'HELP',

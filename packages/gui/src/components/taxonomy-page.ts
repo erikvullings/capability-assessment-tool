@@ -4,11 +4,11 @@ import { Dashboards } from '../models';
 import { ICapabilityModel } from '../models/capability-model';
 import { MeiosisComponent } from '../services';
 
-const md = `#### Lexicon
+const md = `#### Taxonomy
 
 Definitions and abbreviations of commonly used words.`;
 
-const lexiconForm = [
+const TaxonomyForm = [
   {
     id: 'lexicon',
     label: 'Definitions',
@@ -23,12 +23,12 @@ const lexiconForm = [
   },
 ] as UIForm;
 
-export const LexiconPage: MeiosisComponent = () => ({
+export const TaxonomyPage: MeiosisComponent = () => ({
   oninit: ({
     attrs: {
       actions: { setPage },
     },
-  }) => setPage(Dashboards.LEXICON),
+  }) => setPage(Dashboards.TAXONOMY),
   view: ({
     attrs: {
       state: {
@@ -46,17 +46,20 @@ export const LexiconPage: MeiosisComponent = () => ({
         lexicon &&
           lexicon instanceof Array &&
           lexicon.length > 0 &&
-          m('table.highlight.responsive-table', [
+          m('table.highlight.responsive-table', { style: 'margin-bottom: 3rem' }, [
             m('thead', m('tr', [m('th', 'Term'), m('th', 'Description')])),
             m(
               'tbody',
-              lexicon.map((l) =>
-                m('tr', [m('td', m('strong', l.id)), m('td', m.trust(render(l.label)))])
-              )
+              lexicon
+                .filter((l) => typeof l.id !== 'undefined' && typeof l.label !== 'undefined')
+                .sort((a, b) => (a.id.toLowerCase() > b.id.toLowerCase() ? 1 : -1))
+                .map((l) =>
+                  m('tr', [m('td', m('strong', l.id)), m('td', m.trust(render(l.label)))])
+                )
             ),
           ]),
         m(LayoutForm, {
-          form: lexiconForm,
+          form: TaxonomyForm,
           obj: data,
           onchange: () => {
             console.log(JSON.stringify(catModel, null, 2));

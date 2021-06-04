@@ -7,7 +7,7 @@ import {
   HomePage,
   CatPage,
   SettingsPage,
-  LexiconPage,
+  TaxonomyPage,
   OverviewPage,
 } from '../components';
 
@@ -111,12 +111,12 @@ export const dashboardSvc: DashboardService = new DashboardService([
     component: CatPage,
   },
   {
-    id: Dashboards.LEXICON,
-    title: 'LEXICON',
+    id: Dashboards.TAXONOMY,
+    title: 'TAXONOMY',
     icon: 'book',
-    route: '/lexicon',
+    route: '/taxonomy',
     visible: true,
-    component: LexiconPage,
+    component: TaxonomyPage,
   },
   {
     id: Dashboards.ABOUT,

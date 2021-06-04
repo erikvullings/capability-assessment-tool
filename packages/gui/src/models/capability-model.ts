@@ -4,6 +4,10 @@ export interface ICapabilityDataModel {
   partners?: IPartner[];
   categories?: ICategory[];
   capabilities?: ICapability[];
+  mainTasks?: ILabelled[];
+  taskScale?: ILabelled[];
+  performanceAspects?: ILabelled[];
+  performanceScale?: ILabelled[];
   lexicon?: ILabelled[];
 }
 
@@ -17,6 +21,7 @@ export interface ICapabilityModel {
 export interface ILabelled {
   id: string;
   label: string;
+  desc?: string;
 }
 
 export interface ICategory extends ILabelled {
@@ -28,6 +33,7 @@ export interface ICapability extends ILabelled {
   subcategoryId: string;
   desc?: string;
   partnerIds?: string[];
+  assessmentId?: string;
 }
 
 export interface IPartner extends ILabelled {
@@ -36,7 +42,7 @@ export interface IPartner extends ILabelled {
 
 export const defaultCapabilityModel = {
   form: [
-    { id: 'prepare', label: 'Preparations', type: 'section' },
+    { id: 'prepare', label: '1. Preparations', type: 'section' },
     {
       id: 'categoryId',
       label: 'Category',
@@ -77,14 +83,6 @@ export const defaultCapabilityModel = {
       placeholder: 'What are the long and short term goals that you want to achieve as a group.',
       className: 'col s12',
     },
-    // {
-    //   id: 'partnerIds',
-    //   label: 'Partners',
-    //   type: 'select',
-    //   multiple: true,
-    //   options: 'partners',
-    //   className: 'col m12',
-    // },
     {
       id: 'capabilityPartners',
       label: 'Partners',
@@ -135,10 +133,53 @@ export const defaultCapabilityModel = {
       ],
       className: 'col m12',
     },
-    { id: 'assess', label: 'Assessment', type: 'section' },
-    { id: 'develop', label: 'Development', type: 'section' },
+    { id: 'assess', label: '2. Assessment', type: 'section' },
+    { type: 'md', value: '##### Capability importance', className: '.assess' },
+    {
+      id: 'taskAssessment',
+      type: 'assessment',
+      options: 'mainTasks',
+      optionLabel: 'Main task',
+      assessmentOptions: 'taskScale',
+      assessmentLabel: 'Importance',
+      descriptionLabel: 'Description',
+      overallAssessmentLabel: 'Maximum importance',
+      overallAssessment: 'max',
+    },
+    {
+      id: 'performanceAssessment',
+      type: 'assessment',
+      options: 'performanceAspects',
+      optionLabel: 'Performance aspect',
+      assessmentOptions: 'performanceScale',
+      assessmentLabel: 'Performance',
+      descriptionLabel: 'Description',
+      overallAssessmentLabel: 'Average performance',
+      overallAssessment: 'avg',
+    },
+    {
+      id: 'assessmentId',
+      label: 'Overall assessment',
+      type: 'lookup-table',
+      table: 'assessmentTable',
+      options: 'assessmentScale',
+      rowId: 'taskAssessment.assessmentId',
+      colId: 'performanceAssessment.assessmentId',
+    },
+    { type: 'md', value: '###### GO / NO GO decision' },
+    {
+      id: 'shouldDevelop',
+      type: 'switch',
+      label: '',
+      options: [
+        { id: 'NO GO', label: 'NO GO' },
+        { id: 'go', label: 'GO' },
+      ],
+    },
+    { id: 'develop', label: '3. Development', type: 'section' },
   ] as UIForm,
   settings: [
+    { type: 'md', value: '##### Category settings' },
     {
       id: 'categories',
       label: 'Categories for capabilities',
@@ -167,6 +208,7 @@ export const defaultCapabilityModel = {
         },
       ],
     },
+    { type: 'md', value: '##### Partner/stakeholder settings' },
     {
       id: 'stakeholderTypes',
       label: 'Stakeholder types',
@@ -201,6 +243,74 @@ export const defaultCapabilityModel = {
           className: 'col s12 m4',
         },
       ],
+    },
+    { type: 'md', value: '##### Task settings' },
+    {
+      id: 'mainTasks',
+      label: 'Main tasks a capability needs to support',
+      repeat: true,
+      pageSize: 1,
+      sortProperty: 'id',
+      type: [
+        { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
+        { id: 'label', label: 'Task', type: 'text', className: 'col s9 m10' },
+        { id: 'desc', label: 'Description', type: 'textarea', className: 'col s12' },
+      ],
+    },
+    {
+      id: 'taskScale',
+      label: 'Scale for the main tasks',
+      repeat: true,
+      pageSize: 1,
+      sortProperty: 'id',
+      type: [
+        { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
+        { id: 'label', label: 'Value', type: 'text', className: 'col s9 m10' },
+      ],
+    },
+    { type: 'md', value: '##### Performance settings' },
+    {
+      id: 'performanceAspects',
+      label: 'Performance aspects',
+      repeat: true,
+      pageSize: 1,
+      sortProperty: 'id',
+      type: [
+        { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
+        { id: 'label', label: 'Task', type: 'text', className: 'col s9 m10' },
+        { id: 'desc', label: 'Description', type: 'textarea', className: 'col s12' },
+      ],
+    },
+    {
+      id: 'performanceScale',
+      label: 'Scale for performance score',
+      repeat: true,
+      pageSize: 1,
+      sortProperty: 'id',
+      type: [
+        { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
+        { id: 'label', label: 'Value', type: 'text', className: 'col s9 m10' },
+      ],
+    },
+    { type: 'md', value: '##### Task to performance table lookup' },
+    {
+      id: 'assessmentScale',
+      label: 'Scale for assessment score',
+      repeat: true,
+      pageSize: 1,
+      sortProperty: 'id',
+      type: [
+        { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
+        { id: 'label', label: 'Value', type: 'text', className: 'col s9 m10' },
+      ],
+    },
+    {
+      id: 'assessmentTable',
+      type: 'create-lookup-table',
+      label: 'task \\ perf. scale',
+      options: 'assessmentScale',
+      rows: 'taskScale',
+      cols: 'performanceScale',
     },
   ] as UIForm,
   data: {
@@ -306,6 +416,81 @@ export const defaultCapabilityModel = {
       },
       { id: 'LO3', categoryId: 'C3', subcategoryId: 'Y3', label: 'Sustainable personnel' },
       { id: 'LO4', categoryId: 'C3', subcategoryId: 'Y3', label: 'OPSEC' },
+    ],
+    mainTasks: [
+      { id: 'MT1', label: 'Preventing dark web & cryptocurrency criminality' },
+      { id: 'MT2', label: 'Reduce impact of dark web & cryptocurrency criminality' },
+      {
+        id: 'MT3',
+        label: 'Finding, arresting and prosecuting criminals operating on the dark web',
+      },
+    ],
+    taskScale: [
+      { id: 'TS1', label: 'Barely' },
+      { id: 'TS2', label: 'Low' },
+      { id: 'TS3', label: 'Moderate' },
+      { id: 'TS4', label: 'High' },
+      { id: 'TS5', label: 'Essential' },
+    ],
+    performanceAspects: [
+      {
+        id: 'PA1',
+        label: 'Effectivity of the capability:',
+        desc: `- Quality of the results
+- Timeliness of the results
+- The ability to deliver results as long as required`,
+      },
+      {
+        id: 'PA2',
+        label: 'Safe work environment professionals',
+        desc: 'Physical and mental health of employees policing the dark web while carrying out or as the result of this capability.',
+      },
+      {
+        id: 'PA3',
+        label: 'Efficiency',
+        desc: 'The extent to which financial resources for this capability are proportionate to the desired results (output) of this capability.',
+      },
+    ],
+    performanceScale: [
+      { id: 'PS1', label: 'Bad' },
+      { id: 'PS2', label: 'Inadequate' },
+      { id: 'PS3', label: 'Moderate' },
+      { id: 'PS4', label: 'Adequate' },
+      { id: 'PS5', label: 'Good' },
+    ],
+    assessmentScale: [
+      { id: 'AS1', label: 'None' },
+      { id: 'AS2', label: 'Limited' },
+      { id: 'AS3', label: 'Moderate' },
+      { id: 'AS4', label: 'High' },
+      { id: 'AS5', label: 'Very high' },
+    ],
+    assessmentTable: [
+      { rowId: 'TS1', colId: 'PS1', optionId: 'AS3' },
+      { rowId: 'TS1', colId: 'PS2', optionId: 'AS3' },
+      { rowId: 'TS1', colId: 'PS3', optionId: 'AS2' },
+      { rowId: 'TS1', colId: 'PS4', optionId: 'AS2' },
+      { rowId: 'TS1', colId: 'PS5', optionId: 'AS1' },
+      { rowId: 'TS2', colId: 'PS1', optionId: 'AS4' },
+      { rowId: 'TS2', colId: 'PS2', optionId: 'AS3' },
+      { rowId: 'TS2', colId: 'PS3', optionId: 'AS3' },
+      { rowId: 'TS2', colId: 'PS4', optionId: 'AS2' },
+      { rowId: 'TS2', colId: 'PS5', optionId: 'AS1' },
+      { rowId: 'TS3', colId: 'PS1', optionId: 'AS4' },
+      { rowId: 'TS3', colId: 'PS2', optionId: 'AS4' },
+      { rowId: 'TS3', colId: 'PS3', optionId: 'AS3' },
+      { rowId: 'TS3', colId: 'PS4', optionId: 'AS3' },
+      { rowId: 'TS3', colId: 'PS5', optionId: 'AS1' },
+      { rowId: 'TS4', colId: 'PS1', optionId: 'AS5' },
+      { rowId: 'TS4', colId: 'PS2', optionId: 'AS4' },
+      { rowId: 'TS4', colId: 'PS3', optionId: 'AS4' },
+      { rowId: 'TS4', colId: 'PS4', optionId: 'AS3' },
+      { rowId: 'TS4', colId: 'PS5', optionId: 'AS1' },
+      { rowId: 'TS5', colId: 'PS1', optionId: 'AS5' },
+      { rowId: 'TS5', colId: 'PS2', optionId: 'AS5' },
+      { rowId: 'TS5', colId: 'PS3', optionId: 'AS4' },
+      { rowId: 'TS5', colId: 'PS4', optionId: 'AS4' },
+      { rowId: 'TS5', colId: 'PS5', optionId: 'AS1' },
     ],
     lexicon: [
       {
