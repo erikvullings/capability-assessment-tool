@@ -96,10 +96,7 @@ a {
   top: 66px;
 }
 .buttons a {
-  margin: 5px 0;
-}
-.buttons {
-  padding: 0 20px;
+  margin: 5px;
 }
 
 /* print styles */

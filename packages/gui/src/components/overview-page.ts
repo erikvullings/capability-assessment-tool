@@ -114,7 +114,7 @@ export const OverviewPage: MeiosisComponent = () => {
               ],
               data.partners &&
                 m(Select, {
-                  placeholder: 'Select one',
+                  placeholder: 'Select one or more',
                   label: 'Stakeholder',
                   checkedId: stakeholderId,
                   options: data.partners,

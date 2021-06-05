@@ -22,22 +22,23 @@ export const settingsModel = [
     pageSize: 1,
     propertyFilter: 'label',
     type: [
-      { id: 'id', autogenerate: 'id' },
+      { id: 'id', type: 'text', label: 'Acronym', className: 'col s3 m2' },
       {
         id: 'label',
         label: 'Organisation / department',
         type: 'text',
-        className: 'col s12 m8',
+        className: 'col s9 m7',
       },
       {
         id: 'type',
         label: 'Type of stakeholder',
         type: 'select',
         options: 'stakeholderTypes',
-        className: 'col s12 m4',
+        className: 'col s12 m3',
       },
     ],
   },
+
   { id: 'category-settings', type: 'section', label: 'Categories' },
   { type: 'md', value: '##### Category settings' },
   {
@@ -68,6 +69,7 @@ export const settingsModel = [
       },
     ],
   },
+
   { id: 'task-settings', type: 'section', label: 'Tasks' },
   { type: 'md', value: '##### Task settings' },
   {

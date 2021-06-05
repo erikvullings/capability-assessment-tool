@@ -125,9 +125,9 @@ export const debounce = (func: (...args: any) => void, timeout: number) => {
   };
 };
 
-export const formatDate = (date: number | Date) => {
+export const formatDate = (date: number | Date = new Date()) => {
   const d = new Date(date);
-  return `${padLeft(d.getDate())}/${padLeft(d.getMonth() + 1)}/${d.getFullYear()}`;
+  return `${d.getFullYear()}-${padLeft(d.getMonth() + 1)}-${padLeft(d.getDate())}`;
 };
 
 /**

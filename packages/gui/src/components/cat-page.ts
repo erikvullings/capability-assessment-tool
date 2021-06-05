@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { Tabs, ITabItem } from 'mithril-materialized';
-import { LayoutForm } from 'mithril-ui-form';
+import { LayoutForm, render } from 'mithril-ui-form';
 import { Dashboards } from '../models';
 import { ICapabilityModel } from '../models/capability-model/capability-model';
 import { MeiosisComponent } from '../services';
@@ -37,8 +37,26 @@ export const CatPage: MeiosisComponent = () => ({
     const sections = form.filter((i) => i.type === 'section');
     const tabs = [
       {
-        title: 'Overview',
-        vnode: m('.overview', [m('h5', capability.label)]),
+        id: 'overview',
+        title: capability.label ? `"${capability.label}" overview` : 'Overview',
+        vnode: m('.overview', [
+          m('h4', `Capability: ${capability.label}`),
+          capability.desc && m('p', capability.desc),
+          capability.goal && [m('h5', 'Group goal'), m('p', capability.goal)],
+          capability.capabilityPartners &&
+            capability.capabilityPartners.length > 0 && [
+              m('h5', 'Partners'),
+              m(
+                'ul.browser-default',
+                capability.capabilityPartners.map((p) =>
+                  m('li', [
+                    m('strong', `${p.partnerId}'s goals: `),
+                    p.goal && m('span', m.trust(render(p.goal, true))),
+                  ])
+                )
+              ),
+            ],
+        ]),
       } as ITabItem,
       ...sections.map(
         (s) =>

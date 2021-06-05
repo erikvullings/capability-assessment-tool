@@ -19,6 +19,7 @@ export interface ICapabilityDataModel {
 }
 
 export interface ICapabilityModel {
+  version?: number;
   form: UIForm;
   settings: UIForm;
   // data: Record<string, any>;
@@ -39,7 +40,9 @@ export interface ICapability extends ILabelled {
   categoryId: string;
   subcategoryId: string;
   desc?: string;
-  partnerIds?: string[];
+  goal?: string;
+  capabilityPartners?: Array<{ partnerId: string; goal?: string }>;
+  documentation?: Array<{ documentId?: string; label?: string; url?: string }>;
   assessmentId?: string;
 }
 
@@ -48,6 +51,7 @@ export interface IPartner extends ILabelled {
 }
 
 export const defaultCapabilityModel = {
+  version: 0,
   form: [
     ...preparationModel,
     ...assessmentModel,
@@ -61,8 +65,8 @@ export const defaultCapabilityModel = {
       { id: 'ST3', label: 'First response' },
     ],
     partners: [
-      { id: 'P1', label: 'NCTV', typeId: 'ST1' },
-      { id: 'P2', label: 'IFV', typeId: 'ST2' },
+      { id: 'NCTV', label: 'NCTV', typeId: 'ST1' },
+      { id: 'IFV', label: 'IFV', typeId: 'ST2' },
     ],
     categories: [
       {

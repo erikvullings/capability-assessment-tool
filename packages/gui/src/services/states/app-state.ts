@@ -45,10 +45,11 @@ export interface IAppState {
 // console.log(`API server: ${process.env.SERVER}`);
 
 const cm = localStorage.getItem(catModelKey) || JSON.stringify(defaultCapabilityModel);
-const catModel = JSON.parse(cm);
+const catModel = JSON.parse(cm) as ICapabilityModel;
 // TODO: DURING DEV
-catModel.form = defaultCapabilityModel.form;
-catModel.data = defaultCapabilityModel.data;
+// catModel.form = defaultCapabilityModel.form;
+// catModel.settings = defaultCapabilityModel.settings;
+// catModel.data = defaultCapabilityModel.data;
 
 export const appStateMgmt = {
   initial: {
@@ -73,6 +74,7 @@ export const appStateMgmt = {
       createRoute: (page, params) => dashboardSvc && dashboardSvc.route(page, params),
       saveModel: (cat) => {
         localStorage.setItem(catModelKey, JSON.stringify(cat));
+        update({ app: { catModel: () => cat } });
       },
     };
   },
