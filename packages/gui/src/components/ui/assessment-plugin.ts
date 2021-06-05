@@ -1,5 +1,5 @@
 import m from 'mithril';
-import { Select, TextArea } from 'mithril-materialized';
+import { Select, TextArea, TextInput } from 'mithril-materialized';
 import { IInputField, resolveExpression, render } from 'mithril-ui-form';
 import { PluginType } from 'mithril-ui-form-plugin';
 import { ILabelled } from '../../models/capability-model/capability-model';
@@ -37,10 +37,12 @@ export const assessmentPlugin: PluginType = () => {
         descriptionLabel,
         overallAssessment,
         overallAssessmentLabel,
+        readonly,
       } = field as AssessmentFieldType;
       if (obj instanceof Array) return;
       if (!obj.hasOwnProperty(id)) obj[id] = { assessmentId: '', items: [] } as AssessmentType;
 
+      const disabled = readonly;
       const items = (obj[id] as AssessmentType).items;
       const opt =
         typeof options === 'string' && (resolveExpression(options, [obj, context]) as ILabelled[]);
@@ -104,8 +106,8 @@ export const assessmentPlugin: PluginType = () => {
                   {
                     'data-tooltip': o.desc
                       ? `<div class="left-align">${render(o.desc).replace(
-                          /ul/,
-                          'ul class="browser-default"'
+                          /<ul/,
+                          '<ul class="browser-default"'
                         )}</div>`
                       : undefined,
                     style: 'margin: 9px auto 0 auto;',
@@ -115,22 +117,28 @@ export const assessmentPlugin: PluginType = () => {
                 ),
                 m(
                   '.col.s4.m2',
-                  m(Select, {
-                    placeholder: 'Pick one',
-                    options: score,
-                    initialValue: item.value,
-                    onchange: (v) => {
-                      item.value = v[0] as string;
-                      const o = computeOutcome();
-                      if (typeof o === 'number')
-                        (obj[id] as AssessmentType).assessmentId = score[o].id;
-                      onchange && onchange(obj[id]);
-                    },
-                  })
+                  disabled
+                    ? m(TextInput, {
+                        disabled,
+                        initialValue: score.filter((s) => s.id === item.value).shift()?.label,
+                      })
+                    : m(Select, {
+                        placeholder: 'Pick one',
+                        options: score,
+                        initialValue: item.value,
+                        onchange: (v) => {
+                          item.value = v[0] as string;
+                          const o = computeOutcome();
+                          if (typeof o === 'number')
+                            (obj[id] as AssessmentType).assessmentId = score[o].id;
+                          onchange && onchange(obj[id]);
+                        },
+                      })
                 ),
                 m(
                   '.col.s12.m5',
                   m(TextArea, {
+                    disabled,
                     initialValue: item.desc,
                     onchange: (v) => {
                       item.desc = v;

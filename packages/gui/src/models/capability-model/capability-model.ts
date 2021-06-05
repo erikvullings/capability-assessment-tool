@@ -44,6 +44,7 @@ export interface ICapability extends ILabelled {
   capabilityPartners?: Array<{ partnerId: string; goal?: string }>;
   documentation?: Array<{ documentId?: string; label?: string; url?: string }>;
   assessmentId?: string;
+  shouldDevelop?: boolean;
 }
 
 export interface IPartner extends ILabelled {

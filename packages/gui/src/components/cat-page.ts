@@ -56,6 +56,64 @@ export const CatPage: MeiosisComponent = () => ({
                 )
               ),
             ],
+          m('h5', 'Assessment'),
+          m(LayoutForm, {
+            form: [
+              {
+                readonly: true,
+                id: 'taskAssessment',
+                type: 'assessment',
+                options: 'mainTasks',
+                optionLabel: 'Main task',
+                assessmentOptions: 'taskScale',
+                assessmentLabel: 'Importance',
+                descriptionLabel: 'Explanation',
+                overallAssessmentLabel: 'Maximum importance',
+                overallAssessment: 'max',
+              },
+              {
+                readonly: true,
+                id: 'performanceAssessment',
+                type: 'assessment',
+                options: 'performanceAspects',
+                optionLabel: 'Performance aspect',
+                assessmentOptions: 'performanceScale',
+                assessmentLabel: 'Performance',
+                descriptionLabel: 'Explanation',
+                overallAssessmentLabel: 'Average performance',
+                overallAssessment: 'avg',
+              },
+              {
+                readonly: true,
+                id: 'gapAssessment',
+                type: 'assessment',
+                options: 'mainGaps',
+                optionLabel: 'Cause of the problem',
+                assessmentOptions: 'gapScale',
+                assessmentLabel: 'Problem',
+                descriptionLabel: 'Explanation',
+              },
+              {
+                readonly: true,
+                id: 'assessmentId',
+                label: 'Overall assessment',
+                type: 'lookup-table',
+                table: 'assessmentTable',
+                options: 'assessmentScale',
+                rowId: 'taskAssessment.assessmentId',
+                colId: 'performanceAssessment.assessmentId',
+              },
+              {
+                type: 'md',
+                value: `###### **GO / NO GO decision: ${
+                  capability.shouldDevelop ? 'GO' : 'NO GO'
+                }**`,
+                className: 'right-align',
+              },
+            ],
+            obj: capability,
+            context: data,
+          }),
         ]),
       } as ITabItem,
       ...sections.map(
@@ -83,9 +141,15 @@ export const CatPage: MeiosisComponent = () => ({
           } as ITabItem)
       ),
     ];
-    return m(Tabs, {
-      tabs,
-      tabWidth: 'fill',
-    });
+    return m(
+      '.capability-page',
+      // {
+      //   style: 'height: 95vh',
+      // },
+      m(Tabs, {
+        tabs,
+        tabWidth: 'fill',
+      })
+    );
   },
 });

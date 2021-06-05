@@ -13,8 +13,8 @@ specifiers:
   mini-css-extract-plugin: ^1.6.0
   mithril: ^2.0.4
   mithril-materialized: ^0.19.0
-  mithril-ui-form: ^1.1.5
-  mithril-ui-form-plugin: ^0.3.1
+  mithril-ui-form: ^1.1.7
+  mithril-ui-form-plugin: ^0.3.3
   mithril-ui-form-rating-plugin: ^0.3.3
   rimraf: ^3.0.2
   style-loader: ^2.0.0
@@ -29,8 +29,8 @@ dependencies:
   materialize-css: 1.0.0
   mithril: 2.0.4
   mithril-materialized: 0.19.0_f3d9df6f4766fd28b6cfb8072ccbc3ca
-  mithril-ui-form: 1.1.5_468454086b960aae41e583438778ffa2
-  mithril-ui-form-plugin: 0.3.1
+  mithril-ui-form: 1.1.7_468454086b960aae41e583438778ffa2
+  mithril-ui-form-plugin: 0.3.3
   mithril-ui-form-rating-plugin: 0.3.3_mithril@2.0.4
 
 devDependencies:
@@ -2462,8 +2462,8 @@ packages:
       mithril: 2.0.4
     dev: false
 
-  /mithril-ui-form-plugin/0.3.1:
-    resolution: {integrity: sha512-R++4WKlwLX7ycDlcJmrIgcdkwhE5mxZd+Q5fwfavanpZdikfBSJpIQ2cC9L6Mm/A9Yu3hysWZzmSTcsss7EUHw==}
+  /mithril-ui-form-plugin/0.3.3:
+    resolution: {integrity: sha512-8gO90YeGs7B+akTcoUpVRl3YHkQb6vhZ71E9igCjUqd83DJHO4Ey0xFcNCOjZ3gpSkX8h+J6RcwqxFBJrOg3ZA==}
     dev: false
 
   /mithril-ui-form-rating-plugin/0.3.3_mithril@2.0.4:
@@ -2474,8 +2474,8 @@ packages:
       mithril: 2.0.4
     dev: false
 
-  /mithril-ui-form/1.1.5_468454086b960aae41e583438778ffa2:
-    resolution: {integrity: sha512-IIVfd4XgdqRB2UwqjVmiUzLwwGdyoaaYIXC6OYKaPnQEfWn8eu2DEzcAbEtJesMHGjS6QNsWV/bl00mAfaZfkA==}
+  /mithril-ui-form/1.1.7_468454086b960aae41e583438778ffa2:
+    resolution: {integrity: sha512-5By8V6Mv8Ny17/yi8IXajISMeU830CWRXN+GJAa2UUL6n4yjzsC3g9B9hUEfM0EJUsrHDxNGWuQqJWTlXfadeA==}
     peerDependencies:
       materialize-css: ^1.0.0
       mithril: ^2.0.4
@@ -2484,7 +2484,7 @@ packages:
       materialize-css: 1.0.0
       mithril: 2.0.4
       mithril-materialized: 0.19.0_f3d9df6f4766fd28b6cfb8072ccbc3ca
-      mithril-ui-form-plugin: 0.3.1
+      mithril-ui-form-plugin: 0.3.3
     dev: false
 
   /mithril/2.0.4:
