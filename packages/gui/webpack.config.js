@@ -137,6 +137,7 @@ module.exports = (env) => {
     output: {
       filename: 'bundle.js',
       path: outputPath,
+      publicPath,
     },
   };
 };
