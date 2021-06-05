@@ -1,7 +1,8 @@
 import m from 'mithril';
 import { Select, TextArea } from 'mithril-materialized';
-import { IInputField, resolveExpression } from 'mithril-ui-form';
+import { IInputField, resolveExpression, render } from 'mithril-ui-form';
 import { PluginType } from 'mithril-ui-form-plugin';
+import { ILabelled } from '../../models/capability-model/capability-model';
 
 // const range = (start: number, end: number) =>
 //   Array.from({ length: end - start + 1 }, (_, k) => k + start);
@@ -42,14 +43,10 @@ export const assessmentPlugin: PluginType = () => {
 
       const items = (obj[id] as AssessmentType).items;
       const opt =
-        typeof options === 'string' &&
-        (resolveExpression(options, [obj, context]) as Array<{ id: string; label?: string }>);
+        typeof options === 'string' && (resolveExpression(options, [obj, context]) as ILabelled[]);
       const score =
         typeof options === 'string' &&
-        (resolveExpression(assessmentOptions, [obj, context]) as Array<{
-          id: string;
-          label: string;
-        }>);
+        (resolveExpression(assessmentOptions, [obj, context]) as ILabelled[]);
       const computeOutcome = () =>
         score &&
         Math.round(
@@ -72,7 +69,7 @@ export const assessmentPlugin: PluginType = () => {
 
       return m('.section', [
         m('.divider'),
-        overallAssessment &&
+        overallAssessmentLabel &&
           m(
             '.row',
             m(
@@ -83,7 +80,10 @@ export const assessmentPlugin: PluginType = () => {
                   style:
                     'border: solid 2px black; border-radius: 8px; background: aliceblue; float: right; padding: 5px; margin-top: 10px;',
                 },
-                [m('strong', `${overallAssessmentLabel}: `), m('span', outcome)]
+                [
+                  m('strong', `${overallAssessmentLabel}: `),
+                  m('span', items.filter((i) => i.value).length > 0 ? outcome : 'TBD'),
+                ]
               )
             )
           ),
@@ -98,8 +98,21 @@ export const assessmentPlugin: PluginType = () => {
               const existing = items.filter((i) => i.id === o.id).shift();
               if (!existing) items.push({ id: o.id });
               const item = existing || items[items.length - 1];
-              return m('.myrow', [
-                m('.col.s8.m5', { style: 'margin: 26px auto 0 auto;' }, o.label),
+              return m('.condensed', [
+                m(
+                  '.col.s8.m5.truncate.tooltipped[data-position=bottom]',
+                  {
+                    'data-tooltip': o.desc
+                      ? `<div class="left-align">${render(o.desc).replace(
+                          /ul/,
+                          'ul class="browser-default"'
+                        )}</div>`
+                      : undefined,
+                    style: 'margin: 9px auto 0 auto;',
+                    oncreate: ({ dom }) => o.desc && M.Tooltip.init(dom),
+                  },
+                  o.label
+                ),
                 m(
                   '.col.s4.m2',
                   m(Select, {

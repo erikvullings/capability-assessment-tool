@@ -501,33 +501,6 @@ ul.projects > li > span.project-id {
   opacity: 1;
 }
 
-.spider-chart {
-  width: 100%;
-  max-width: 100%;
-}
-.spider-chart .axis {
-  stroke: #555;
-  stroke-width: 0.2;
-}
-.spider-chart .scale {
-  fill: #eee;
-  stroke: #999;
-  stroke-width: 0.2;
-}
-.spider-chart .shape {
-  fill-opacity: 0.3;
-  stroke-width: 0.5;
-}
-.spider-chart:hover .shape {
-  fill-opacity: 0.3;
-}
-.spider-chart .shape:hover,
-.spider-chart:hover .shape:hover {
-  fill-opacity: 0.6;
-}
-.spider-chart .caption {
-  font-size: 3px;
-  fill: #444;
-  font-weight: normal;
-  text-shadow: 1px 1px 0 #fff;
+.condensed .input-field {
+  margin: 0 auto;
 }

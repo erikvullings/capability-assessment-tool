@@ -1,7 +1,11 @@
 import m from 'mithril';
 import { Select, FlatButton } from 'mithril-materialized';
 import { Dashboards } from '../models';
-import { ICapability, ICapabilityDataModel, ICapabilityModel } from '../models/capability-model';
+import {
+  ICapability,
+  ICapabilityDataModel,
+  ICapabilityModel,
+} from '../models/capability-model/capability-model';
 import { MeiosisComponent } from '../services';
 import { TextInputWithClear } from './ui';
 

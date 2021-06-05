@@ -1,7 +1,10 @@
 import Stream from 'mithril/stream';
 import { dashboardSvc } from '..';
 import { Dashboards } from '../../models';
-import { defaultCapabilityModel, ICapabilityModel } from '../../models/capability-model';
+import {
+  defaultCapabilityModel,
+  ICapabilityModel,
+} from '../../models/capability-model/capability-model';
 import { IAppModel, UpdateStream } from '../meiosis';
 /** Application state */
 

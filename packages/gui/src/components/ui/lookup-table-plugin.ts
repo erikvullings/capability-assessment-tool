@@ -49,33 +49,30 @@ export const lookupTable: PluginType = () => {
       const optTmp =
         typeof options === 'string' &&
         (resolveExpression(options, [obj, context]) as Array<{ id: string; label: string }>);
-      console.log({ tbl, rId, cId });
+      // console.log({ tbl, rId, cId });
       const optionId =
         tbl &&
         tbl instanceof Array &&
         tbl.filter((t) => t.rowId === rId && t.colId === cId).shift();
       const opt = optTmp && optionId && optTmp.filter((o) => o.id === optionId.optionId).shift();
       if (onchange && opt && obj[id] !== opt.id) onchange(opt.id);
-      return (
-        opt &&
-        m('section', [
-          m('.divider'),
+      return m('section', [
+        m('.divider'),
+        m(
+          '.row',
           m(
-            '.row',
+            '.col.s12.right-align',
             m(
-              '.col.s12.right-align',
-              m(
-                '.assessment-score',
-                {
-                  style:
-                    'border: solid 2px black; border-radius: 8px; background: aliceblue; float: right; padding: 5px; margin-top: 10px;',
-                },
-                [m('strong', `${label}: `), m('span', opt.label)]
-              )
+              '.assessment-score',
+              {
+                style:
+                  'border: solid 2px black; border-radius: 8px; background: aliceblue; float: right; padding: 5px; margin-top: 10px;',
+              },
+              [m('strong', `${label}: `), m('span', opt ? opt.label : 'TBD')]
             )
-          ),
-        ])
-      );
+          )
+        ),
+      ]);
     },
   };
 };

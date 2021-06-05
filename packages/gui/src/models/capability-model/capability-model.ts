@@ -1,4 +1,7 @@
 import { UIForm } from 'mithril-ui-form';
+import { assessmentModel } from './assessment';
+import { preparationModel } from './preparation';
+import { settingsModel } from './settings';
 
 export interface ICapabilityDataModel {
   partners?: IPartner[];
@@ -8,6 +11,10 @@ export interface ICapabilityDataModel {
   taskScale?: ILabelled[];
   performanceAspects?: ILabelled[];
   performanceScale?: ILabelled[];
+  assessmentTable?: Array<{ rowId: string; colId: string; optionId: string }>;
+  assessmentScale?: ILabelled[];
+  mainGaps?: ILabelled[];
+  gapScale?: ILabelled[];
   lexicon?: ILabelled[];
 }
 
@@ -42,277 +49,11 @@ export interface IPartner extends ILabelled {
 
 export const defaultCapabilityModel = {
   form: [
-    { id: 'prepare', label: '1. Preparations', type: 'section' },
-    {
-      id: 'categoryId',
-      label: 'Category',
-      type: 'select',
-      options: 'categories',
-      className: 'col s12 m3',
-    },
-    {
-      id: 'subcategoryId',
-      label: 'Subcategory',
-      type: 'select',
-      options: 'categories.categoryId.subcategories',
-      className: 'col s12 m3',
-    },
-    {
-      id: 'label',
-      label: 'Capability',
-      type: 'text',
-      className: 'col s12 m4',
-    },
-    {
-      id: 'id',
-      label: 'ID',
-      type: 'text',
-      className: 'col s12 m2',
-    },
-    {
-      id: 'desc',
-      label: 'Description',
-      placeholder: 'Describe the capability in detail.',
-      type: 'textarea',
-      className: 'col s12',
-    },
-    {
-      id: 'goal',
-      label: 'Group goal',
-      type: 'textarea',
-      placeholder: 'What are the long and short term goals that you want to achieve as a group.',
-      className: 'col s12',
-    },
-    {
-      id: 'capabilityPartners',
-      label: 'Partners',
-      pageSize: 5,
-      repeat: true,
-      type: [
-        {
-          id: 'partnerId',
-          label: 'Partner',
-          type: 'select',
-          options: 'partners',
-          className: 'col s4 m2',
-        },
-        {
-          id: 'goal',
-          label: 'Goals',
-          placeholder: 'Specify long and short term goals',
-          type: 'textarea',
-          className: 'col s8 m10',
-        },
-      ],
-      className: 'col m12',
-    },
-    {
-      id: 'documentation',
-      label: 'Documentation',
-      repeat: true,
-      pageSize: 5,
-      type: [
-        {
-          id: 'documentId',
-          label: 'Document ID',
-          type: 'text',
-          className: 'col s3 m2',
-        },
-        {
-          id: 'label',
-          label: 'Title',
-          type: 'text',
-          className: 'col s6 m6',
-        },
-        {
-          id: 'link',
-          label: 'URL',
-          type: 'url',
-          className: 'col s3 m4',
-        },
-      ],
-      className: 'col m12',
-    },
-    { id: 'assess', label: '2. Assessment', type: 'section' },
-    { type: 'md', value: '##### Capability importance', className: '.assess' },
-    {
-      id: 'taskAssessment',
-      type: 'assessment',
-      options: 'mainTasks',
-      optionLabel: 'Main task',
-      assessmentOptions: 'taskScale',
-      assessmentLabel: 'Importance',
-      descriptionLabel: 'Description',
-      overallAssessmentLabel: 'Maximum importance',
-      overallAssessment: 'max',
-    },
-    {
-      id: 'performanceAssessment',
-      type: 'assessment',
-      options: 'performanceAspects',
-      optionLabel: 'Performance aspect',
-      assessmentOptions: 'performanceScale',
-      assessmentLabel: 'Performance',
-      descriptionLabel: 'Description',
-      overallAssessmentLabel: 'Average performance',
-      overallAssessment: 'avg',
-    },
-    {
-      id: 'assessmentId',
-      label: 'Overall assessment',
-      type: 'lookup-table',
-      table: 'assessmentTable',
-      options: 'assessmentScale',
-      rowId: 'taskAssessment.assessmentId',
-      colId: 'performanceAssessment.assessmentId',
-    },
-    { type: 'md', value: '###### GO / NO GO decision' },
-    {
-      id: 'shouldDevelop',
-      type: 'switch',
-      label: '',
-      options: [
-        { id: 'NO GO', label: 'NO GO' },
-        { id: 'go', label: 'GO' },
-      ],
-    },
+    ...preparationModel,
+    ...assessmentModel,
     { id: 'develop', label: '3. Development', type: 'section' },
   ] as UIForm,
-  settings: [
-    { type: 'md', value: '##### Category settings' },
-    {
-      id: 'categories',
-      label: 'Categories for capabilities',
-      repeat: true,
-      pageSize: 1,
-      propertyFilter: 'label',
-      sortProperty: 'id',
-      type: [
-        { id: 'id', type: 'text', className: 'col s4 m3' },
-        { id: 'label', type: 'text', label: 'Name', className: 'col s8 m9' },
-        { id: 'desc', type: 'textarea', label: 'Description', className: 'col s12' },
-        {
-          id: 'subcategories',
-          label: 'Subcategories',
-          repeat: true,
-          pageSize: 1,
-          propertyFilter: 'label',
-          sortProperty: 'id',
-          tabindex: 2,
-          className: 'col offset-s2 s10',
-          type: [
-            { id: 'id', type: 'text', className: 'col s4 m3' },
-            { id: 'label', type: 'text', label: 'Name', className: 'col s8 m9' },
-            { id: 'desc', type: 'textarea', label: 'Description', className: 'col s12' },
-          ],
-        },
-      ],
-    },
-    { type: 'md', value: '##### Partner/stakeholder settings' },
-    {
-      id: 'stakeholderTypes',
-      label: 'Stakeholder types',
-      repeat: true,
-      pageSize: 1,
-      propertyFilter: 'label',
-      sortProperty: 'id',
-      type: [
-        { id: 'id', type: 'text', className: 'col s4 m3' },
-        { id: 'label', type: 'text', label: 'Name', className: 'col s8 m9' },
-      ],
-    },
-    {
-      id: 'partners',
-      label: 'Partner organisations',
-      repeat: true,
-      pageSize: 1,
-      propertyFilter: 'label',
-      type: [
-        { id: 'id', autogenerate: 'id' },
-        {
-          id: 'label',
-          label: 'Organisation / department',
-          type: 'text',
-          className: 'col s12 m8',
-        },
-        {
-          id: 'type',
-          label: 'Type of stakeholder',
-          type: 'select',
-          options: 'stakeholderTypes',
-          className: 'col s12 m4',
-        },
-      ],
-    },
-    { type: 'md', value: '##### Task settings' },
-    {
-      id: 'mainTasks',
-      label: 'Main tasks a capability needs to support',
-      repeat: true,
-      pageSize: 1,
-      sortProperty: 'id',
-      type: [
-        { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
-        { id: 'label', label: 'Task', type: 'text', className: 'col s9 m10' },
-        { id: 'desc', label: 'Description', type: 'textarea', className: 'col s12' },
-      ],
-    },
-    {
-      id: 'taskScale',
-      label: 'Scale for the main tasks',
-      repeat: true,
-      pageSize: 1,
-      sortProperty: 'id',
-      type: [
-        { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
-        { id: 'label', label: 'Value', type: 'text', className: 'col s9 m10' },
-      ],
-    },
-    { type: 'md', value: '##### Performance settings' },
-    {
-      id: 'performanceAspects',
-      label: 'Performance aspects',
-      repeat: true,
-      pageSize: 1,
-      sortProperty: 'id',
-      type: [
-        { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
-        { id: 'label', label: 'Task', type: 'text', className: 'col s9 m10' },
-        { id: 'desc', label: 'Description', type: 'textarea', className: 'col s12' },
-      ],
-    },
-    {
-      id: 'performanceScale',
-      label: 'Scale for performance score',
-      repeat: true,
-      pageSize: 1,
-      sortProperty: 'id',
-      type: [
-        { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
-        { id: 'label', label: 'Value', type: 'text', className: 'col s9 m10' },
-      ],
-    },
-    { type: 'md', value: '##### Task to performance table lookup' },
-    {
-      id: 'assessmentScale',
-      label: 'Scale for assessment score',
-      repeat: true,
-      pageSize: 1,
-      sortProperty: 'id',
-      type: [
-        { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
-        { id: 'label', label: 'Value', type: 'text', className: 'col s9 m10' },
-      ],
-    },
-    {
-      id: 'assessmentTable',
-      type: 'create-lookup-table',
-      label: 'task \\ perf. scale',
-      options: 'assessmentScale',
-      rows: 'taskScale',
-      cols: 'performanceScale',
-    },
-  ] as UIForm,
+  settings: settingsModel,
   data: {
     stakeholderTypes: [
       { id: 'ST1', label: 'Government' },
@@ -435,7 +176,7 @@ export const defaultCapabilityModel = {
     performanceAspects: [
       {
         id: 'PA1',
-        label: 'Effectivity of the capability:',
+        label: 'Effectivity of the capability',
         desc: `- Quality of the results
 - Timeliness of the results
 - The ability to deliver results as long as required`,
@@ -457,6 +198,20 @@ export const defaultCapabilityModel = {
       { id: 'PS3', label: 'Moderate' },
       { id: 'PS4', label: 'Adequate' },
       { id: 'PS5', label: 'Good' },
+    ],
+    mainGaps: [
+      { id: 'MG1', label: 'Organisation / procedure' },
+      { id: 'MG2', label: 'Personnel capacity' },
+      { id: 'MG3', label: 'Material capacity' },
+      { id: 'MG4', label: 'ICT-capacity / provision' },
+      { id: 'MG5', label: 'Technological support' },
+      { id: 'MG6', label: 'Policy or policy development' },
+      { id: 'MG7', label: 'Other' },
+    ],
+    gapScale: [
+      { id: 'GS1', label: 'Unknown' },
+      { id: 'GS2', label: 'Yes' },
+      { id: 'GS3', label: 'No' },
     ],
     assessmentScale: [
       { id: 'AS1', label: 'None' },

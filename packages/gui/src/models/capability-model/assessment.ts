@@ -1,0 +1,57 @@
+import { UIForm } from 'mithril-ui-form-plugin';
+
+export const assessmentModel = [
+  { id: 'assess', label: '2. Assessment', type: 'section' },
+  // { type: 'md', value: '##### Capability assessment', className: '.assess' },
+  {
+    id: 'taskAssessment',
+    type: 'assessment',
+    options: 'mainTasks',
+    optionLabel: 'Main task',
+    assessmentOptions: 'taskScale',
+    assessmentLabel: 'Importance',
+    descriptionLabel: 'Explanation',
+    overallAssessmentLabel: 'Maximum importance',
+    overallAssessment: 'max',
+  },
+  {
+    id: 'performanceAssessment',
+    type: 'assessment',
+    options: 'performanceAspects',
+    optionLabel: 'Performance aspect',
+    assessmentOptions: 'performanceScale',
+    assessmentLabel: 'Performance',
+    descriptionLabel: 'Explanation',
+    overallAssessmentLabel: 'Average performance',
+    overallAssessment: 'avg',
+  },
+  {
+    id: 'gapAssessment',
+    type: 'assessment',
+    options: 'mainGaps',
+    optionLabel: 'Cause of the problem',
+    assessmentOptions: 'gapScale',
+    assessmentLabel: 'Problem',
+    descriptionLabel: 'Explanation',
+  },
+  {
+    id: 'assessmentId',
+    label: 'Overall assessment',
+    type: 'lookup-table',
+    table: 'assessmentTable',
+    options: 'assessmentScale',
+    rowId: 'taskAssessment.assessmentId',
+    colId: 'performanceAssessment.assessmentId',
+  },
+  { type: 'md', value: '###### GO / NO GO decision<br>', className: 'right-align' },
+  {
+    id: 'shouldDevelop',
+    type: 'switch',
+    className: 'right-align',
+    label: '',
+    options: [
+      { id: 'NO GO', label: 'NO GO' },
+      { id: 'go', label: 'GO' },
+    ],
+  },
+] as UIForm;

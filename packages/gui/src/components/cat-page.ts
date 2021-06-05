@@ -2,7 +2,7 @@ import m from 'mithril';
 import { Tabs, ITabItem } from 'mithril-materialized';
 import { LayoutForm } from 'mithril-ui-form';
 import { Dashboards } from '../models';
-import { ICapabilityModel } from '../models/capability-model';
+import { ICapabilityModel } from '../models/capability-model/capability-model';
 import { MeiosisComponent } from '../services';
 import { CircularSpinner } from './ui';
 
@@ -65,6 +65,9 @@ export const CatPage: MeiosisComponent = () => ({
           } as ITabItem)
       ),
     ];
-    return m('.row', { style: 'height: 90vh' }, m(Tabs, { tabs, tabWidth: 'fill' }));
+    return m(Tabs, {
+      tabs,
+      tabWidth: 'fill',
+    });
   },
 });

@@ -1,7 +1,7 @@
 import m from 'mithril';
 import { LayoutForm, UIForm, render } from 'mithril-ui-form';
 import { Dashboards } from '../models';
-import { ICapabilityModel } from '../models/capability-model';
+import { ICapabilityModel } from '../models/capability-model/capability-model';
 import { MeiosisComponent } from '../services';
 
 const md = `#### Taxonomy
