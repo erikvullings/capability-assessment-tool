@@ -12643,7 +12643,7 @@ const a=()=>"idxxxxxxxx".replace(/[x]/g,()=>(16*Math.random()|0).toString(16)),i
 
 /***/ }),
 
-/***/ 1780:
+/***/ 7263:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -15479,7 +15479,7 @@ __webpack_require__(2845);
 __webpack_require__(7486);
 __webpack_require__(9312);
 var dashboard_service_1 = __webpack_require__(2117);
-var mithril_ui_form_1 = __webpack_require__(1780);
+var mithril_ui_form_1 = __webpack_require__(7263);
 var ui_1 = __webpack_require__(8961);
 mithril_ui_form_1.registerPlugin('assessment', ui_1.assessmentPlugin);
 mithril_ui_form_1.registerPlugin('create-lookup-table', ui_1.lookupTableCreatorPlugin);
@@ -15500,7 +15500,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.AboutPage = void 0;
 var mithril_1 = __importDefault(__webpack_require__(1022));
-var mithril_ui_form_1 = __webpack_require__(1780);
+var mithril_ui_form_1 = __webpack_require__(7263);
 var models_1 = __webpack_require__(1961);
 var md = "#### Capability Assessment Tool\n\n##### Purpose\n\n##### Methodology\n...";
 var AboutPage = function () { return ({
@@ -15534,7 +15534,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.CatPage = void 0;
 var mithril_1 = __importDefault(__webpack_require__(1022));
 var mithril_materialized_1 = __webpack_require__(9512);
-var mithril_ui_form_1 = __webpack_require__(1780);
+var mithril_ui_form_1 = __webpack_require__(7263);
 var models_1 = __webpack_require__(1961);
 var ui_1 = __webpack_require__(8961);
 var CatPage = function () { return ({
@@ -15578,6 +15578,64 @@ var CatPage = function () { return ({
                             ]);
                         })),
                     ],
+                    mithril_1.default('h5', 'Assessment'),
+                    mithril_1.default(mithril_ui_form_1.LayoutForm, {
+                        form: [
+                            {
+                                readonly: true,
+                                id: 'taskAssessment',
+                                type: 'assessment',
+                                options: 'mainTasks',
+                                optionLabel: 'Main task',
+                                assessmentOptions: 'taskScale',
+                                assessmentLabel: 'Importance',
+                                descriptionLabel: 'Explanation',
+                                overallAssessmentLabel: 'Maximum importance',
+                                overallAssessment: 'max',
+                            },
+                            {
+                                readonly: true,
+                                id: 'performanceAssessment',
+                                type: 'assessment',
+                                options: 'performanceAspects',
+                                optionLabel: 'Performance aspect',
+                                assessmentOptions: 'performanceScale',
+                                assessmentLabel: 'Performance',
+                                descriptionLabel: 'Explanation',
+                                overallAssessmentLabel: 'Average performance',
+                                overallAssessment: 'avg',
+                            },
+                            {
+                                readonly: true,
+                                id: 'gapAssessment',
+                                type: 'assessment',
+                                options: 'mainGaps',
+                                optionLabel: 'Cause of the problem',
+                                assessmentOptions: 'gapScale',
+                                assessmentLabel: 'Problem',
+                                descriptionLabel: 'Explanation',
+                                overallAssessmentLabel: 'Problem cause is well known',
+                                overallAssessment: 'max',
+                            },
+                            {
+                                readonly: true,
+                                id: 'assessmentId',
+                                label: 'Overall assessment',
+                                type: 'lookup-table',
+                                table: 'assessmentTable',
+                                options: 'assessmentScale',
+                                rowId: 'taskAssessment.assessmentId',
+                                colId: 'performanceAssessment.assessmentId',
+                            },
+                            {
+                                type: 'md',
+                                value: "###### **GO / NO GO decision: " + (capability.shouldDevelop ? 'GO' : 'NO GO') + "**",
+                                className: 'right-align',
+                            },
+                        ],
+                        obj: capability,
+                        context: data,
+                    }),
                 ]),
             }
         ], sections.map(function (s) {
@@ -15597,10 +15655,14 @@ var CatPage = function () { return ({
                 }),
             });
         }));
-        return mithril_1.default(mithril_materialized_1.Tabs, {
+        return mithril_1.default('.capability-page', 
+        // {
+        //   style: 'height: 95vh',
+        // },
+        mithril_1.default(mithril_materialized_1.Tabs, {
             tabs: tabs,
             tabWidth: 'fill',
-        });
+        }));
     },
 }); };
 exports.CatPage = CatPage;
@@ -15842,6 +15904,28 @@ exports.Layout = Layout;
 
 "use strict";
 
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -15851,6 +15935,24 @@ var mithril_1 = __importDefault(__webpack_require__(1022));
 var mithril_materialized_1 = __webpack_require__(9512);
 var models_1 = __webpack_require__(1961);
 var ui_1 = __webpack_require__(8961);
+var createTextFilter = function (txt) {
+    if (!txt)
+        return function () { return true; };
+    var checker = new RegExp(txt, 'i');
+    return function (_a) {
+        var _b = _a.label, label = _b === void 0 ? '' : _b, _c = _a.desc, desc = _c === void 0 ? '' : _c;
+        return checker.test(label) || checker.test(desc);
+    };
+};
+var createStakeholderFilter = function (shs) {
+    if (!shs || shs.length === 0)
+        return function () { return true; };
+    console.log(shs);
+    return function (_a) {
+        var capabilityPartners = _a.capabilityPartners;
+        return capabilityPartners && capabilityPartners.some(function (p) { return shs.indexOf(p.partnerId) >= 0; });
+    };
+};
 var OverviewPage = function () {
     var colors = [
         '#e41a1c',
@@ -15863,46 +15965,47 @@ var OverviewPage = function () {
         '#f781bf',
         '#999999',
     ];
-    var createTextFilter = function (txt) {
-        if (!txt)
-            return function () { return true; };
-        var checker = new RegExp(txt, 'i');
-        return function (_a) {
-            var _b = _a.label, label = _b === void 0 ? '' : _b, _c = _a.desc, desc = _c === void 0 ? '' : _c;
-            return checker.test(label) || checker.test(desc);
-        };
-    };
     var key = 1;
-    var filterValue = '';
-    var stakeholderFilter = undefined;
-    var stakeholderId = '';
     return {
         oninit: function (_a) {
             var setPage = _a.attrs.actions.setPage;
             return setPage(models_1.Dashboards.OVERVIEW);
         },
         view: function (_a) {
-            var _b = _a.attrs, _c = _b.state.app.catModel, catModel = _c === void 0 ? {} : _c, _d = _b.actions, changePage = _d.changePage, createRoute = _d.createRoute;
-            var _e = catModel.data, data = _e === void 0 ? {
+            var _b = _a.attrs, _c = _b.state.app, _d = _c.catModel, catModel = _d === void 0 ? {} : _d, stakeholderFilter = _c.stakeholderFilter, textFilter = _c.textFilter, _e = _b.actions, changePage = _e.changePage, createRoute = _e.createRoute, update = _e.update;
+            var _f = catModel.data, data = _f === void 0 ? {
                 categories: [],
                 capabilities: [],
-            } : _e;
+            } : _f;
             catModel.data = data;
             var categories = data.categories, capabilities = data.capabilities;
-            var filterText = createTextFilter(filterValue);
-            console.log(stakeholderFilter);
-            console.log(stakeholderId);
-            var maxItems = categories && capabilities
-                ? categories.reduce(function (acc, cur) {
-                    var height = cur.subcategories
-                        ? cur.subcategories.reduce(function (acc2, sc) {
-                            var count = capabilities.filter(function (cap) { return cap.subcategoryId === sc.id; }).length;
-                            return Math.max(acc2, count);
-                        }, 0)
-                        : 0;
-                    return Math.max(acc, height);
-                }, 0)
-                : 0;
+            var filterText = createTextFilter(textFilter);
+            var filterStakeholders = createStakeholderFilter(stakeholderFilter);
+            var filteredCapabilities = capabilities && capabilities.filter(filterText).filter(filterStakeholders);
+            var filteredCategories = categories &&
+                filteredCapabilities &&
+                categories.reduce(function (acc, cat) {
+                    var _a = cat.subcategories, subcategories = _a === void 0 ? [] : _a, params = __rest(cat, ["subcategories"]);
+                    var category = __assign({}, params);
+                    category.subcategories = subcategories
+                        .map(function (_a) {
+                        var id = _a.id, label = _a.label, desc = _a.desc;
+                        return ({
+                            id: id,
+                            label: label,
+                            desc: desc,
+                            capabilities: filteredCapabilities.filter(function (cap) { return cap.subcategoryId === id; }),
+                        });
+                    })
+                        .filter(function (sc) { return sc.capabilities.length > 0; });
+                    if (category.subcategories.length > 0)
+                        acc.push(category);
+                    return acc;
+                }, []);
+            var maxItems = filteredCategories
+                ? Math.max.apply(Math, filteredCategories.map(function (cat) {
+                    return Math.max.apply(Math, cat.subcategories.map(function (sc) { return sc.capabilities.length; }));
+                })) : 0;
             return mithril_1.default('.row', [
                 mithril_1.default('.col.s12.l3', mithril_1.default('ul#slide-out.sidenav.sidenav-fixed', {
                     style: 'height: 95vh',
@@ -15931,10 +16034,10 @@ var OverviewPage = function () {
                             key: key,
                             label: 'Text filter of events',
                             id: 'filter',
-                            initialValue: filterValue,
+                            initialValue: textFilter,
                             placeholder: 'Part of title or description...',
                             iconName: 'filter_list',
-                            onchange: function (v) { return (filterValue = v ? v : ''); },
+                            onchange: function (v) { return (textFilter = v ? v : ''); },
                             style: 'margin-right:100px',
                             className: 'col s12',
                         }),
@@ -15943,11 +16046,11 @@ var OverviewPage = function () {
                         mithril_1.default(mithril_materialized_1.Select, {
                             placeholder: 'Select one or more',
                             label: 'Stakeholder',
-                            checkedId: stakeholderId,
-                            options: data.partners,
-                            iconName: 'public',
+                            checkedId: stakeholderFilter,
+                            options: data.partners.map(function (p) { return ({ id: p.id, label: p.id }); }),
+                            iconName: 'person',
                             multiple: true,
-                            onchange: function (f) { return (stakeholderFilter = f); },
+                            onchange: function (f) { return update({ app: { stakeholderFilter: f } }); },
                             className: 'col s12',
                         }),
                     mithril_1.default(mithril_materialized_1.FlatButton, {
@@ -15957,40 +16060,42 @@ var OverviewPage = function () {
                         style: 'margin: 1em;',
                         onclick: function () {
                             key++;
-                            filterValue = '';
-                            stakeholderFilter = undefined;
+                            update({ app: { stakeholderFilter: [], textFilter: '' } });
                         },
                     }),
                 ])),
-                categories &&
+                filteredCategories &&
                     mithril_1.default('.col.s12.l9', [
-                        categories.map(function (_a, i) {
+                        filteredCategories.map(function (_a, i) {
                             var label = _a.label, subcategories = _a.subcategories;
                             return mithril_1.default('.category', [
                                 i > 0 && mithril_1.default('.divider'),
                                 mithril_1.default(i > 0 ? '.section' : 'div', [
                                     mithril_1.default('h5', label),
                                     subcategories &&
-                                        subcategories.length > 0 &&
                                         mithril_1.default('.row', subcategories.map(function (sc) {
                                             return mithril_1.default('.col.s12.m4', mithril_1.default('.card', {
-                                                style: "background: " + colors[i % colors.length] + "; height: " + (80 + maxItems * 32) + "px",
+                                                style: "background: " + colors[i % colors.length] + "; height: " + (90 + maxItems * 30) + "px",
                                             }, [
                                                 mithril_1.default('.card-content.white-text', [
                                                     mithril_1.default('span.card-title.black-text.white.center-align', { style: 'padding: 0.4rem' }, mithril_1.default('strong', sc.label)),
-                                                    capabilities &&
-                                                        capabilities.length > 0 &&
-                                                        mithril_1.default('ul', capabilities
-                                                            .filter(function (cap) { return cap.subcategoryId === sc.id; })
-                                                            .filter(filterText)
-                                                            .map(function (cap) {
-                                                            return mithril_1.default('li', mithril_1.default('a.white-text.truncate', {
-                                                                alt: cap.label,
-                                                                href: createRoute(models_1.Dashboards.CAPABILITY, {
-                                                                    id: cap.id,
-                                                                }),
-                                                            }, cap.label));
-                                                        })),
+                                                    mithril_1.default('ul', sc.capabilities.map(function (cap) {
+                                                        return mithril_1.default('li', mithril_1.default('a.white-text', {
+                                                            style: 'line-height: 22px;',
+                                                            alt: cap.label,
+                                                            href: createRoute(models_1.Dashboards.CAPABILITY, {
+                                                                id: cap.id,
+                                                            }),
+                                                        }, [
+                                                            mithril_1.default('span.truncate', { style: 'display: inline-block;width: 60%' }, cap.label),
+                                                            mithril_1.default('span.badge', {
+                                                                style: 'color:inherit; display: inline-block;width: 30%',
+                                                            }, mithril_1.default.trust("" + (cap.capabilityPartners &&
+                                                                cap.capabilityPartners.length > 0
+                                                                ? cap.capabilityPartners.length + "<i class=\"inline-icon material-icons\">people</i> "
+                                                                : '') + (cap.shouldDevelop ? '✓' : ''))),
+                                                        ]));
+                                                    })),
                                                 ]),
                                             ]));
                                         })),
@@ -16019,7 +16124,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SettingsPage = void 0;
 var mithril_1 = __importDefault(__webpack_require__(1022));
 var mithril_materialized_1 = __webpack_require__(9512);
-var mithril_ui_form_1 = __webpack_require__(1780);
+var mithril_ui_form_1 = __webpack_require__(7263);
 var models_1 = __webpack_require__(1961);
 var SettingsPage = function () { return ({
     oninit: function (_a) {
@@ -16080,7 +16185,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.TaxonomyPage = void 0;
 var mithril_1 = __importDefault(__webpack_require__(1022));
-var mithril_ui_form_1 = __webpack_require__(1780);
+var mithril_ui_form_1 = __webpack_require__(7263);
 var models_1 = __webpack_require__(1961);
 var md = "#### Taxonomy\n\nDefinitions and abbreviations of commonly used words.";
 var TaxonomyForm = [
@@ -16150,16 +16255,17 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.assessmentPlugin = void 0;
 var mithril_1 = __importDefault(__webpack_require__(1022));
 var mithril_materialized_1 = __webpack_require__(9512);
-var mithril_ui_form_1 = __webpack_require__(1780);
+var mithril_ui_form_1 = __webpack_require__(7263);
 var assessmentPlugin = function () {
     return {
         view: function (_a) {
             var _b = _a.attrs, field = _b.field, obj = _b.obj, _c = _b.context, context = _c === void 0 ? [] : _c, onchange = _b.onchange;
-            var _d = field, _e = _d.id, id = _e === void 0 ? '' : _e, _f = _d.options, options = _f === void 0 ? '' : _f, _g = _d.assessmentOptions, assessmentOptions = _g === void 0 ? '' : _g, optionLabel = _d.optionLabel, assessmentLabel = _d.assessmentLabel, descriptionLabel = _d.descriptionLabel, overallAssessment = _d.overallAssessment, overallAssessmentLabel = _d.overallAssessmentLabel;
+            var _d = field, _e = _d.id, id = _e === void 0 ? '' : _e, _f = _d.options, options = _f === void 0 ? '' : _f, _g = _d.assessmentOptions, assessmentOptions = _g === void 0 ? '' : _g, optionLabel = _d.optionLabel, assessmentLabel = _d.assessmentLabel, descriptionLabel = _d.descriptionLabel, overallAssessment = _d.overallAssessment, overallAssessmentLabel = _d.overallAssessmentLabel, readonly = _d.readonly;
             if (obj instanceof Array)
                 return;
             if (!obj.hasOwnProperty(id))
                 obj[id] = { assessmentId: '', items: [] };
+            var disabled = readonly;
             var items = obj[id].items;
             var opt = typeof options === 'string' && mithril_ui_form_1.resolveExpression(options, [obj, context]);
             var score = typeof options === 'string' &&
@@ -16198,6 +16304,7 @@ var assessmentPlugin = function () {
                         score &&
                         opt.length > 0 &&
                         opt.map(function (o) {
+                            var _a;
                             var existing = items.filter(function (i) { return i.id === o.id; }).shift();
                             if (!existing)
                                 items.push({ id: o.id });
@@ -16205,7 +16312,7 @@ var assessmentPlugin = function () {
                             return mithril_1.default('.condensed', [
                                 mithril_1.default('.col.s8.m5.truncate.tooltipped[data-position=bottom]', {
                                     'data-tooltip': o.desc
-                                        ? "<div class=\"left-align\">" + mithril_ui_form_1.render(o.desc).replace(/ul/, 'ul class="browser-default"') + "</div>"
+                                        ? "<div class=\"left-align\">" + mithril_ui_form_1.render(o.desc).replace(/<ul/, '<ul class="browser-default"') + "</div>"
                                         : undefined,
                                     style: 'margin: 9px auto 0 auto;',
                                     oncreate: function (_a) {
@@ -16213,19 +16320,25 @@ var assessmentPlugin = function () {
                                         return o.desc && M.Tooltip.init(dom);
                                     },
                                 }, o.label),
-                                mithril_1.default('.col.s4.m2', mithril_1.default(mithril_materialized_1.Select, {
-                                    placeholder: 'Pick one',
-                                    options: score,
-                                    initialValue: item.value,
-                                    onchange: function (v) {
-                                        item.value = v[0];
-                                        var o = computeOutcome();
-                                        if (typeof o === 'number')
-                                            obj[id].assessmentId = score[o].id;
-                                        onchange && onchange(obj[id]);
-                                    },
-                                })),
+                                mithril_1.default('.col.s4.m2', disabled
+                                    ? mithril_1.default(mithril_materialized_1.TextInput, {
+                                        disabled: disabled,
+                                        initialValue: (_a = score.filter(function (s) { return s.id === item.value; }).shift()) === null || _a === void 0 ? void 0 : _a.label,
+                                    })
+                                    : mithril_1.default(mithril_materialized_1.Select, {
+                                        placeholder: 'Pick one',
+                                        options: score,
+                                        initialValue: item.value,
+                                        onchange: function (v) {
+                                            item.value = v[0];
+                                            var o = computeOutcome();
+                                            if (typeof o === 'number')
+                                                obj[id].assessmentId = score[o].id;
+                                            onchange && onchange(obj[id]);
+                                        },
+                                    })),
                                 mithril_1.default('.col.s12.m5', mithril_1.default(mithril_materialized_1.TextArea, {
+                                    disabled: disabled,
                                     initialValue: item.desc,
                                     onchange: function (v) {
                                         item.desc = v;
@@ -16288,7 +16401,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.lookupTableCreatorPlugin = exports.lookupTable = void 0;
 var mithril_1 = __importDefault(__webpack_require__(1022));
 var mithril_materialized_1 = __webpack_require__(9512);
-var mithril_ui_form_1 = __webpack_require__(1780);
+var mithril_ui_form_1 = __webpack_require__(7263);
 var lookupTable = function () {
     return {
         view: function (_a) {
@@ -16560,6 +16673,8 @@ exports.assessmentModel = [
         assessmentOptions: 'gapScale',
         assessmentLabel: 'Problem',
         descriptionLabel: 'Explanation',
+        overallAssessmentLabel: 'Problem cause is well known',
+        overallAssessment: 'max',
     },
     {
         id: 'assessmentId',
@@ -16760,9 +16875,9 @@ exports.defaultCapabilityModel = {
             { id: 'MG7', label: 'Other' },
         ],
         gapScale: [
-            { id: 'GS1', label: 'Unknown' },
-            { id: 'GS2', label: 'Yes' },
-            { id: 'GS3', label: 'No' },
+            { id: 'GS1', label: 'No' },
+            { id: 'GS2', label: 'Unknown' },
+            { id: 'GS3', label: 'Yes' },
         ],
         assessmentScale: [
             { id: 'AS1', label: 'None' },
@@ -17579,6 +17694,8 @@ exports.appStateMgmt = {
             isSearching: false,
             searchQuery: '',
             catModel: catModel,
+            textFilter: '',
+            stakeholderFilter: [],
         },
     },
     actions: function (update, _states) {

@@ -214,9 +214,9 @@ export const defaultCapabilityModel = {
       { id: 'MG7', label: 'Other' },
     ],
     gapScale: [
-      { id: 'GS1', label: 'Unknown' },
-      { id: 'GS2', label: 'Yes' },
-      { id: 'GS3', label: 'No' },
+      { id: 'GS1', label: 'No' },
+      { id: 'GS2', label: 'Unknown' },
+      { id: 'GS3', label: 'Yes' },
     ],
     assessmentScale: [
       { id: 'AS1', label: 'None' },

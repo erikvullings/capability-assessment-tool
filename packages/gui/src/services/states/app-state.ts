@@ -1,5 +1,5 @@
 import Stream from 'mithril/stream';
-import { dashboardSvc } from '..';
+import { dashboardSvc, ModelUpdateFunction } from '..';
 import { Dashboards } from '../../models';
 import {
   defaultCapabilityModel,
@@ -17,12 +17,14 @@ export interface IAppStateModel {
     searchQuery?: string;
     page?: Dashboards;
     catModel: ICapabilityModel;
+    textFilter: string;
+    stakeholderFilter: string[];
   };
 }
 
 export interface IAppStateActions {
   setPage: (page: Dashboards) => void;
-  update: (model: Partial<IAppModel>) => void;
+  update: (model: Partial<ModelUpdateFunction>) => void;
   search: (isSearching: boolean, searchQuery?: string) => void;
   changePage: (
     page: Dashboards,
@@ -59,12 +61,14 @@ export const appStateMgmt = {
       isSearching: false,
       searchQuery: '',
       catModel,
+      textFilter: '',
+      stakeholderFilter: [],
     },
   },
   actions: (update, _states) => {
     return {
       setPage: (page: Dashboards) => update({ app: { page } }),
-      update: (model: Partial<IAppModel>) => update(model),
+      update: (model: Partial<ModelUpdateFunction>) => update(model),
       search: (isSearching: boolean, searchQuery?: string) =>
         update({ app: { isSearching, searchQuery } }),
       changePage: (page, params, query) => {

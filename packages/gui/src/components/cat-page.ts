@@ -92,6 +92,8 @@ export const CatPage: MeiosisComponent = () => ({
                 assessmentOptions: 'gapScale',
                 assessmentLabel: 'Problem',
                 descriptionLabel: 'Explanation',
+                overallAssessmentLabel: 'Problem cause is well known',
+                overallAssessment: 'max',
               },
               {
                 readonly: true,

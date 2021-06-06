@@ -33,6 +33,8 @@ export const assessmentModel = [
     assessmentOptions: 'gapScale',
     assessmentLabel: 'Problem',
     descriptionLabel: 'Explanation',
+    overallAssessmentLabel: 'Problem cause is well known',
+    overallAssessment: 'max',
   },
   {
     id: 'assessmentId',

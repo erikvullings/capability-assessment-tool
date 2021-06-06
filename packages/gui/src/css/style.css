@@ -4,6 +4,9 @@
   }
 }
 
+.container {
+  max-width: unset;
+}
 body {
   font-size: 18px;
 }
@@ -500,4 +503,9 @@ ul.projects > li > span.project-id {
 
 .condensed .input-field {
   margin: 0 auto;
+}
+
+.inline-icon {
+  vertical-align: bottom;
+  /* font-size: 20px !important; */
 }
