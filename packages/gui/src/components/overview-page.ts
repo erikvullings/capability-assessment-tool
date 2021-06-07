@@ -137,7 +137,7 @@ export const OverviewPage: MeiosisComponent = () => {
                   initialValue: textFilter,
                   placeholder: 'Part of title or description...',
                   iconName: 'filter_list',
-                  onchange: (v?: string) => (textFilter = v ? v : ''),
+                  onchange: (v?: string) => update({ app: { textFilter: v as string } }),
                   style: 'margin-right:100px',
                   className: 'col s12',
                 }),

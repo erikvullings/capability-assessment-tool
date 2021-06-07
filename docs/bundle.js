@@ -16037,7 +16037,7 @@ var OverviewPage = function () {
                             initialValue: textFilter,
                             placeholder: 'Part of title or description...',
                             iconName: 'filter_list',
-                            onchange: function (v) { return (textFilter = v ? v : ''); },
+                            onchange: function (v) { return update({ app: { textFilter: v } }); },
                             style: 'margin-right:100px',
                             className: 'col s12',
                         }),
