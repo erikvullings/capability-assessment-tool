@@ -1,5 +1,6 @@
 import { UIForm } from 'mithril-ui-form';
 import { assessmentModel } from './assessment';
+import { lexicon } from './lexicon';
 import { preparationModel } from './preparation';
 import { settingsModel } from './settings';
 
@@ -15,7 +16,7 @@ export interface ICapabilityDataModel {
   assessmentScale?: ILabelled[];
   mainGaps?: ILabelled[];
   gapScale?: ILabelled[];
-  lexicon?: ILabelled[];
+  lexicon?: Array<ILabelled & { ref?: string; url?: string }>;
 }
 
 export interface ICapabilityModel {
@@ -252,12 +253,6 @@ export const defaultCapabilityModel = {
       { rowId: 'TS5', colId: 'PS4', optionId: 'AS4' },
       { rowId: 'TS5', colId: 'PS5', optionId: 'AS1' },
     ],
-    lexicon: [
-      {
-        id: 'Capability',
-        label:
-          'A **capability** is the ability of an organisation to, within a period of time with the available personnel, material means and methods, execute a task or role adequately.',
-      },
-    ],
+    lexicon,
   },
 } as ICapabilityModel;
