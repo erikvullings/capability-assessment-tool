@@ -29,7 +29,7 @@ export const assessmentModel = [
     id: 'gapAssessment',
     type: 'assessment',
     options: 'mainGaps',
-    optionLabel: 'Cause of the problem',
+    optionLabel: 'Problem areas',
     assessmentOptions: 'gapScale',
     assessmentLabel: 'Problem',
     descriptionLabel: 'Explanation',

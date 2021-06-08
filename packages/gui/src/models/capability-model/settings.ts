@@ -92,7 +92,8 @@ export const settingsModel = [
     sortProperty: 'id',
     type: [
       { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
-      { id: 'label', label: 'Value', type: 'text', className: 'col s9 m10' },
+      { id: 'label', label: 'Value', type: 'text', className: 'col s6 m8' },
+      { id: 'color', label: 'Color', value: '#ffffff', type: 'color', className: 'col s3 m2' },
     ],
   },
   { id: 'performance-settings', type: 'section', label: 'Performance' },
@@ -117,7 +118,8 @@ export const settingsModel = [
     sortProperty: 'id',
     type: [
       { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
-      { id: 'label', label: 'Value', type: 'text', className: 'col s9 m10' },
+      { id: 'label', label: 'Value', type: 'text', className: 'col s6 m8' },
+      { id: 'color', label: 'Color', value: '#ffffff', type: 'color', className: 'col s3 m2' },
     ],
   },
   { id: 'gap-settings', type: 'section', label: 'Gaps' },
@@ -142,7 +144,8 @@ export const settingsModel = [
     sortProperty: 'id',
     type: [
       { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
-      { id: 'label', label: 'Value', type: 'text', className: 'col s9 m10' },
+      { id: 'label', label: 'Value', type: 'text', className: 'col s6 m8' },
+      { id: 'color', label: 'Color', value: '#ffffff', type: 'color', className: 'col s3 m2' },
     ],
   },
   { id: 'assessment-settings', type: 'section', label: 'Assessment' },
@@ -155,7 +158,8 @@ export const settingsModel = [
     sortProperty: 'id',
     type: [
       { id: 'id', label: 'ID', type: 'text', className: 'col s3 m2' },
-      { id: 'label', label: 'Value', type: 'text', className: 'col s9 m10' },
+      { id: 'label', label: 'Value', type: 'text', className: 'col s6 m8' },
+      { id: 'color', label: 'Color', value: '#ffffff', type: 'color', className: 'col s3 m2' },
     ],
   },
   {

@@ -25,6 +25,19 @@ type AssessmentFieldType = IInputField & {
   overallAssessmentLabel: string;
 };
 
+const getTextColorFromBackground = (backgroundColor?: string) => {
+  if (!backgroundColor) return 'black-text';
+  const c = backgroundColor.substring(1); // strip #
+  const rgb = parseInt(c, 16); // convert rrggbb to decimal
+  const r = (rgb >> 16) & 0xff; // extract red
+  const g = (rgb >> 8) & 0xff; // extract green
+  const b = (rgb >> 0) & 0xff; // extract blue
+
+  const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+
+  return luma < 105 ? 'white-text' : 'black-text';
+};
+
 export const assessmentPlugin: PluginType = () => {
   return {
     view: ({ attrs: { field, obj, context = [], onchange } }) => {
@@ -44,11 +57,11 @@ export const assessmentPlugin: PluginType = () => {
 
       const disabled = readonly;
       const items = (obj[id] as AssessmentType).items;
-      const opt =
-        typeof options === 'string' && (resolveExpression(options, [obj, context]) as ILabelled[]);
+      const ctx = context instanceof Array ? [obj, ...context] : [obj, context];
+
+      const opt = typeof options === 'string' && (resolveExpression(options, ctx) as ILabelled[]);
       const score =
-        typeof options === 'string' &&
-        (resolveExpression(assessmentOptions, [obj, context]) as ILabelled[]);
+        typeof options === 'string' && (resolveExpression(assessmentOptions, ctx) as ILabelled[]);
       const computeOutcome = () =>
         score &&
         Math.round(
@@ -66,10 +79,12 @@ export const assessmentPlugin: PluginType = () => {
       const outcomeIndex = typeof overallAssessment !== 'undefined' && score && computeOutcome();
       const outcome =
         typeof outcomeIndex === 'number' && score && score.length > outcomeIndex
-          ? score[outcomeIndex].label
-          : '?';
+          ? score[outcomeIndex]
+          : { label: '?', color: '' };
 
-      return m('.section', [
+      const assessmentStarted = items.filter((i) => i.value).length > 0;
+      const color = assessmentStarted && outcome.color ? outcome.color : '#f0f8ff';
+      return m('.assessment-plugin.section', [
         m('.divider'),
         overallAssessmentLabel &&
           m(
@@ -77,14 +92,13 @@ export const assessmentPlugin: PluginType = () => {
             m(
               '.col.s12.right-align',
               m(
-                '.assessment-score',
+                `.assessment-score.${getTextColorFromBackground(color)}`,
                 {
-                  style:
-                    'border: solid 2px black; border-radius: 8px; background: aliceblue; float: right; padding: 5px; margin-top: 10px;',
+                  style: `border: solid 2px black; border-radius: 8px; background: ${color}; float: right; padding: 5px; margin-top: 10px;`,
                 },
                 [
                   m('strong', `${overallAssessmentLabel}: `),
-                  m('span', items.filter((i) => i.value).length > 0 ? outcome : 'TBD'),
+                  m('span', assessmentStarted ? outcome.label : 'TBD'),
                 ]
               )
             )

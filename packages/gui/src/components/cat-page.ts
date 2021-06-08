@@ -116,6 +116,114 @@ export const CatPage: MeiosisComponent = () => ({
             obj: capability,
             context: data,
           }),
+          capability.projectProposals &&
+            capability.projectProposals.length > 0 && [
+              m('h5', 'Development'),
+              capability.projectProposals.map((project) =>
+                m(LayoutForm, {
+                  form: [
+                    {
+                      readonly: true,
+                      id: 'label',
+                      label: 'Proposal name',
+                      show: '!approved',
+                      type: 'text',
+                      className: 'col s6 m4',
+                    },
+                    {
+                      readonly: true,
+                      id: 'label',
+                      label: 'Project name',
+                      show: 'approved',
+                      type: 'text',
+                      className: 'col s6 m4',
+                    },
+                    {
+                      readonly: true,
+                      id: 'start',
+                      label: 'Start time',
+                      placeholder: 'YYYY Q1 or YYYY M1',
+                      type: 'text',
+                      className: 'col s3 m4',
+                    },
+                    {
+                      readonly: true,
+                      id: 'duration',
+                      label: 'Duration',
+                      placeholder: 'In months',
+                      type: 'text',
+                      className: 'col s3 m4',
+                    },
+                    {
+                      readonly: true,
+                      id: 'proposal',
+                      label: 'Project summary',
+                      type: 'textarea',
+                      className: 'col s12',
+                    },
+                    {
+                      readonly: true,
+                      id: 'projectPartners',
+                      label: 'Partners',
+                      pageSize: 5,
+                      repeat: true,
+                      type: [
+                        {
+                          readonly: true,
+                          id: 'partnerId',
+                          label: 'Partner',
+                          type: 'select',
+                          options: 'partners',
+                          className: 'col s4 m2',
+                        },
+                        {
+                          readonly: true,
+                          id: 'persons',
+                          label: 'Persons involved',
+                          type: 'textarea',
+                          className: 'col s8 m10',
+                        },
+                      ],
+                      className: 'col m12',
+                    },
+                    {
+                      readonly: true,
+                      id: 'gapAssessment',
+                      type: 'assessment',
+                      options: 'mainGaps',
+                      optionLabel: 'Problem areas',
+                      assessmentOptions: 'gapScale',
+                      assessmentLabel: 'Addressed',
+                      descriptionLabel: 'How is it addressed?',
+                    },
+                    {
+                      readonly: true,
+                      id: 'performanceAssessment',
+                      type: 'assessment',
+                      options: 'performanceAspects',
+                      optionLabel: 'Performance aspect',
+                      assessmentOptions: 'performanceScale',
+                      assessmentLabel: 'Performance',
+                      descriptionLabel: 'Explanation',
+                      overallAssessmentLabel: 'Expected performance',
+                      overallAssessment: 'avg',
+                    },
+                    {
+                      type: 'md',
+                      value: '###### PROJECT APPROVED<br>',
+                      className: 'margins right-align',
+                    },
+                    {
+                      type: 'md',
+                      value: `###### **Project approved: ${project.approved ? 'YES' : 'NO'}**`,
+                      className: 'right-align',
+                    },
+                  ],
+                  obj: project,
+                  context: [capability, data],
+                })
+              ),
+            ],
         ]),
       } as ITabItem,
       ...sections.map(
@@ -144,7 +252,7 @@ export const CatPage: MeiosisComponent = () => ({
       ),
     ];
     return m(
-      '.capability-page',
+      '.capability-page.margins',
       // {
       //   style: 'height: 95vh',
       // },

@@ -181,6 +181,11 @@ ul.questionnaire-nav > li > a {
 .repeat-list .pagination {
   margin: 0;
 }
+
+.repeat-list .assessment-plugin {
+  margin: 0 10px;
+}
+
 .incident-view {
   margin-bottom: 0;
   position: absolute;
@@ -508,4 +513,21 @@ ul.projects > li > span.project-id {
 .inline-icon {
   vertical-align: bottom;
   /* font-size: 20px !important; */
+}
+
+.margins {
+  margin: 10px;
+}
+
+.overview .capability {
+  margin-right: 2rem;
+  display: flex;
+  width: 100%;
+  white-space: nowrap;
+}
+.overview .capability .name {
+  flex-grow: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }

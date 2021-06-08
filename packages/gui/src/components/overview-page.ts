@@ -103,7 +103,7 @@ export const OverviewPage: MeiosisComponent = () => {
           )
         : 0;
 
-      return m('.row', [
+      return m('.row.overview', [
         m(
           '.col.s12.l3',
           m(
@@ -207,28 +207,81 @@ export const OverviewPage: MeiosisComponent = () => {
                                             id: cap.id,
                                           }),
                                         },
-                                        [
+                                        m('.capability', [
+                                          m('.name', cap.label),
                                           m(
-                                            'span.truncate',
-                                            { style: 'display: inline-block;width: 60%' },
-                                            cap.label
-                                          ),
-                                          m(
-                                            'span.badge',
-                                            {
-                                              style:
-                                                'color:inherit; display: inline-block;width: 30%',
-                                            },
+                                            '.badges.right-align',
                                             m.trust(
                                               `${
                                                 cap.capabilityPartners &&
                                                 cap.capabilityPartners.length > 0
                                                   ? `${cap.capabilityPartners.length}<i class="inline-icon material-icons">people</i> `
                                                   : ''
-                                              }${cap.shouldDevelop ? '✓' : ''}`
+                                              }${cap.shouldDevelop ? '✓' : ''}
+                                                  ${
+                                                    cap.projectProposals &&
+                                                    cap.projectProposals.filter((p) => !p.approved)
+                                                      .length > 0
+                                                      ? `${
+                                                          cap.projectProposals.filter(
+                                                            (p) => !p.approved
+                                                          ).length
+                                                        }<i class="inline-icon material-icons">lightbulb</i>`
+                                                      : ''
+                                                  }
+                                                  ${
+                                                    cap.projectProposals &&
+                                                    cap.projectProposals.filter((p) => p.approved)
+                                                      .length > 0
+                                                      ? `${
+                                                          cap.projectProposals.filter(
+                                                            (p) => p.approved
+                                                          ).length
+                                                        }<i class="inline-icon material-icons">engineering</i>`
+                                                      : ''
+                                                  }`
                                             )
                                           ),
-                                        ]
+                                        ])
+                                        // [
+                                        //   m(
+                                        //     'span.truncate',
+                                        //     { style: 'display: inline-block;width: 60%' },
+                                        //     cap.label
+                                        //   ),
+                                        //   m(
+                                        //     'span.badge',
+                                        //     {
+                                        //       style:
+                                        //         'color:inherit; display: inline-block;width: 30%',
+                                        //     },
+                                        //     m.trust(
+                                        //       `${
+                                        //         cap.capabilityPartners &&
+                                        //         cap.capabilityPartners.length > 0
+                                        //           ? `${cap.capabilityPartners.length}<i class="inline-icon material-icons">people</i> `
+                                        //           : ''
+                                        //       }${cap.shouldDevelop ? '✓' : ''}
+                                        //       ${
+                                        //         cap.projectProposals
+                                        //           ? `${
+                                        //               cap.projectProposals.filter(
+                                        //                 (p) => !p.approved
+                                        //               ).length
+                                        //             }<i class="inline-icon material-icons">lightbulb</i>`
+                                        //           : ''
+                                        //       }
+                                        //       ${
+                                        //         cap.projectProposals
+                                        //           ? `${
+                                        //               cap.projectProposals.filter((p) => p.approved)
+                                        //                 .length
+                                        //             }<i class="inline-icon material-icons">engineering</i>`
+                                        //           : ''
+                                        //       }`
+                                        //     )
+                                        //   ),
+                                        // ]
                                       )
                                     )
                                   )
