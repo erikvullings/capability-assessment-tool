@@ -243,45 +243,6 @@ export const OverviewPage: MeiosisComponent = () => {
                                             )
                                           ),
                                         ])
-                                        // [
-                                        //   m(
-                                        //     'span.truncate',
-                                        //     { style: 'display: inline-block;width: 60%' },
-                                        //     cap.label
-                                        //   ),
-                                        //   m(
-                                        //     'span.badge',
-                                        //     {
-                                        //       style:
-                                        //         'color:inherit; display: inline-block;width: 30%',
-                                        //     },
-                                        //     m.trust(
-                                        //       `${
-                                        //         cap.capabilityPartners &&
-                                        //         cap.capabilityPartners.length > 0
-                                        //           ? `${cap.capabilityPartners.length}<i class="inline-icon material-icons">people</i> `
-                                        //           : ''
-                                        //       }${cap.shouldDevelop ? '✓' : ''}
-                                        //       ${
-                                        //         cap.projectProposals
-                                        //           ? `${
-                                        //               cap.projectProposals.filter(
-                                        //                 (p) => !p.approved
-                                        //               ).length
-                                        //             }<i class="inline-icon material-icons">lightbulb</i>`
-                                        //           : ''
-                                        //       }
-                                        //       ${
-                                        //         cap.projectProposals
-                                        //           ? `${
-                                        //               cap.projectProposals.filter((p) => p.approved)
-                                        //                 .length
-                                        //             }<i class="inline-icon material-icons">engineering</i>`
-                                        //           : ''
-                                        //       }`
-                                        //     )
-                                        //   ),
-                                        // ]
                                       )
                                     )
                                   )
