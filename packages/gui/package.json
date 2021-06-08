@@ -36,16 +36,16 @@
     "materialize-css": "^1.0.0",
     "mithril": "^2.0.4",
     "mithril-materialized": "^0.19.0",
-    "mithril-ui-form": "^1.1.7",
+    "mithril-ui-form": "^1.1.8",
     "mithril-ui-form-plugin": "^0.3.3",
     "mithril-ui-form-rating-plugin": "^0.3.3"
   },
   "devDependencies": {
-    "@types/materialize-css": "^1.0.9",
+    "@types/materialize-css": "^1.0.10",
     "@types/mithril": "^2.0.7",
     "css-loader": "^5.2.6",
     "css-minimizer-webpack-plugin": "^2.0.0",
-    "dotenv-webpack": "^7.0.2",
+    "dotenv-webpack": "^7.0.3",
     "html-webpack-plugin": "^5.3.1",
     "html-webpack-tags-plugin": "^3.0.1",
     "mini-css-extract-plugin": "^1.6.0",
@@ -54,7 +54,7 @@
     "ts-loader": "^8.3.0",
     "typescript": "^4.3.2",
     "webpack": "^5.38.1",
-    "webpack-cli": "^4.7.0",
+    "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.11.2"
   }
 }

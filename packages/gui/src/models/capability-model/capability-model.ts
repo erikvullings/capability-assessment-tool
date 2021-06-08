@@ -1,5 +1,6 @@
 import { UIForm } from 'mithril-ui-form';
 import { assessmentModel } from './assessment';
+import { developmentModel } from './development';
 import { lexicon } from './lexicon';
 import { preparationModel } from './preparation';
 import { settingsModel } from './settings';
@@ -31,6 +32,7 @@ export interface ILabelled {
   id: string;
   label: string;
   desc?: string;
+  color?: string;
 }
 
 export interface ICategory extends ILabelled {
@@ -46,19 +48,37 @@ export interface ICapability extends ILabelled {
   documentation?: Array<{ documentId?: string; label?: string; url?: string }>;
   assessmentId?: string;
   shouldDevelop?: boolean;
+  projectProposals?: Array<{
+    id: number;
+    label?: string;
+    start?: string;
+    duration?: string;
+    proposal?: string;
+    projectPartners?: Array<{ partnerId?: string; persons?: string }>;
+    gapAssessment?: Array<{
+      id: string;
+      value?: string;
+      desc?: string;
+    }>;
+    performanceAssessment?: Array<{
+      id: string;
+      value?: string;
+      desc?: string;
+    }>;
+    approved?: boolean;
+  }>;
 }
 
 export interface IPartner extends ILabelled {
   typeId: string;
 }
 
+const redGreenColors = ['#d7191c', '#fdae61', '#ffffbf', '#a6d96a', '#1a9641'];
+const towardsRedColors = ['#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000'];
+
 export const defaultCapabilityModel = {
   version: 0,
-  form: [
-    ...preparationModel,
-    ...assessmentModel,
-    { id: 'develop', label: '3. Development', type: 'section' },
-  ] as UIForm,
+  form: [...preparationModel, ...assessmentModel, ...developmentModel] as UIForm,
   settings: settingsModel,
   data: {
     stakeholderTypes: [
@@ -173,11 +193,11 @@ export const defaultCapabilityModel = {
       },
     ],
     taskScale: [
-      { id: 'TS1', label: 'Barely' },
-      { id: 'TS2', label: 'Low' },
-      { id: 'TS3', label: 'Moderate' },
-      { id: 'TS4', label: 'High' },
-      { id: 'TS5', label: 'Essential' },
+      { id: 'TS1', color: towardsRedColors[0], label: 'Barely' },
+      { id: 'TS2', color: towardsRedColors[1], label: 'Low' },
+      { id: 'TS3', color: towardsRedColors[2], label: 'Moderate' },
+      { id: 'TS4', color: towardsRedColors[3], label: 'High' },
+      { id: 'TS5', color: towardsRedColors[4], label: 'Essential' },
     ],
     performanceAspects: [
       {
@@ -199,11 +219,11 @@ export const defaultCapabilityModel = {
       },
     ],
     performanceScale: [
-      { id: 'PS1', label: 'Bad' },
-      { id: 'PS2', label: 'Inadequate' },
-      { id: 'PS3', label: 'Moderate' },
-      { id: 'PS4', label: 'Adequate' },
-      { id: 'PS5', label: 'Good' },
+      { id: 'PS1', color: redGreenColors[0], label: 'Bad' },
+      { id: 'PS2', color: redGreenColors[1], label: 'Inadequate' },
+      { id: 'PS3', color: redGreenColors[2], label: 'Moderate' },
+      { id: 'PS4', color: redGreenColors[3], label: 'Adequate' },
+      { id: 'PS5', color: redGreenColors[4], label: 'Good' },
     ],
     mainGaps: [
       { id: 'MG1', label: 'Organisation / procedure' },
@@ -220,11 +240,11 @@ export const defaultCapabilityModel = {
       { id: 'GS3', label: 'Yes' },
     ],
     assessmentScale: [
-      { id: 'AS1', label: 'None' },
-      { id: 'AS2', label: 'Limited' },
-      { id: 'AS3', label: 'Moderate' },
-      { id: 'AS4', label: 'High' },
-      { id: 'AS5', label: 'Very high' },
+      { id: 'AS1', color: towardsRedColors[0], label: 'None' },
+      { id: 'AS2', color: towardsRedColors[1], label: 'Limited' },
+      { id: 'AS3', color: towardsRedColors[2], label: 'Moderate' },
+      { id: 'AS4', color: towardsRedColors[3], label: 'High' },
+      { id: 'AS5', color: towardsRedColors[4], label: 'Very high' },
     ],
     assessmentTable: [
       { rowId: 'TS1', colId: 'PS1', optionId: 'AS3' },
