@@ -28,7 +28,6 @@ export interface ICapabilityModel {
   development?: UIForm;
   evaluation?: UIForm;
   settings?: UIForm;
-  // data: Record<string, any>;
   data: ICapabilityDataModel;
 }
 

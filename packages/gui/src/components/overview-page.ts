@@ -203,7 +203,7 @@ export const OverviewPage: MeiosisComponent = () => {
                                         {
                                           style: 'line-height: 22px;',
                                           alt: cap.label,
-                                          href: createRoute(Dashboards.CAPABILITY, {
+                                          href: createRoute(Dashboards.ASSESSMENT, {
                                             id: cap.id,
                                           }),
                                         },

@@ -119,7 +119,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
     title: 'Assessment',
     icon: 'looks_two',
     iconClass: 'blue-text',
-    route: '/Assessment',
+    route: '/assessment',
     visible: true,
     component: AssessmentPage,
   },

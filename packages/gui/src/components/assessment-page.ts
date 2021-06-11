@@ -1,23 +1,37 @@
 import m from 'mithril';
 import { Select } from 'mithril-materialized';
 import { LayoutForm } from 'mithril-ui-form';
-import { Dashboards, ICapabilityModel } from '../models';
+import { Dashboards, ICapability, ICapabilityModel } from '../models';
 import { MeiosisComponent } from '../services';
 
 export const AssessmentPage: MeiosisComponent = () => {
   return {
     oninit: ({
       attrs: {
-        actions: { setPage },
+        state: {
+          app: { catModel },
+        },
+        actions: { setPage, update },
       },
-    }) => setPage(Dashboards.ASSESSMENT),
+    }) => {
+      const id = m.route.param('id');
+      if (id && catModel) {
+        const { capabilities = [] } = catModel.data;
+        const capability =
+          capabilities.filter((cap) => cap.id === id).shift() || ({} as ICapability);
+        const { id: capabilityId, categoryId, subcategoryId } = capability;
+        update({ app: { page: Dashboards.ASSESSMENT, capabilityId, categoryId, subcategoryId } });
+      } else {
+        setPage(Dashboards.ASSESSMENT);
+      }
+    },
     view: ({
       attrs: {
         state: {
           app: {
             catModel = { data: {} } as ICapabilityModel,
             categoryId,
-            subCategoryId,
+            subcategoryId: subCategoryId,
             capabilityId,
           },
         },
@@ -51,7 +65,7 @@ export const AssessmentPage: MeiosisComponent = () => {
                 label: 'Select subcategory',
                 initialValue: subCategoryId,
                 options: category && category.subcategories,
-                onchange: (v) => update({ app: { subCategoryId: v[0] as string } }),
+                onchange: (v) => update({ app: { subcategoryId: v[0] as string } }),
               }),
             caps &&
               caps.length > 0 &&
@@ -71,7 +85,7 @@ export const AssessmentPage: MeiosisComponent = () => {
             '.row',
             m(LayoutForm, {
               form: assessment,
-              obj: cap || {},
+              obj: cap,
               context: data,
               onchange: () => {
                 saveModel(catModel);

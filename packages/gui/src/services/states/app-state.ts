@@ -20,7 +20,7 @@ export interface IAppStateModel {
     textFilter: string;
     stakeholderFilter: string[];
     categoryId?: string;
-    subCategoryId?: string;
+    subcategoryId?: string;
     capabilityId?: string;
   };
 }

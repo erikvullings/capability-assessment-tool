@@ -17,7 +17,7 @@ export const EvaluationPage: MeiosisComponent = () => {
           app: {
             catModel = { data: {} } as ICapabilityModel,
             categoryId,
-            subCategoryId,
+            subcategoryId: subCategoryId,
             capabilityId,
           },
         },
@@ -51,7 +51,7 @@ export const EvaluationPage: MeiosisComponent = () => {
                 label: 'Select subcategory',
                 initialValue: subCategoryId,
                 options: category && category.subcategories,
-                onchange: (v) => update({ app: { subCategoryId: v[0] as string } }),
+                onchange: (v) => update({ app: { subcategoryId: v[0] as string } }),
               }),
             caps &&
               caps.length > 0 &&

@@ -2,6 +2,63 @@ import { UIForm } from 'mithril-ui-form-plugin';
 
 export const assessmentModel = [
   {
+    id: 'desc',
+    label: 'Description',
+    placeholder: 'Describe the capability in detail.',
+    type: 'textarea',
+    className: 'col s12',
+  },
+  {
+    id: 'capabilityPartners',
+    label: 'Partners',
+    pageSize: 5,
+    repeat: true,
+    type: [
+      {
+        id: 'partnerId',
+        label: 'Partner',
+        type: 'select',
+        options: 'partners',
+        className: 'col s4 m2',
+      },
+      {
+        id: 'goal',
+        label: 'Goals',
+        placeholder: 'Specify long and short term goals',
+        type: 'textarea',
+        className: 'col s8 m10',
+      },
+    ],
+    className: 'col m12',
+  },
+  {
+    id: 'documentation',
+    label: 'Documentation',
+    repeat: true,
+    pageSize: 5,
+    type: [
+      {
+        id: 'documentId',
+        label: 'Document ID',
+        type: 'text',
+        className: 'col s3 m2',
+      },
+      {
+        id: 'label',
+        label: 'Title',
+        type: 'text',
+        className: 'col s6 m6',
+      },
+      {
+        id: 'link',
+        label: 'URL',
+        type: 'url',
+        className: 'col s3 m4',
+      },
+    ],
+    className: 'col m12',
+  },
+  {
     id: 'taskAssessment',
     type: 'assessment',
     options: 'mainTasks',
