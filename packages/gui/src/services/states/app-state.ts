@@ -19,6 +19,9 @@ export interface IAppStateModel {
     catModel: ICapabilityModel;
     textFilter: string;
     stakeholderFilter: string[];
+    categoryId?: string;
+    subCategoryId?: string;
+    capabilityId?: string;
   };
 }
 

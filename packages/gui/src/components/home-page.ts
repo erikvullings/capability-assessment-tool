@@ -28,84 +28,85 @@ export const HomePage: MeiosisComponent = () => {
         actions: { saveModel },
       },
     }) => [
-      m('.row', [
+      m('div', { style: 'position: relative;' }, [
         m(
           '.overlay.center',
           {
-            style: 'position: relative; top: 550px;',
+            style: 'position: absolute; width: 100%',
           },
-          m('.buttons', [
+          [m('h3.white-text', 'Capability Assessment Tool (CAT)')]
+        ),
+        m('img.responsive-img', { src: background }),
+        m('.buttons.center', { style: 'margin: 10px auto;' }, [
+          m(Button, {
+            iconName: 'clear',
+            className: 'btn-large',
+            label: 'Clear',
+            onclick: () => {
+              saveModel(defaultCapabilityModel);
+              dashboardSvc.switchTo(Dashboards.PREPARATION);
+            },
+          }),
+          typeof catModel.version === 'number' &&
             m(Button, {
-              iconName: 'fiber_new',
+              iconName: 'edit',
               className: 'btn-large',
-              label: 'Start new',
+              label: 'Continue',
               onclick: () => {
-                saveModel(defaultCapabilityModel);
                 dashboardSvc.switchTo(Dashboards.OVERVIEW);
               },
             }),
-            typeof catModel.version === 'number' &&
-              m(Button, {
-                iconName: 'edit',
-                className: 'btn-large',
-                label: 'Continue',
-                onclick: () => {
-                  dashboardSvc.switchTo(Dashboards.OVERVIEW);
-                },
-              }),
-            m('a#downloadAnchorElem', { style: 'display:none' }),
+          m('a#downloadAnchorElem', { style: 'display:none' }),
+          m(Button, {
+            iconName: 'download',
+            className: 'btn-large',
+            label: 'Download',
+            onclick: () => {
+              const dlAnchorElem = document.getElementById('downloadAnchorElem');
+              if (!dlAnchorElem) return;
+              const version = typeof catModel.version === 'undefined' ? 1 : catModel.version++;
+              const dataStr =
+                'data:text/json;charset=utf-8,' +
+                encodeURIComponent(JSON.stringify({ version, ...catModel }, null, 2));
+              dlAnchorElem.setAttribute('href', dataStr);
+              dlAnchorElem.setAttribute(
+                'download',
+                `${formatDate()}_v${version}_capability_model.json`
+              );
+              dlAnchorElem.click();
+            },
+          }),
+          m('input#selectFiles[type=file]', { style: 'display:none' }),
+          readerAvailable &&
             m(Button, {
-              iconName: 'download',
+              iconName: 'upload',
               className: 'btn-large',
-              label: 'Download',
+              label: 'Upload',
               onclick: () => {
-                const dlAnchorElem = document.getElementById('downloadAnchorElem');
-                if (!dlAnchorElem) return;
-                const version = typeof catModel.version === 'undefined' ? 1 : catModel.version++;
-                const dataStr =
-                  'data:text/json;charset=utf-8,' +
-                  encodeURIComponent(JSON.stringify({ version, ...catModel }, null, 2));
-                dlAnchorElem.setAttribute('href', dataStr);
-                dlAnchorElem.setAttribute(
-                  'download',
-                  `${formatDate()}_v${version}_capability_model.json`
-                );
-                dlAnchorElem.click();
+                const fileInput = document.getElementById('selectFiles') as HTMLInputElement;
+                fileInput.onchange = () => {
+                  if (!fileInput) return;
+                  const files = fileInput.files;
+                  if (files && files.length <= 0) {
+                    return;
+                  }
+                  const reader = new FileReader();
+                  reader.onload = (e: ProgressEvent<FileReader>) => {
+                    const result =
+                      e &&
+                      e.target &&
+                      e.target.result &&
+                      (JSON.parse(e.target.result.toString()) as ICapabilityModel);
+                    result && result.version && saveModel(result);
+                  };
+                  const data = files && files.item(0);
+                  data && reader.readAsText(data);
+                  dashboardSvc.switchTo(Dashboards.OVERVIEW);
+                };
+                fileInput.click();
               },
             }),
-            m('input#selectFiles[type=file]', { style: 'display:none' }),
-            readerAvailable &&
-              m(Button, {
-                iconName: 'upload',
-                className: 'btn-large',
-                label: 'Upload',
-                onclick: () => {
-                  const fileInput = document.getElementById('selectFiles') as HTMLInputElement;
-                  fileInput.onchange = () => {
-                    if (!fileInput) return;
-                    const files = fileInput.files;
-                    if (files && files.length <= 0) {
-                      return;
-                    }
-                    const reader = new FileReader();
-                    reader.onload = (e: ProgressEvent<FileReader>) => {
-                      const result =
-                        e &&
-                        e.target &&
-                        e.target.result &&
-                        (JSON.parse(e.target.result.toString()) as ICapabilityModel);
-                      result && result.version && saveModel(result);
-                    };
-                    const data = files && files.item(0);
-                    data && reader.readAsText(data);
-                    dashboardSvc.switchTo(Dashboards.OVERVIEW);
-                  };
-                  fileInput.click();
-                },
-              }),
-          ])
-        ),
-        m('img.responsive-img', { src: background }),
+        ]),
         m(
           '.section.white',
           m('.row.container.center', [

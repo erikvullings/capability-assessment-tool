@@ -228,3 +228,16 @@ export const list = (arr: string[] = [], prefix = '') =>
       (arr.length === 1
         ? arr[0]
         : `${arr.slice(0, arr.length - 1).join(', ')} en ${arr[arr.length - 1]}`);
+
+export const getTextColorFromBackground = (backgroundColor?: string) => {
+  if (!backgroundColor) return 'black-text';
+  const c = backgroundColor.substring(1); // strip #
+  const rgb = parseInt(c, 16); // convert rrggbb to decimal
+  const r = (rgb >> 16) & 0xff; // extract red
+  const g = (rgb >> 8) & 0xff; // extract green
+  const b = (rgb >> 0) & 0xff; // extract blue
+
+  const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
+
+  return luma < 105 ? 'white-text' : 'black-text';
+};

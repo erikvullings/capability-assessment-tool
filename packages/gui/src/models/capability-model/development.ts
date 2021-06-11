@@ -1,7 +1,6 @@
 import { UIForm } from 'mithril-ui-form-plugin';
 
 export const developmentModel = [
-  { id: 'develop', label: '3. Development', type: 'section' },
   {
     id: 'projectProposals',
     label: 'Projects and project proposals',

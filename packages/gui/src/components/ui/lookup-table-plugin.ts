@@ -2,6 +2,7 @@ import m from 'mithril';
 import { Select } from 'mithril-materialized';
 import { IInputField, resolveExpression } from 'mithril-ui-form';
 import { PluginType } from 'mithril-ui-form-plugin';
+import { getTextColorFromBackground } from '../../utils';
 
 type LookupTableFieldType = IInputField & {
   /** Path to the row ID */
@@ -48,13 +49,19 @@ export const lookupTable: PluginType = () => {
       const cId = resolveExpression(colId, [obj, context]) as string;
       const optTmp =
         typeof options === 'string' &&
-        (resolveExpression(options, [obj, context]) as Array<{ id: string; label: string }>);
+        (resolveExpression(options, [obj, context]) as Array<{
+          id: string;
+          label: string;
+          color?: string;
+        }>);
       // console.log({ tbl, rId, cId });
       const optionId =
         tbl &&
         tbl instanceof Array &&
         tbl.filter((t) => t.rowId === rId && t.colId === cId).shift();
       const opt = optTmp && optionId && optTmp.filter((o) => o.id === optionId.optionId).shift();
+      const color = opt && opt.color ? opt.color : '#f0f8ff';
+
       if (onchange && opt && obj[id] !== opt.id) onchange(opt.id);
       return m('section', [
         m('.divider'),
@@ -63,10 +70,9 @@ export const lookupTable: PluginType = () => {
           m(
             '.col.s12.right-align',
             m(
-              '.assessment-score',
+              `.assessment-score.${getTextColorFromBackground(color)}`,
               {
-                style:
-                  'border: solid 2px black; border-radius: 8px; background: aliceblue; float: right; padding: 5px; margin-top: 10px;',
+                style: `border: solid 2px black; border-radius: 8px; background: ${color}; float: right; padding: 5px; margin-top: 10px;`,
               },
               [m('strong', `${label}: `), m('span', opt ? opt.label : 'TBD')]
             )

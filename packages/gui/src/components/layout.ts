@@ -32,12 +32,12 @@ export const Layout: MeiosisComponent = () => ({
                 'div',
                 {
                   style:
-                    'margin-top: 0px; position: absolute; top: 10px; left: 120px; width: 600px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; height: 40px;',
+                    'margin-top: 0px; position: absolute; top: 10px; left: 60px; width: 200px;',
                 },
                 m(
-                  'h4.center.hide-on-med-and-down.black-text',
+                  'h4.center.show-on-med-and-up.black-text',
                   { style: 'text-align: left; margin: 0;' },
-                  'Capability Assessment Tool'
+                  'CAT'
                 )
               ),
             ]),
@@ -66,7 +66,7 @@ export const Layout: MeiosisComponent = () => ({
                 .map((d: IDashboard) =>
                   m(`li.tooltip${isActive(d)}`, [
                     m(Icon, {
-                      className: 'hoverable',
+                      className: 'hoverable' + (d.iconClass ? ` ${d.iconClass}` : ''),
                       style: 'font-size: 2.2rem; width: 4rem;',
                       iconName: typeof d.icon === 'string' ? d.icon : d.icon(),
                       onclick: () => changePage(d.id),

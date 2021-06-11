@@ -5,11 +5,14 @@ import { Layout } from '../components/layout';
 import {
   AboutPage,
   HomePage,
-  CatPage,
   SettingsPage,
   TaxonomyPage,
   OverviewPage,
+  PreparationPage,
+  EvaluationPage,
+  AssessmentPage,
 } from '../components';
+import { DevelopmentPage } from '../components/development-page';
 
 class DashboardService {
   private dashboards!: ReadonlyArray<IDashboard>;
@@ -103,12 +106,40 @@ export const dashboardSvc: DashboardService = new DashboardService([
     component: OverviewPage,
   },
   {
-    id: Dashboards.CAPABILITY,
-    title: 'Capability',
-    icon: 'extension',
-    route: '/capability',
+    id: Dashboards.PREPARATION,
+    title: 'Preparation',
+    icon: 'looks_one',
+    iconClass: 'blue-text',
+    route: '/preparation',
     visible: true,
-    component: CatPage,
+    component: PreparationPage,
+  },
+  {
+    id: Dashboards.ASSESSMENT,
+    title: 'Assessment',
+    icon: 'looks_two',
+    iconClass: 'blue-text',
+    route: '/Assessment',
+    visible: true,
+    component: AssessmentPage,
+  },
+  {
+    id: Dashboards.DEVELOPMENT,
+    title: 'Development',
+    icon: 'looks_3',
+    iconClass: 'blue-text',
+    route: '/development',
+    visible: true,
+    component: DevelopmentPage,
+  },
+  {
+    id: Dashboards.EVALUATION,
+    title: 'Evaluation',
+    icon: 'looks_4',
+    iconClass: 'blue-text',
+    route: '/evaluation',
+    visible: true,
+    component: EvaluationPage,
   },
   {
     id: Dashboards.TAXONOMY,

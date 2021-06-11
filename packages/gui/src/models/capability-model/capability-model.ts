@@ -1,9 +1,10 @@
 import { UIForm } from 'mithril-ui-form';
 import { assessmentModel } from './assessment';
 import { developmentModel } from './development';
-import { lexicon } from './lexicon';
+import { evaluationModel } from './evaluation';
 import { preparationModel } from './preparation';
 import { settingsModel } from './settings';
+import { lexicon } from './lexicon';
 
 export interface ICapabilityDataModel {
   partners?: IPartner[];
@@ -22,8 +23,11 @@ export interface ICapabilityDataModel {
 
 export interface ICapabilityModel {
   version?: number;
-  form: UIForm;
-  settings: UIForm;
+  preparations?: UIForm;
+  assessment?: UIForm;
+  development?: UIForm;
+  evaluation?: UIForm;
+  settings?: UIForm;
   // data: Record<string, any>;
   data: ICapabilityDataModel;
 }
@@ -78,13 +82,17 @@ const towardsRedColors = ['#fef0d9', '#fdcc8a', '#fc8d59', '#e34a33', '#b30000']
 
 export const defaultCapabilityModel = {
   version: 0,
-  form: [...preparationModel, ...assessmentModel, ...developmentModel] as UIForm,
+  preparations: preparationModel,
+  assessment: assessmentModel,
+  development: developmentModel,
+  evaluation: evaluationModel,
   settings: settingsModel,
   data: {
     stakeholderTypes: [
-      { id: 'ST1', label: 'Government' },
-      { id: 'ST2', label: 'Public safety' },
-      { id: 'ST3', label: 'First response' },
+      { id: 'ST1', label: 'Law enforcement' },
+      { id: 'ST2', label: 'Government' },
+      { id: 'ST3', label: 'Public safety' },
+      { id: 'ST4', label: 'First response' },
     ],
     partners: [
       { id: 'NCTV', label: 'NCTV', typeId: 'ST1' },
@@ -185,10 +193,10 @@ export const defaultCapabilityModel = {
       { id: 'LO4', categoryId: 'C3', subcategoryId: 'Y3', label: 'OPSEC' },
     ],
     mainTasks: [
-      { id: 'MT1', label: 'Preventing dark web & cryptocurrency criminality' },
-      { id: 'MT2', label: 'Reduce impact of dark web & cryptocurrency criminality' },
+      { id: 'MG1', label: 'Preventing dark web & cryptocurrency criminality' },
+      { id: 'MG2', label: 'Reduce impact of dark web & cryptocurrency criminality' },
       {
-        id: 'MT3',
+        id: 'MG3',
         label: 'Finding, arresting and prosecuting criminals operating on the dark web',
       },
     ],

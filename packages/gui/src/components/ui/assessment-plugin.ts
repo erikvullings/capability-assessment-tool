@@ -3,6 +3,7 @@ import { Select, TextArea, TextInput } from 'mithril-materialized';
 import { IInputField, resolveExpression, render } from 'mithril-ui-form';
 import { PluginType } from 'mithril-ui-form-plugin';
 import { ILabelled } from '../../models/capability-model/capability-model';
+import { getTextColorFromBackground } from '../../utils';
 
 // const range = (start: number, end: number) =>
 //   Array.from({ length: end - start + 1 }, (_, k) => k + start);
@@ -23,19 +24,6 @@ type AssessmentFieldType = IInputField & {
   descriptionLabel: string;
   overallAssessment: 'min' | 'max' | 'avg';
   overallAssessmentLabel: string;
-};
-
-const getTextColorFromBackground = (backgroundColor?: string) => {
-  if (!backgroundColor) return 'black-text';
-  const c = backgroundColor.substring(1); // strip #
-  const rgb = parseInt(c, 16); // convert rrggbb to decimal
-  const r = (rgb >> 16) & 0xff; // extract red
-  const g = (rgb >> 8) & 0xff; // extract green
-  const b = (rgb >> 0) & 0xff; // extract blue
-
-  const luma = 0.2126 * r + 0.7152 * g + 0.0722 * b; // per ITU-R BT.709
-
-  return luma < 105 ? 'white-text' : 'black-text';
 };
 
 export const assessmentPlugin: PluginType = () => {

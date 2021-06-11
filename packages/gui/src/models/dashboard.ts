@@ -10,6 +10,7 @@ export interface IDashboard {
   hasNavBar?: boolean;
   title: string | (() => string);
   icon: string | IconResolver;
+  iconClass?: string;
   route: string;
   visible: boolean | (() => boolean);
   component: ComponentTypes<any, any>;
@@ -22,5 +23,9 @@ export enum Dashboards {
   TAXONOMY = 'TAXONOMY',
   ABOUT = 'ABOUT',
   SETTINGS = 'SETTINGS',
+  PREPARATION = 'PREPARATION',
+  ASSESSMENT = 'ASSESSMENT',
+  DEVELOPMENT = 'DEVELOPMENT',
+  EVALUATION = 'EVALUATION',
   HELP = 'HELP',
 }

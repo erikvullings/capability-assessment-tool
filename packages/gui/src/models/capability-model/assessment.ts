@@ -1,13 +1,11 @@
 import { UIForm } from 'mithril-ui-form-plugin';
 
 export const assessmentModel = [
-  { id: 'assess', label: '2. Assessment', type: 'section' },
-  // { type: 'md', value: '##### Capability assessment', className: '.assess' },
   {
     id: 'taskAssessment',
     type: 'assessment',
     options: 'mainTasks',
-    optionLabel: 'Main task',
+    optionLabel: 'Main goals',
     assessmentOptions: 'taskScale',
     assessmentLabel: 'Importance',
     descriptionLabel: 'Explanation',

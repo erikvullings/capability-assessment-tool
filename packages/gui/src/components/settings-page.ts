@@ -21,7 +21,6 @@ export const SettingsPage: MeiosisComponent = () => ({
   }) => {
     const { settings: form = [], data = {} } = catModel;
     const sections = form.filter((i) => i.type === 'section');
-    console.log(sections);
     const tabs = sections.map(
       (s) =>
         ({

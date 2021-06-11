@@ -510,6 +510,9 @@ ul.projects > li > span.project-id {
   margin: 0 auto;
 }
 
+.assessment-plugin.section {
+  padding: 0;
+}
 .inline-icon {
   vertical-align: bottom;
   /* font-size: 20px !important; */
@@ -530,4 +533,10 @@ ul.projects > li > span.project-id {
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+.evaluation-page .row,
+.development-page .row,
+.assessment-page .row {
+  margin-bottom: 0;
 }
