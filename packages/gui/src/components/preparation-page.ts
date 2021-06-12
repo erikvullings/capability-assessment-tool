@@ -1,6 +1,6 @@
 import m from 'mithril';
 import { ITabItem, Tabs } from 'mithril-materialized';
-import { LayoutForm, UIForm } from 'mithril-ui-form';
+import { LayoutForm, UIForm, render } from 'mithril-ui-form';
 import { Dashboards, ICapabilityModel } from '../models';
 import { MeiosisComponent } from '../services';
 
@@ -43,6 +43,21 @@ export const PreparationPage: MeiosisComponent = () => ({
           }),
         } as ITabItem)
     );
-    return m('.row', { style: 'height: 90vh' }, m(Tabs, { tabs, tabWidth: 'fill' }));
+    return m('.row', { style: 'height: 90vh' }, [
+      m('.col.s12', m('h4', 'Preparation')),
+      m(
+        '.col.s12',
+        m(
+          'p',
+          m.trust(
+            render(
+              `_Define your organisation's goals, and your most important capabilities._`,
+              true
+            )
+          )
+        )
+      ),
+      m(Tabs, { tabs, tabWidth: 'fill' }),
+    ]);
   },
 });

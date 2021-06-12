@@ -4,9 +4,7 @@ export const preparationModel = [
   { type: 'section', id: 'partners', label: 'Select partners' },
   {
     type: 'md',
-    label: `#### 1. Preparation
-
-1. **Select your partners and specify their organizational goals.**
+    label: `1. **Select your partners and specify their organizational goals.**
 2. Set the group goals that you want to achieve.
 3. Specify capability categories to organize the capabilities.
 4. Specify the capabilities that you need to achieve the group goals.`,
@@ -42,9 +40,7 @@ export const preparationModel = [
   { type: 'section', id: 'goals', label: 'Specify group goals' },
   {
     type: 'md',
-    label: `#### 1. Preparation
-
-1. Select your partners and specify their organizational goals.
+    label: `1. Select your partners and specify their organizational goals.
 2. **Set the group goals that you want to achieve.**
 3. Specify capability categories to organize the capabilities.
 4. Specify the capabilities that you need to achieve the group goals.`,
@@ -64,9 +60,7 @@ export const preparationModel = [
   { type: 'section', id: 'categories', label: 'Specify categories' },
   {
     type: 'md',
-    label: `#### 1. Preparation
-
-1. Select your partners and specify their organizational goals.
+    label: `1. Select your partners and specify their organizational goals.
 2. Set the group goals that you want to achieve.
 3. **Specify capability categories to organize the capabilities.**
 4. Specify the capabilities that you need to achieve the group goals.`,
@@ -102,9 +96,7 @@ export const preparationModel = [
   { type: 'section', id: 'capabilities', label: 'Specify capabilities' },
   {
     type: 'md',
-    label: `#### 1. Preparation
-
-1. Select your partners and specify their organizational goals.
+    label: `1. Select your partners and specify their organizational goals.
 2. Set the group goals that you want to achieve.
 3. Specify capability categories to organize the capabilities.
 4. **Specify the capabilities that you need to achieve the group goals.**`,

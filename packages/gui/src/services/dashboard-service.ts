@@ -108,7 +108,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   {
     id: Dashboards.PREPARATION,
     title: 'Preparation',
-    icon: 'looks_one',
+    icon: 'video_settings',
     iconClass: 'blue-text',
     route: '/preparation',
     visible: true,
@@ -117,7 +117,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   {
     id: Dashboards.ASSESSMENT,
     title: 'Assessment',
-    icon: 'looks_two',
+    icon: 'assessment',
     iconClass: 'blue-text',
     route: '/assessment',
     visible: true,
@@ -126,7 +126,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   {
     id: Dashboards.DEVELOPMENT,
     title: 'Development',
-    icon: 'looks_3',
+    icon: 'engineering',
     iconClass: 'blue-text',
     route: '/development',
     visible: true,
@@ -135,7 +135,7 @@ export const dashboardSvc: DashboardService = new DashboardService([
   {
     id: Dashboards.EVALUATION,
     title: 'Evaluation',
-    icon: 'looks_4',
+    icon: 'grading',
     iconClass: 'blue-text',
     route: '/evaluation',
     visible: true,

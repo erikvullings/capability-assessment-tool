@@ -69,7 +69,7 @@ export const OverviewPage: MeiosisComponent = () => {
         } as ICapabilityDataModel,
       } = catModel;
       catModel.data = data;
-      const { categories, capabilities } = data;
+      const { categories, capabilities, projectProposals = [] } = data;
       const filterText = createTextFilter(textFilter);
       const filterStakeholders = createStakeholderFilter(stakeholderFilter as string[]);
       const filteredCapabilities =
@@ -219,24 +219,31 @@ export const OverviewPage: MeiosisComponent = () => {
                                                   : ''
                                               }${cap.shouldDevelop ? '✓' : ''}
                                                   ${
-                                                    cap.projectProposals &&
-                                                    cap.projectProposals.filter((p) => !p.approved)
-                                                      .length > 0
+                                                    projectProposals.length > 0 &&
+                                                    projectProposals.filter(
+                                                      (p) =>
+                                                        !p.approved &&
+                                                        p.capabilityIds &&
+                                                        p.capabilityIds.includes(cap.id)
+                                                    ).length > 0
                                                       ? `${
-                                                          cap.projectProposals.filter(
+                                                          projectProposals.filter(
                                                             (p) => !p.approved
                                                           ).length
                                                         }<i class="inline-icon material-icons">lightbulb</i>`
                                                       : ''
                                                   }
                                                   ${
-                                                    cap.projectProposals &&
-                                                    cap.projectProposals.filter((p) => p.approved)
-                                                      .length > 0
+                                                    projectProposals.length > 0 &&
+                                                    projectProposals.filter(
+                                                      (p) =>
+                                                        p.approved &&
+                                                        p.capabilityIds &&
+                                                        p.capabilityIds.includes(cap.id)
+                                                    ).length > 0
                                                       ? `${
-                                                          cap.projectProposals.filter(
-                                                            (p) => p.approved
-                                                          ).length
+                                                          projectProposals.filter((p) => p.approved)
+                                                            .length
                                                         }<i class="inline-icon material-icons">engineering</i>`
                                                       : ''
                                                   }`

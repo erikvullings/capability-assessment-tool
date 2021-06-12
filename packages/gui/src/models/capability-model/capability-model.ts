@@ -1,15 +1,40 @@
 import { UIForm } from 'mithril-ui-form';
 import { assessmentModel } from './assessment';
 import { developmentModel } from './development';
-import { evaluationModel } from './evaluation';
+import { evaluationModel, projectEvaluationModel } from './evaluation';
 import { preparationModel } from './preparation';
 import { settingsModel } from './settings';
 import { lexicon } from './lexicon';
+
+export type ProjectProposal = {
+  id: number;
+  label?: string;
+  start?: string;
+  duration?: string;
+  proposal?: string;
+  capabilityIds?: string[];
+  projectPartners?: Array<{
+    partnerId?: string;
+    persons?: string;
+  }>;
+  gapAssessment?: Array<{
+    id: string;
+    value?: string;
+    desc?: string;
+  }>;
+  performanceAssessment?: Array<{
+    id: string;
+    value?: string;
+    desc?: string;
+  }>;
+  approved?: boolean;
+};
 
 export interface ICapabilityDataModel {
   partners?: IPartner[];
   categories?: ICategory[];
   capabilities?: ICapability[];
+  projectProposals?: Array<ProjectProposal>;
   mainTasks?: ILabelled[];
   taskScale?: ILabelled[];
   performanceAspects?: ILabelled[];
@@ -27,6 +52,7 @@ export interface ICapabilityModel {
   assessment?: UIForm;
   development?: UIForm;
   evaluation?: UIForm;
+  projectEvaluation?: UIForm;
   settings?: UIForm;
   data: ICapabilityDataModel;
 }
@@ -51,25 +77,6 @@ export interface ICapability extends ILabelled {
   documentation?: Array<{ documentId?: string; label?: string; url?: string }>;
   assessmentId?: string;
   shouldDevelop?: boolean;
-  projectProposals?: Array<{
-    id: number;
-    label?: string;
-    start?: string;
-    duration?: string;
-    proposal?: string;
-    projectPartners?: Array<{ partnerId?: string; persons?: string }>;
-    gapAssessment?: Array<{
-      id: string;
-      value?: string;
-      desc?: string;
-    }>;
-    performanceAssessment?: Array<{
-      id: string;
-      value?: string;
-      desc?: string;
-    }>;
-    approved?: boolean;
-  }>;
 }
 
 export interface IPartner extends ILabelled {
@@ -85,6 +92,7 @@ export const defaultCapabilityModel = {
   assessment: assessmentModel,
   development: developmentModel,
   evaluation: evaluationModel,
+  projectEvaluation: projectEvaluationModel,
   settings: settingsModel,
   data: {
     stakeholderTypes: [
