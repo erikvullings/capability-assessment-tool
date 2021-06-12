@@ -15484,6 +15484,7 @@ var ui_1 = __webpack_require__(8961);
 mithril_ui_form_1.registerPlugin('assessment', ui_1.assessmentPlugin);
 mithril_ui_form_1.registerPlugin('create-lookup-table', ui_1.lookupTableCreatorPlugin);
 mithril_ui_form_1.registerPlugin('lookup-table', ui_1.lookupTable);
+mithril_ui_form_1.registerPlugin('table', ui_1.tablePlugin);
 mithril_1.default.route(document.body, dashboard_service_1.dashboardSvc.defaultRoute, dashboard_service_1.dashboardSvc.routingTable());
 
 
@@ -15534,34 +15535,55 @@ var models_1 = __webpack_require__(1961);
 var AssessmentPage = function () {
     return {
         oninit: function (_a) {
-            var setPage = _a.attrs.actions.setPage;
-            return setPage(models_1.Dashboards.ASSESSMENT);
+            var _b = _a.attrs, catModel = _b.state.app.catModel, _c = _b.actions, setPage = _c.setPage, update = _c.update;
+            var id = mithril_1.default.route.param('id');
+            if (id && catModel) {
+                var _d = catModel.data.capabilities, capabilities = _d === void 0 ? [] : _d;
+                var capability = capabilities.filter(function (cap) { return cap.id === id; }).shift() || {};
+                var capabilityId = capability.id, categoryId = capability.categoryId, subcategoryId = capability.subcategoryId;
+                update({ app: { page: models_1.Dashboards.ASSESSMENT, capabilityId: capabilityId, categoryId: categoryId, subcategoryId: subcategoryId } });
+            }
+            else {
+                setPage(models_1.Dashboards.ASSESSMENT);
+            }
         },
         view: function (_a) {
-            var _b = _a.attrs, _c = _b.state.app, _d = _c.catModel, catModel = _d === void 0 ? { data: {} } : _d, categoryId = _c.categoryId, subCategoryId = _c.subCategoryId, capabilityId = _c.capabilityId, _e = _b.actions, saveModel = _e.saveModel, update = _e.update;
+            var _b = _a.attrs, _c = _b.state.app, _d = _c.catModel, catModel = _d === void 0 ? { data: {} } : _d, categoryId = _c.categoryId, subcategoryId = _c.subcategoryId, capabilityId = _c.capabilityId, _e = _b.actions, saveModel = _e.saveModel, update = _e.update;
             var _f = catModel.assessment, assessment = _f === void 0 ? [] : _f, _g = catModel.data, data = _g === void 0 ? {} : _g;
             var _h = data.categories, categories = _h === void 0 ? [] : _h, capabilities = data.capabilities;
             var category = categoryId && categories.filter(function (cat) { return cat.id === categoryId; }).shift();
-            var caps = capabilities && capabilities.filter(function (cap) { return cap.subcategoryId === subCategoryId; });
+            var caps = capabilities && capabilities.filter(function (cap) { return cap.subcategoryId === subcategoryId; });
             var cap = capabilities && capabilities.filter(function (cap) { return cap.id === capabilityId; }).shift();
             return mithril_1.default('.assessment-page', { style: 'min-height: 95vh; padding-bottom: 20px' }, [
                 mithril_1.default('.row', [
+                    mithril_1.default('.col.s12', mithril_1.default('h4', 'Assessment')),
+                    mithril_1.default('.col.s12', mithril_1.default('p', mithril_1.default.trust(mithril_ui_form_1.render("_Assess the contribution of a capability towards your goals, and the room for improvement. Start by selecting a capability._", true)))),
                     mithril_1.default(mithril_materialized_1.Select, {
                         className: 'col s4',
                         placeholder: 'Pick one',
                         label: 'Select category',
                         initialValue: categoryId,
                         options: categories,
-                        onchange: function (v) { return update({ app: { categoryId: v[0] } }); },
+                        onchange: function (v) {
+                            return update({
+                                app: {
+                                    categoryId: v[0],
+                                    subcategoryId: undefined,
+                                    capabilityId: undefined,
+                                },
+                            });
+                        },
                     }),
                     category &&
                         mithril_1.default(mithril_materialized_1.Select, {
                             className: 'col s4',
                             placeholder: 'Pick one',
                             label: 'Select subcategory',
-                            initialValue: subCategoryId,
+                            initialValue: subcategoryId,
                             options: category && category.subcategories,
-                            onchange: function (v) { return update({ app: { subCategoryId: v[0] } }); },
+                            onchange: function (v) {
+                                return update({ app: { subcategoryId: v[0], capabilityId: undefined } });
+                            },
                         }),
                     caps &&
                         caps.length > 0 &&
@@ -15574,11 +15596,11 @@ var AssessmentPage = function () {
                             onchange: function (v) { return update({ app: { capabilityId: v[0] } }); },
                         }),
                 ]),
-                cap && mithril_1.default('h4.col.s12', "Assess capability '" + cap.label + "'"),
+                cap && mithril_1.default('.row', mithril_1.default('h5.col.s12', "Capability '" + cap.label + "'")),
             ], cap &&
                 mithril_1.default('.row', mithril_1.default(mithril_ui_form_1.LayoutForm, {
                     form: assessment,
-                    obj: cap || {},
+                    obj: cap,
                     context: data,
                     onchange: function () {
                         saveModel(catModel);
@@ -15613,21 +15635,37 @@ var DevelopmentPage = function () {
             return setPage(models_1.Dashboards.DEVELOPMENT);
         },
         view: function (_a) {
-            var _b = _a.attrs, _c = _b.state.app, _d = _c.catModel, catModel = _d === void 0 ? { data: {} } : _d, categoryId = _c.categoryId, subCategoryId = _c.subCategoryId, capabilityId = _c.capabilityId, _e = _b.actions, saveModel = _e.saveModel, update = _e.update;
+            var _b = _a.attrs, _c = _b.state.app, _d = _c.catModel, catModel = _d === void 0 ? { data: {} } : _d, categoryId = _c.categoryId, subCategoryId = _c.subcategoryId, capabilityId = _c.capabilityId, _e = _b.actions, saveModel = _e.saveModel, update = _e.update;
             var _f = catModel.development, development = _f === void 0 ? [] : _f, _g = catModel.data, data = _g === void 0 ? {} : _g;
-            var _h = data.categories, categories = _h === void 0 ? [] : _h, capabilities = data.capabilities;
+            var _h = data.categories, categories = _h === void 0 ? [] : _h, _j = data.capabilities, capabilities = _j === void 0 ? [] : _j, _k = data.projectProposals, projectProposals = _k === void 0 ? [] : _k;
+            if (!data.projectProposals) {
+                data.projectProposals = projectProposals;
+                saveModel(catModel);
+            }
             var category = categoryId && categories.filter(function (cat) { return cat.id === categoryId; }).shift();
             var caps = capabilities && capabilities.filter(function (cap) { return cap.subcategoryId === subCategoryId; });
             var cap = capabilities && capabilities.filter(function (cap) { return cap.id === capabilityId; }).shift();
+            console.log(caps);
+            var projects = cap && projectProposals.filter(function (p) { return !p.capabilityIds || p.capabilityIds.includes(cap.id); });
             return mithril_1.default('.development-page', { style: 'min-height: 95vh; padding-bottom: 20px' }, [
                 mithril_1.default('.row', [
+                    mithril_1.default('.col.s12', mithril_1.default('h4', 'Development')),
+                    mithril_1.default('.col.s12', mithril_1.default('p', mithril_1.default.trust(mithril_ui_form_1.render("_Suggest new projects to develop your capability. Start by selecting a capability._", true)))),
                     mithril_1.default(mithril_materialized_1.Select, {
                         className: 'col s4',
                         placeholder: 'Pick one',
                         label: 'Select category',
                         initialValue: categoryId,
                         options: categories,
-                        onchange: function (v) { return update({ app: { categoryId: v[0] } }); },
+                        onchange: function (v) {
+                            return update({
+                                app: {
+                                    categoryId: v[0],
+                                    subcategoryId: undefined,
+                                    capabilityId: undefined,
+                                },
+                            });
+                        },
                     }),
                     category &&
                         mithril_1.default(mithril_materialized_1.Select, {
@@ -15636,7 +15674,9 @@ var DevelopmentPage = function () {
                             label: 'Select subcategory',
                             initialValue: subCategoryId,
                             options: category && category.subcategories,
-                            onchange: function (v) { return update({ app: { subCategoryId: v[0] } }); },
+                            onchange: function (v) {
+                                return update({ app: { subcategoryId: v[0], capabilityId: undefined } });
+                            },
                         }),
                     caps &&
                         caps.length > 0 &&
@@ -15649,16 +15689,39 @@ var DevelopmentPage = function () {
                             onchange: function (v) { return update({ app: { capabilityId: v[0] } }); },
                         }),
                 ]),
-                cap && mithril_1.default('h4.col.s12', "Develop capability '" + cap.label + "'"),
-            ], cap &&
-                mithril_1.default('.row', mithril_1.default(mithril_ui_form_1.LayoutForm, {
-                    form: development,
-                    obj: cap || {},
-                    context: data,
-                    onchange: function () {
-                        saveModel(catModel);
-                    },
-                })));
+                cap &&
+                    mithril_1.default('.row', [
+                        mithril_1.default('h5.col.s12', "Capability '" + cap.label + "'"),
+                        mithril_1.default('.col.s12.right-align', mithril_1.default(mithril_materialized_1.FlatButton, {
+                            iconName: 'add',
+                            iconClass: 'right',
+                            label: 'New project or proposal',
+                            onclick: function () {
+                                projectProposals.push({
+                                    id: Date.now(),
+                                    label: 'New proposal',
+                                    capabilityIds: [cap.id],
+                                });
+                                saveModel(catModel);
+                            },
+                        })),
+                    ]),
+            ], projects &&
+                projects.length > 0 &&
+                mithril_1.default(mithril_materialized_1.Collapsible, {
+                    items: projects.map(function (p) { return ({
+                        header: p.label,
+                        body: mithril_1.default('.row', mithril_1.default(mithril_ui_form_1.LayoutForm, {
+                            form: development,
+                            obj: p,
+                            context: data,
+                            onchange: function () {
+                                saveModel(catModel);
+                            },
+                        })),
+                        iconName: p.approved ? 'engineering' : 'lightbulb',
+                    }); }),
+                }));
         },
     };
 };
@@ -15688,21 +15751,37 @@ var EvaluationPage = function () {
             return setPage(models_1.Dashboards.EVALUATION);
         },
         view: function (_a) {
-            var _b = _a.attrs, _c = _b.state.app, _d = _c.catModel, catModel = _d === void 0 ? { data: {} } : _d, categoryId = _c.categoryId, subCategoryId = _c.subCategoryId, capabilityId = _c.capabilityId, _e = _b.actions, saveModel = _e.saveModel, update = _e.update;
-            var _f = catModel.evaluation, evaluation = _f === void 0 ? [] : _f, _g = catModel.data, data = _g === void 0 ? {} : _g;
-            var _h = data.categories, categories = _h === void 0 ? [] : _h, capabilities = data.capabilities;
+            var _b = _a.attrs, _c = _b.state.app, _d = _c.catModel, catModel = _d === void 0 ? { data: {} } : _d, categoryId = _c.categoryId, subCategoryId = _c.subcategoryId, capabilityId = _c.capabilityId, _e = _b.actions, saveModel = _e.saveModel, update = _e.update;
+            var _f = catModel.projectEvaluation, projectEvaluation = _f === void 0 ? [] : _f, _g = catModel.evaluation, evaluation = _g === void 0 ? [] : _g, _h = catModel.data, data = _h === void 0 ? {} : _h;
+            var _j = data.categories, categories = _j === void 0 ? [] : _j, _k = data.capabilities, capabilities = _k === void 0 ? [] : _k, _l = data.projectProposals, projectProposals = _l === void 0 ? [] : _l;
+            if (!data.projectProposals) {
+                data.projectProposals = projectProposals;
+                saveModel(catModel);
+            }
             var category = categoryId && categories.filter(function (cat) { return cat.id === categoryId; }).shift();
             var caps = capabilities && capabilities.filter(function (cap) { return cap.subcategoryId === subCategoryId; });
             var cap = capabilities && capabilities.filter(function (cap) { return cap.id === capabilityId; }).shift();
+            var projects = cap &&
+                projectProposals.filter(function (p) { return p.approved && (!p.capabilityIds || p.capabilityIds.includes(cap.id)); });
             return mithril_1.default('.evaluation-page', { style: 'min-height: 95vh; padding-bottom: 20px' }, [
                 mithril_1.default('.row', [
+                    mithril_1.default('.col.s12', mithril_1.default('h4', 'Evaluation')),
+                    mithril_1.default('.col.s12', mithril_1.default('p', mithril_1.default.trust(mithril_ui_form_1.render("_Evaluate your capability and the associated projects. Start by selecting a capability._", true)))),
                     mithril_1.default(mithril_materialized_1.Select, {
                         className: 'col s4',
                         placeholder: 'Pick one',
                         label: 'Select category',
                         initialValue: categoryId,
                         options: categories,
-                        onchange: function (v) { return update({ app: { categoryId: v[0] } }); },
+                        onchange: function (v) {
+                            return update({
+                                app: {
+                                    categoryId: v[0],
+                                    subcategoryId: undefined,
+                                    capabilityId: undefined,
+                                },
+                            });
+                        },
                     }),
                     category &&
                         mithril_1.default(mithril_materialized_1.Select, {
@@ -15711,7 +15790,9 @@ var EvaluationPage = function () {
                             label: 'Select subcategory',
                             initialValue: subCategoryId,
                             options: category && category.subcategories,
-                            onchange: function (v) { return update({ app: { subCategoryId: v[0] } }); },
+                            onchange: function (v) {
+                                return update({ app: { subcategoryId: v[0], capabilityId: undefined } });
+                            },
                         }),
                     caps &&
                         caps.length > 0 &&
@@ -15724,16 +15805,31 @@ var EvaluationPage = function () {
                             onchange: function (v) { return update({ app: { capabilityId: v[0] } }); },
                         }),
                 ]),
-                cap && mithril_1.default('h4.col.s12', "Evaluate capability '" + cap.label + "'"),
+                cap && mithril_1.default('.row', mithril_1.default('h5.col.s12', "Capability '" + cap.label + "'")),
             ], cap &&
                 mithril_1.default('.row', mithril_1.default(mithril_ui_form_1.LayoutForm, {
                     form: evaluation,
-                    obj: cap || {},
+                    obj: cap,
                     context: data,
                     onchange: function () {
                         saveModel(catModel);
                     },
-                })));
+                })), projects &&
+                projects.length > 0 &&
+                mithril_1.default(mithril_materialized_1.Collapsible, {
+                    items: projects.map(function (p) { return ({
+                        header: p.label,
+                        body: mithril_1.default('.row', mithril_1.default(mithril_ui_form_1.LayoutForm, {
+                            form: projectEvaluation,
+                            obj: p,
+                            context: data,
+                            onchange: function () {
+                                saveModel(catModel);
+                            },
+                        })),
+                        iconName: p.approved ? 'engineering' : 'lightbulb',
+                    }); }),
+                }));
         },
     };
 };
@@ -16053,7 +16149,7 @@ var OverviewPage = function () {
                 capabilities: [],
             } : _f;
             catModel.data = data;
-            var categories = data.categories, capabilities = data.capabilities;
+            var categories = data.categories, capabilities = data.capabilities, _g = data.projectProposals, projectProposals = _g === void 0 ? [] : _g;
             var filterText = createTextFilter(textFilter);
             var filterStakeholders = createStakeholderFilter(stakeholderFilter);
             var filteredCapabilities = capabilities && capabilities.filter(filterText).filter(filterStakeholders);
@@ -16158,7 +16254,7 @@ var OverviewPage = function () {
                                                         return mithril_1.default('li', mithril_1.default('a.white-text', {
                                                             style: 'line-height: 22px;',
                                                             alt: cap.label,
-                                                            href: createRoute(models_1.Dashboards.CAPABILITY, {
+                                                            href: createRoute(models_1.Dashboards.ASSESSMENT, {
                                                                 id: cap.id,
                                                             }),
                                                         }, mithril_1.default('.capability', [
@@ -16166,14 +16262,21 @@ var OverviewPage = function () {
                                                             mithril_1.default('.badges.right-align', mithril_1.default.trust("" + (cap.capabilityPartners &&
                                                                 cap.capabilityPartners.length > 0
                                                                 ? cap.capabilityPartners.length + "<i class=\"inline-icon material-icons\">people</i> "
-                                                                : '') + (cap.shouldDevelop ? '✓' : '') + "\n                                                  " + (cap.projectProposals &&
-                                                                cap.projectProposals.filter(function (p) { return !p.approved; })
-                                                                    .length > 0
-                                                                ? cap.projectProposals.filter(function (p) { return !p.approved; }).length + "<i class=\"inline-icon material-icons\">lightbulb</i>"
-                                                                : '') + "\n                                                  " + (cap.projectProposals &&
-                                                                cap.projectProposals.filter(function (p) { return p.approved; })
-                                                                    .length > 0
-                                                                ? cap.projectProposals.filter(function (p) { return p.approved; }).length + "<i class=\"inline-icon material-icons\">engineering</i>"
+                                                                : '') + (cap.shouldDevelop ? '✓' : '') + "\n                                                  " + (projectProposals.length > 0 &&
+                                                                projectProposals.filter(function (p) {
+                                                                    return !p.approved &&
+                                                                        p.capabilityIds &&
+                                                                        p.capabilityIds.includes(cap.id);
+                                                                }).length > 0
+                                                                ? projectProposals.filter(function (p) { return !p.approved; }).length + "<i class=\"inline-icon material-icons\">lightbulb</i>"
+                                                                : '') + "\n                                                  " + (projectProposals.length > 0 &&
+                                                                projectProposals.filter(function (p) {
+                                                                    return p.approved &&
+                                                                        p.capabilityIds &&
+                                                                        p.capabilityIds.includes(cap.id);
+                                                                }).length > 0
+                                                                ? projectProposals.filter(function (p) { return p.approved; })
+                                                                    .length + "<i class=\"inline-icon material-icons\">engineering</i>"
                                                                 : ''))),
                                                         ])));
                                                     })),
@@ -16231,7 +16334,11 @@ var PreparationPage = function () { return ({
                 }),
             });
         });
-        return mithril_1.default('.row', { style: 'height: 90vh' }, mithril_1.default(mithril_materialized_1.Tabs, { tabs: tabs, tabWidth: 'fill' }));
+        return mithril_1.default('.row', { style: 'height: 90vh' }, [
+            mithril_1.default('.col.s12', mithril_1.default('h4', 'Preparation')),
+            mithril_1.default('.col.s12', mithril_1.default('p', mithril_1.default.trust(mithril_ui_form_1.render("_Define your organisation's goals, and your most important capabilities._", true)))),
+            mithril_1.default(mithril_materialized_1.Tabs, { tabs: tabs, tabWidth: 'fill' }),
+        ]);
     },
 }); };
 exports.PreparationPage = PreparationPage;
@@ -16564,6 +16671,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 __exportStar(__webpack_require__(3660), exports);
 __exportStar(__webpack_require__(5045), exports);
 __exportStar(__webpack_require__(6990), exports);
+__exportStar(__webpack_require__(6931), exports);
 __exportStar(__webpack_require__(5770), exports);
 
 
@@ -16728,6 +16836,40 @@ exports.CircularSpinner = CircularSpinner;
 
 /***/ }),
 
+/***/ 6931:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.tablePlugin = void 0;
+var mithril_1 = __importDefault(__webpack_require__(1022));
+var tablePlugin = function () {
+    return {
+        view: function (_a) {
+            var _b = _a.attrs, field = _b.field, obj = _b.obj;
+            var _c = field.id, id = _c === void 0 ? '' : _c, _d = field.label, label = _d === void 0 ? '' : _d, _e = field.options, options = _e === void 0 ? [] : _e;
+            if (obj instanceof Array || !(options instanceof Array))
+                return;
+            var values = obj[id];
+            return mithril_1.default('table.highlight.responsive-table', { style: 'margin-bottom: 30px' }, [
+                label && mithril_1.default('caption', mithril_1.default('strong', label)),
+                mithril_1.default('thead', mithril_1.default('tr', options.map(function (o) { return mithril_1.default('th', o.label); }))),
+                mithril_1.default('tbody', values.map(function (v) {
+                    return mithril_1.default('tr', options.map(function (o) { return mithril_1.default('td', v[o.id] || ''); }));
+                })),
+            ]);
+        },
+    };
+};
+exports.tablePlugin = tablePlugin;
+
+
+/***/ }),
+
 /***/ 5770:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
@@ -16819,6 +16961,63 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.assessmentModel = void 0;
 exports.assessmentModel = [
     {
+        id: 'desc',
+        label: 'Description',
+        placeholder: 'Describe the capability in detail.',
+        type: 'textarea',
+        className: 'col s12',
+    },
+    {
+        id: 'capabilityPartners',
+        label: 'Partners',
+        pageSize: 5,
+        repeat: true,
+        type: [
+            {
+                id: 'partnerId',
+                label: 'Partner',
+                type: 'select',
+                options: 'partners',
+                className: 'col s4 m2',
+            },
+            {
+                id: 'goal',
+                label: 'Goals',
+                placeholder: 'Specify long and short term goals',
+                type: 'textarea',
+                className: 'col s8 m10',
+            },
+        ],
+        className: 'col m12',
+    },
+    {
+        id: 'documentation',
+        label: 'Documentation',
+        repeat: true,
+        pageSize: 5,
+        type: [
+            {
+                id: 'documentId',
+                label: 'Document ID',
+                type: 'text',
+                className: 'col s3 m2',
+            },
+            {
+                id: 'label',
+                label: 'Title',
+                type: 'text',
+                className: 'col s6 m6',
+            },
+            {
+                id: 'link',
+                label: 'URL',
+                type: 'url',
+                className: 'col s3 m4',
+            },
+        ],
+        className: 'col m12',
+    },
+    {
         id: 'taskAssessment',
         type: 'assessment',
         options: 'mainTasks',
@@ -16897,6 +17096,7 @@ exports.defaultCapabilityModel = {
     assessment: assessment_1.assessmentModel,
     development: development_1.developmentModel,
     evaluation: evaluation_1.evaluationModel,
+    projectEvaluation: evaluation_1.projectEvaluationModel,
     settings: settings_1.settingsModel,
     data: {
         stakeholderTypes: [
@@ -17106,100 +17306,99 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.developmentModel = void 0;
 exports.developmentModel = [
     {
-        id: 'projectProposals',
-        label: 'Projects and project proposals',
+        id: 'label',
+        label: 'Proposal name',
+        show: '!approved',
+        type: 'text',
+        className: 'col s6 m4',
+    },
+    {
+        id: 'label',
+        label: 'Project name',
+        show: 'approved',
+        type: 'text',
+        className: 'col s6 m4',
+    },
+    {
+        id: 'start',
+        label: 'Start time',
+        placeholder: 'YYYY Q1 or YYYY M1',
+        type: 'text',
+        className: 'col s3 m2',
+    },
+    {
+        id: 'duration',
+        label: 'Duration',
+        placeholder: 'In months',
+        type: 'text',
+        className: 'col s3 m2',
+    },
+    {
+        id: 'capabilityIds',
+        label: 'Capabilities',
+        placeholder: 'Pick one or more',
+        type: 'select',
+        multiple: true,
+        options: 'capabilities',
+        className: 'col s12 m4',
+    },
+    {
+        id: 'proposal',
+        label: 'Project summary',
+        type: 'textarea',
+        className: 'col s12',
+    },
+    {
+        id: 'projectPartners',
+        label: 'Partners',
+        pageSize: 5,
         repeat: true,
-        pageSize: 1,
-        filterLabel: 'label',
         type: [
-            { id: 'id', autogenerate: 'timestamp' },
             {
-                id: 'label',
-                label: 'Proposal name',
-                show: '!approved',
-                type: 'text',
-                className: 'col s6 m4',
+                id: 'partnerId',
+                label: 'Partner',
+                type: 'select',
+                options: 'partners',
+                className: 'col s4 m2',
             },
             {
-                id: 'label',
-                label: 'Project name',
-                show: 'approved',
-                type: 'text',
-                className: 'col s6 m4',
-            },
-            {
-                id: 'start',
-                label: 'Start time',
-                placeholder: 'YYYY Q1 or YYYY M1',
-                type: 'text',
-                className: 'col s3 m4',
-            },
-            {
-                id: 'duration',
-                label: 'Duration',
-                placeholder: 'In months',
-                type: 'text',
-                className: 'col s3 m4',
-            },
-            {
-                id: 'proposal',
-                label: 'Project summary',
+                id: 'persons',
+                label: 'Persons involved',
                 type: 'textarea',
-                className: 'col s12',
+                className: 'col s8 m10',
             },
-            {
-                id: 'projectPartners',
-                label: 'Partners',
-                pageSize: 5,
-                repeat: true,
-                type: [
-                    {
-                        id: 'partnerId',
-                        label: 'Partner',
-                        type: 'select',
-                        options: 'partners',
-                        className: 'col s4 m2',
-                    },
-                    {
-                        id: 'persons',
-                        label: 'Persons involved',
-                        type: 'textarea',
-                        className: 'col s8 m10',
-                    },
-                ],
-                className: 'col m12',
-            },
-            {
-                id: 'gapAssessment',
-                type: 'assessment',
-                options: 'mainGaps',
-                optionLabel: 'Problem areas',
-                assessmentOptions: 'gapScale',
-                assessmentLabel: 'Addressed',
-                descriptionLabel: 'How is it addressed?',
-            },
-            {
-                id: 'performanceAssessment',
-                type: 'assessment',
-                options: 'performanceAspects',
-                optionLabel: 'Performance aspect',
-                assessmentOptions: 'performanceScale',
-                assessmentLabel: 'Performance',
-                descriptionLabel: 'Explanation',
-                overallAssessmentLabel: 'Expected performance',
-                overallAssessment: 'avg',
-            },
-            { type: 'md', value: '###### PROJECT APPROVED<br>', className: 'margins right-align' },
-            {
-                id: 'approved',
-                type: 'switch',
-                className: 'margins right-align',
-                label: '',
-                options: [
-                    { id: 'no', label: 'NO' },
-                    { id: 'yes', label: 'YES' },
-                ],
-            },
+        ],
+        className: 'col m12',
+    },
+    {
+        id: 'gapAssessment',
+        type: 'assessment',
+        options: 'mainGaps',
+        optionLabel: 'Problem areas',
+        assessmentOptions: 'gapScale',
+        assessmentLabel: 'Addressed',
+        descriptionLabel: 'How is it addressed?',
+    },
+    {
+        id: 'performanceAssessment',
+        type: 'assessment',
+        options: 'performanceAspects',
+        optionLabel: 'Performance aspect',
+        assessmentOptions: 'performanceScale',
+        assessmentLabel: 'Performance',
+        descriptionLabel: 'Explanation',
+        overallAssessmentLabel: 'Expected performance',
+        overallAssessment: 'avg',
+    },
+    { type: 'md', value: '###### PROJECT APPROVED<br>', className: 'margins right-align' },
+    {
+        id: 'approved',
+        type: 'switch',
+        className: 'margins right-align',
+        label: '',
+        options: [
+            { id: 'no', label: 'NO' },
+            { id: 'yes', label: 'YES' },
         ],
     },
 ];
@@ -17208,12 +17407,17 @@ exports.developmentModel = [
 /***/ }),
 
 /***/ 8438:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
 
+var __spreadArray = (this && this.__spreadArray) || function (to, from) {
+    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
+        to[j] = from[i];
+    return to;
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.evaluationModel = void 0;
+exports.projectEvaluationModel = exports.evaluationModel = void 0;
 exports.evaluationModel = [
     {
         id: 'evaluation',
@@ -17221,6 +17425,95 @@ exports.evaluationModel = [
         type: 'textarea',
     },
 ];
+exports.projectEvaluationModel = __spreadArray(__spreadArray([
+    {
+        id: 'label',
+        label: 'Project name',
+        type: 'text',
+        className: 'col s6 m4',
+        readonly: true,
+    },
+    {
+        id: 'start',
+        label: 'Start time',
+        placeholder: 'YYYY Q1 or YYYY M1',
+        type: 'text',
+        className: 'col s3 m2',
+        readonly: true,
+    },
+    {
+        id: 'duration',
+        label: 'Duration',
+        placeholder: 'In months',
+        type: 'text',
+        className: 'col s3 m2',
+        readonly: true,
+    },
+    {
+        id: 'capabilityIds',
+        label: 'Capabilities',
+        placeholder: 'Pick one or more',
+        type: 'select',
+        multiple: true,
+        options: 'capabilities',
+        className: 'col s12 m4',
+        readonly: true,
+    },
+    {
+        id: 'proposal',
+        label: 'Project summary',
+        type: 'textarea',
+        className: 'col s12',
+        readonly: true,
+    }
+], exports.evaluationModel), [
+    {
+        id: 'projectPartners',
+        label: 'Partners',
+        type: 'table',
+        disabled: true,
+        className: 'col m12',
+        options: [
+            {
+                id: 'partnerId',
+                label: 'Partner',
+                type: 'select',
+                options: 'partners',
+                className: 'col s4 m2',
+                readonly: true,
+            },
+            {
+                id: 'persons',
+                label: 'Persons involved',
+                type: 'textarea',
+                className: 'col s8 m10',
+                readonly: true,
+            },
+        ],
+    },
+    {
+        id: 'gapAssessment',
+        type: 'assessment',
+        options: 'mainGaps',
+        optionLabel: 'Problem areas',
+        assessmentOptions: 'gapScale',
+        assessmentLabel: 'Addressed',
+        descriptionLabel: 'How is it addressed?',
+        readonly: true,
+    },
+    {
+        id: 'performanceAssessment',
+        type: 'assessment',
+        options: 'performanceAspects',
+        optionLabel: 'Performance aspect',
+        assessmentOptions: 'performanceScale',
+        assessmentLabel: 'Performance',
+        descriptionLabel: 'Explanation',
+        overallAssessmentLabel: 'Expected performance',
+        overallAssessment: 'avg',
+        readonly: true,
+    },
+]);
 
 
 /***/ }),
@@ -17659,7 +17952,7 @@ exports.preparationModel = [
     { type: 'section', id: 'partners', label: 'Select partners' },
     {
         type: 'md',
-        label: "#### 1. Preparation\n\n1. **Select your partners and specify their organizational goals.**\n2. Set the group goals that you want to achieve.\n3. Specify capability categories to organize the capabilities.\n4. Specify the capabilities that you need to achieve the group goals.",
+        label: "1. **Select your partners and specify their organizational goals.**\n2. Set the group goals that you want to achieve.\n3. Specify capability categories to organize the capabilities.\n4. Specify the capabilities that you need to achieve the group goals.",
     },
     {
         id: 'partners',
@@ -17692,7 +17985,7 @@ exports.preparationModel = [
     { type: 'section', id: 'goals', label: 'Specify group goals' },
     {
         type: 'md',
-        label: "#### 1. Preparation\n\n1. Select your partners and specify their organizational goals.\n2. **Set the group goals that you want to achieve.**\n3. Specify capability categories to organize the capabilities.\n4. Specify the capabilities that you need to achieve the group goals.",
+        label: "1. Select your partners and specify their organizational goals.\n2. **Set the group goals that you want to achieve.**\n3. Specify capability categories to organize the capabilities.\n4. Specify the capabilities that you need to achieve the group goals.",
     },
     {
         id: 'mainTasks',
@@ -17709,7 +18002,7 @@ exports.preparationModel = [
     { type: 'section', id: 'categories', label: 'Specify categories' },
     {
         type: 'md',
-        label: "#### 1. Preparation\n\n1. Select your partners and specify their organizational goals.\n2. Set the group goals that you want to achieve.\n3. **Specify capability categories to organize the capabilities.**\n4. Specify the capabilities that you need to achieve the group goals.",
+        label: "1. Select your partners and specify their organizational goals.\n2. Set the group goals that you want to achieve.\n3. **Specify capability categories to organize the capabilities.**\n4. Specify the capabilities that you need to achieve the group goals.",
     },
     {
         id: 'categories',
@@ -17742,7 +18035,7 @@ exports.preparationModel = [
     { type: 'section', id: 'capabilities', label: 'Specify capabilities' },
     {
         type: 'md',
-        label: "#### 1. Preparation\n\n1. Select your partners and specify their organizational goals.\n2. Set the group goals that you want to achieve.\n3. Specify capability categories to organize the capabilities.\n4. **Specify the capabilities that you need to achieve the group goals.**",
+        label: "1. Select your partners and specify their organizational goals.\n2. Set the group goals that you want to achieve.\n3. Specify capability categories to organize the capabilities.\n4. **Specify the capabilities that you need to achieve the group goals.**",
     },
     {
         id: 'capabilities',
@@ -18126,7 +18419,7 @@ exports.dashboardSvc = new DashboardService([
     {
         id: models_1.Dashboards.PREPARATION,
         title: 'Preparation',
-        icon: 'looks_one',
+        icon: 'video_settings',
         iconClass: 'blue-text',
         route: '/preparation',
         visible: true,
@@ -18135,16 +18428,16 @@ exports.dashboardSvc = new DashboardService([
     {
         id: models_1.Dashboards.ASSESSMENT,
         title: 'Assessment',
-        icon: 'looks_two',
+        icon: 'assessment',
         iconClass: 'blue-text',
-        route: '/Assessment',
+        route: '/assessment',
         visible: true,
         component: components_1.AssessmentPage,
     },
     {
         id: models_1.Dashboards.DEVELOPMENT,
         title: 'Development',
-        icon: 'looks_3',
+        icon: 'engineering',
         iconClass: 'blue-text',
         route: '/development',
         visible: true,
@@ -18153,7 +18446,7 @@ exports.dashboardSvc = new DashboardService([
     {
         id: models_1.Dashboards.EVALUATION,
         title: 'Evaluation',
-        icon: 'looks_4',
+        icon: 'grading',
         iconClass: 'blue-text',
         route: '/evaluation',
         visible: true,
