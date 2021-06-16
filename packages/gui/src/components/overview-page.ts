@@ -59,7 +59,7 @@ export const OverviewPage: MeiosisComponent = () => {
         state: {
           app: { catModel = {} as ICapabilityModel, stakeholderFilter, textFilter },
         },
-        actions: { changePage, createRoute, update },
+        actions: { createRoute, update },
       },
     }) => {
       const {
@@ -115,19 +115,6 @@ export const OverviewPage: MeiosisComponent = () => {
               },
             },
             [
-              m(FlatButton, {
-                label: 'New capability',
-                iconName: 'add',
-                class: 'col s11',
-                style: 'margin: 1em;',
-                onclick: () => {
-                  if (!catModel.data.capabilities) return;
-                  catModel.data.capabilities.push({} as ICapability);
-                  changePage(Dashboards.CAPABILITY, {
-                    index: catModel.data.capabilities.length - 1,
-                  });
-                },
-              }),
               m('h5', { style: 'margin-left: 0.5em;' }, 'Filters'),
               [
                 m(TextInputWithClear, {
