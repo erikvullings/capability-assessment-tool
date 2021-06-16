@@ -16143,7 +16143,7 @@ var OverviewPage = function () {
             return setPage(models_1.Dashboards.OVERVIEW);
         },
         view: function (_a) {
-            var _b = _a.attrs, _c = _b.state.app, _d = _c.catModel, catModel = _d === void 0 ? {} : _d, stakeholderFilter = _c.stakeholderFilter, textFilter = _c.textFilter, _e = _b.actions, changePage = _e.changePage, createRoute = _e.createRoute, update = _e.update;
+            var _b = _a.attrs, _c = _b.state.app, _d = _c.catModel, catModel = _d === void 0 ? {} : _d, stakeholderFilter = _c.stakeholderFilter, textFilter = _c.textFilter, _e = _b.actions, createRoute = _e.createRoute, update = _e.update;
             var _f = catModel.data, data = _f === void 0 ? {
                 categories: [],
                 capabilities: [],
@@ -16185,20 +16185,6 @@ var OverviewPage = function () {
                         M.Sidenav.init(dom);
                     },
                 }, [
-                    mithril_1.default(mithril_materialized_1.FlatButton, {
-                        label: 'New capability',
-                        iconName: 'add',
-                        class: 'col s11',
-                        style: 'margin: 1em;',
-                        onclick: function () {
-                            if (!catModel.data.capabilities)
-                                return;
-                            catModel.data.capabilities.push({});
-                            changePage(models_1.Dashboards.CAPABILITY, {
-                                index: catModel.data.capabilities.length - 1,
-                            });
-                        },
-                    }),
                     mithril_1.default('h5', { style: 'margin-left: 0.5em;' }, 'Filters'),
                     [
                         mithril_1.default(ui_1.TextInputWithClear, {
@@ -17101,9 +17087,12 @@ exports.defaultCapabilityModel = {
     data: {
         stakeholderTypes: [
             { id: 'ST1', label: 'Law enforcement' },
-            { id: 'ST2', label: 'Government' },
+            { id: 'ST2', label: 'Governmental' },
             { id: 'ST3', label: 'Public safety' },
             { id: 'ST4', label: 'First response' },
+            { id: 'ST5', label: 'RTO/University' },
+            { id: 'ST6', label: 'Training institute' },
+            { id: 'ST7', label: 'Other' },
         ],
         partners: [
             { id: 'NCTV', label: 'NCTV', typeId: 'ST1' },
@@ -17134,9 +17123,9 @@ exports.defaultCapabilityModel = {
                 id: 'C3',
                 label: 'Preparatory capabilities',
                 subcategories: [
-                    { id: 'Y1', label: 'Intelligence' },
-                    { id: 'Y2', label: 'Coordinate' },
-                    { id: 'Y3', label: 'Collaborate' },
+                    { id: 'Y1', label: 'Prepare' },
+                    { id: 'Y2', label: 'Training' },
+                    { id: 'Y3', label: 'Logistics' },
                 ],
             },
         ],
