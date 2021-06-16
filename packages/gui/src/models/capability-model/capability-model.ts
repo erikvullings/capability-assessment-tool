@@ -97,9 +97,12 @@ export const defaultCapabilityModel = {
   data: {
     stakeholderTypes: [
       { id: 'ST1', label: 'Law enforcement' },
-      { id: 'ST2', label: 'Government' },
+      { id: 'ST2', label: 'Governmental' },
       { id: 'ST3', label: 'Public safety' },
       { id: 'ST4', label: 'First response' },
+      { id: 'ST5', label: 'RTO/University' },
+      { id: 'ST6', label: 'Training institute' },
+      { id: 'ST7', label: 'Other' },
     ],
     partners: [
       { id: 'NCTV', label: 'NCTV', typeId: 'ST1' },
@@ -130,9 +133,9 @@ export const defaultCapabilityModel = {
         id: 'C3',
         label: 'Preparatory capabilities',
         subcategories: [
-          { id: 'Y1', label: 'Intelligence' },
-          { id: 'Y2', label: 'Coordinate' },
-          { id: 'Y3', label: 'Collaborate' },
+          { id: 'Y1', label: 'Prepare' },
+          { id: 'Y2', label: 'Training' },
+          { id: 'Y3', label: 'Logistics' },
         ],
       },
     ],
