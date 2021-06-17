@@ -1,4 +1,5 @@
 import m from 'mithril';
+import lz from 'lz-string';
 import { Button, Icon } from 'mithril-materialized';
 import background from '../assets/background.jpg';
 import { dashboardSvc, MeiosisComponent } from '../services';
@@ -15,10 +16,21 @@ export const HomePage: MeiosisComponent = () => {
   return {
     oninit: ({
       attrs: {
-        actions: { setPage },
+        actions: { setPage, saveModel, changePage },
       },
     }) => {
       setPage(Dashboards.HOME);
+      const model = m.route.param('model');
+      if (!model) return;
+      try {
+        const decompressed = lz.decompressFromEncodedURIComponent(model);
+        if (!decompressed) return;
+        const catModel = JSON.parse(decompressed);
+        saveModel(catModel);
+        changePage(Dashboards.OVERVIEW);
+      } catch (err) {
+        console.error(err);
+      }
     },
     view: ({
       attrs: {
@@ -36,7 +48,7 @@ export const HomePage: MeiosisComponent = () => {
           },
           [m('h3.white-text', 'Capability Assessment Tool (CAT)')]
         ),
-        m('img.responsive-img', { src: background }),
+        m('img.responsive-img.center', { src: background }),
         m('.buttons.center', { style: 'margin: 10px auto;' }, [
           m(Button, {
             iconName: 'clear',
@@ -106,6 +118,35 @@ export const HomePage: MeiosisComponent = () => {
                 fileInput.click();
               },
             }),
+          m(Button, {
+            iconName: 'link',
+            className: 'btn-large',
+            label: 'Permalink',
+            onclick: () => {
+              const permLink = document.createElement('input') as HTMLInputElement;
+              document.body.appendChild(permLink);
+              if (!permLink) return;
+              const compressed = lz.compressToEncodedURIComponent(JSON.stringify(catModel));
+              const url = `${window.location.href}${
+                /\?/.test(window.location.href) ? '&' : '?'
+              }model=${compressed}`;
+              permLink.value = url;
+              permLink.select();
+              permLink.setSelectionRange(0, 999999); // For mobile devices
+              try {
+                const successful = document.execCommand('copy');
+                if (successful)
+                  M.toast({
+                    html: 'Copied permanent link to clipboard.',
+                    classes: 'yellow black-text',
+                  });
+              } catch (err) {
+                M.toast({ html: 'Failed copying link to clipboard: ' + err, classes: 'red' });
+              } finally {
+                document.body.removeChild(permLink);
+              }
+            },
+          }),
         ]),
         m(
           '.section.white',

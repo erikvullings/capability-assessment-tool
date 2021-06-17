@@ -32,6 +32,7 @@
   "app": "src/index.html",
   "target": "web",
   "dependencies": {
+    "lz-string": "^1.4.4",
     "material-icons": "^0.6.4",
     "materialize-css": "^1.0.0",
     "mithril": "^2.0.4",
@@ -41,6 +42,7 @@
     "mithril-ui-form-rating-plugin": "^0.3.3"
   },
   "devDependencies": {
+    "@types/lz-string": "^1.3.34",
     "@types/materialize-css": "^1.0.10",
     "@types/mithril": "^2.0.7",
     "css-loader": "^5.2.6",
