@@ -182,6 +182,513 @@ module.exports = function cssWithMappingToString(item) {
 
 /***/ }),
 
+/***/ 1605:
+/***/ ((module, exports, __webpack_require__) => {
+
+var __WEBPACK_AMD_DEFINE_RESULT__;// Copyright (c) 2013 Pieroxy <pieroxy@pieroxy.net>
+// This work is free. You can redistribute it and/or modify it
+// under the terms of the WTFPL, Version 2
+// For more information see LICENSE.txt or http://www.wtfpl.net/
+//
+// For more information, the home page:
+// http://pieroxy.net/blog/pages/lz-string/testing.html
+//
+// LZ-based compression algorithm, version 1.4.4
+var LZString = (function() {
+
+// private property
+var f = String.fromCharCode;
+var keyStrBase64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+var keyStrUriSafe = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+-$";
+var baseReverseDic = {};
+
+function getBaseValue(alphabet, character) {
+  if (!baseReverseDic[alphabet]) {
+    baseReverseDic[alphabet] = {};
+    for (var i=0 ; i<alphabet.length ; i++) {
+      baseReverseDic[alphabet][alphabet.charAt(i)] = i;
+    }
+  }
+  return baseReverseDic[alphabet][character];
+}
+
+var LZString = {
+  compressToBase64 : function (input) {
+    if (input == null) return "";
+    var res = LZString._compress(input, 6, function(a){return keyStrBase64.charAt(a);});
+    switch (res.length % 4) { // To produce valid Base64
+    default: // When could this happen ?
+    case 0 : return res;
+    case 1 : return res+"===";
+    case 2 : return res+"==";
+    case 3 : return res+"=";
+    }
+  },
+
+  decompressFromBase64 : function (input) {
+    if (input == null) return "";
+    if (input == "") return null;
+    return LZString._decompress(input.length, 32, function(index) { return getBaseValue(keyStrBase64, input.charAt(index)); });
+  },
+
+  compressToUTF16 : function (input) {
+    if (input == null) return "";
+    return LZString._compress(input, 15, function(a){return f(a+32);}) + " ";
+  },
+
+  decompressFromUTF16: function (compressed) {
+    if (compressed == null) return "";
+    if (compressed == "") return null;
+    return LZString._decompress(compressed.length, 16384, function(index) { return compressed.charCodeAt(index) - 32; });
+  },
+
+  //compress into uint8array (UCS-2 big endian format)
+  compressToUint8Array: function (uncompressed) {
+    var compressed = LZString.compress(uncompressed);
+    var buf=new Uint8Array(compressed.length*2); // 2 bytes per character
+
+    for (var i=0, TotalLen=compressed.length; i<TotalLen; i++) {
+      var current_value = compressed.charCodeAt(i);
+      buf[i*2] = current_value >>> 8;
+      buf[i*2+1] = current_value % 256;
+    }
+    return buf;
+  },
+
+  //decompress from uint8array (UCS-2 big endian format)
+  decompressFromUint8Array:function (compressed) {
+    if (compressed===null || compressed===undefined){
+        return LZString.decompress(compressed);
+    } else {
+        var buf=new Array(compressed.length/2); // 2 bytes per character
+        for (var i=0, TotalLen=buf.length; i<TotalLen; i++) {
+          buf[i]=compressed[i*2]*256+compressed[i*2+1];
+        }
+
+        var result = [];
+        buf.forEach(function (c) {
+          result.push(f(c));
+        });
+        return LZString.decompress(result.join(''));
+
+    }
+
+  },
+
+
+  //compress into a string that is already URI encoded
+  compressToEncodedURIComponent: function (input) {
+    if (input == null) return "";
+    return LZString._compress(input, 6, function(a){return keyStrUriSafe.charAt(a);});
+  },
+
+  //decompress from an output of compressToEncodedURIComponent
+  decompressFromEncodedURIComponent:function (input) {
+    if (input == null) return "";
+    if (input == "") return null;
+    input = input.replace(/ /g, "+");
+    return LZString._decompress(input.length, 32, function(index) { return getBaseValue(keyStrUriSafe, input.charAt(index)); });
+  },
+
+  compress: function (uncompressed) {
+    return LZString._compress(uncompressed, 16, function(a){return f(a);});
+  },
+  _compress: function (uncompressed, bitsPerChar, getCharFromInt) {
+    if (uncompressed == null) return "";
+    var i, value,
+        context_dictionary= {},
+        context_dictionaryToCreate= {},
+        context_c="",
+        context_wc="",
+        context_w="",
+        context_enlargeIn= 2, // Compensate for the first entry which should not count
+        context_dictSize= 3,
+        context_numBits= 2,
+        context_data=[],
+        context_data_val=0,
+        context_data_position=0,
+        ii;
+
+    for (ii = 0; ii < uncompressed.length; ii += 1) {
+      context_c = uncompressed.charAt(ii);
+      if (!Object.prototype.hasOwnProperty.call(context_dictionary,context_c)) {
+        context_dictionary[context_c] = context_dictSize++;
+        context_dictionaryToCreate[context_c] = true;
+      }
+
+      context_wc = context_w + context_c;
+      if (Object.prototype.hasOwnProperty.call(context_dictionary,context_wc)) {
+        context_w = context_wc;
+      } else {
+        if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate,context_w)) {
+          if (context_w.charCodeAt(0)<256) {
+            for (i=0 ; i<context_numBits ; i++) {
+              context_data_val = (context_data_val << 1);
+              if (context_data_position == bitsPerChar-1) {
+                context_data_position = 0;
+                context_data.push(getCharFromInt(context_data_val));
+                context_data_val = 0;
+              } else {
+                context_data_position++;
+              }
+            }
+            value = context_w.charCodeAt(0);
+            for (i=0 ; i<8 ; i++) {
+              context_data_val = (context_data_val << 1) | (value&1);
+              if (context_data_position == bitsPerChar-1) {
+                context_data_position = 0;
+                context_data.push(getCharFromInt(context_data_val));
+                context_data_val = 0;
+              } else {
+                context_data_position++;
+              }
+              value = value >> 1;
+            }
+          } else {
+            value = 1;
+            for (i=0 ; i<context_numBits ; i++) {
+              context_data_val = (context_data_val << 1) | value;
+              if (context_data_position ==bitsPerChar-1) {
+                context_data_position = 0;
+                context_data.push(getCharFromInt(context_data_val));
+                context_data_val = 0;
+              } else {
+                context_data_position++;
+              }
+              value = 0;
+            }
+            value = context_w.charCodeAt(0);
+            for (i=0 ; i<16 ; i++) {
+              context_data_val = (context_data_val << 1) | (value&1);
+              if (context_data_position == bitsPerChar-1) {
+                context_data_position = 0;
+                context_data.push(getCharFromInt(context_data_val));
+                context_data_val = 0;
+              } else {
+                context_data_position++;
+              }
+              value = value >> 1;
+            }
+          }
+          context_enlargeIn--;
+          if (context_enlargeIn == 0) {
+            context_enlargeIn = Math.pow(2, context_numBits);
+            context_numBits++;
+          }
+          delete context_dictionaryToCreate[context_w];
+        } else {
+          value = context_dictionary[context_w];
+          for (i=0 ; i<context_numBits ; i++) {
+            context_data_val = (context_data_val << 1) | (value&1);
+            if (context_data_position == bitsPerChar-1) {
+              context_data_position = 0;
+              context_data.push(getCharFromInt(context_data_val));
+              context_data_val = 0;
+            } else {
+              context_data_position++;
+            }
+            value = value >> 1;
+          }
+
+
+        }
+        context_enlargeIn--;
+        if (context_enlargeIn == 0) {
+          context_enlargeIn = Math.pow(2, context_numBits);
+          context_numBits++;
+        }
+        // Add wc to the dictionary.
+        context_dictionary[context_wc] = context_dictSize++;
+        context_w = String(context_c);
+      }
+    }
+
+    // Output the code for w.
+    if (context_w !== "") {
+      if (Object.prototype.hasOwnProperty.call(context_dictionaryToCreate,context_w)) {
+        if (context_w.charCodeAt(0)<256) {
+          for (i=0 ; i<context_numBits ; i++) {
+            context_data_val = (context_data_val << 1);
+            if (context_data_position == bitsPerChar-1) {
+              context_data_position = 0;
+              context_data.push(getCharFromInt(context_data_val));
+              context_data_val = 0;
+            } else {
+              context_data_position++;
+            }
+          }
+          value = context_w.charCodeAt(0);
+          for (i=0 ; i<8 ; i++) {
+            context_data_val = (context_data_val << 1) | (value&1);
+            if (context_data_position == bitsPerChar-1) {
+              context_data_position = 0;
+              context_data.push(getCharFromInt(context_data_val));
+              context_data_val = 0;
+            } else {
+              context_data_position++;
+            }
+            value = value >> 1;
+          }
+        } else {
+          value = 1;
+          for (i=0 ; i<context_numBits ; i++) {
+            context_data_val = (context_data_val << 1) | value;
+            if (context_data_position == bitsPerChar-1) {
+              context_data_position = 0;
+              context_data.push(getCharFromInt(context_data_val));
+              context_data_val = 0;
+            } else {
+              context_data_position++;
+            }
+            value = 0;
+          }
+          value = context_w.charCodeAt(0);
+          for (i=0 ; i<16 ; i++) {
+            context_data_val = (context_data_val << 1) | (value&1);
+            if (context_data_position == bitsPerChar-1) {
+              context_data_position = 0;
+              context_data.push(getCharFromInt(context_data_val));
+              context_data_val = 0;
+            } else {
+              context_data_position++;
+            }
+            value = value >> 1;
+          }
+        }
+        context_enlargeIn--;
+        if (context_enlargeIn == 0) {
+          context_enlargeIn = Math.pow(2, context_numBits);
+          context_numBits++;
+        }
+        delete context_dictionaryToCreate[context_w];
+      } else {
+        value = context_dictionary[context_w];
+        for (i=0 ; i<context_numBits ; i++) {
+          context_data_val = (context_data_val << 1) | (value&1);
+          if (context_data_position == bitsPerChar-1) {
+            context_data_position = 0;
+            context_data.push(getCharFromInt(context_data_val));
+            context_data_val = 0;
+          } else {
+            context_data_position++;
+          }
+          value = value >> 1;
+        }
+
+
+      }
+      context_enlargeIn--;
+      if (context_enlargeIn == 0) {
+        context_enlargeIn = Math.pow(2, context_numBits);
+        context_numBits++;
+      }
+    }
+
+    // Mark the end of the stream
+    value = 2;
+    for (i=0 ; i<context_numBits ; i++) {
+      context_data_val = (context_data_val << 1) | (value&1);
+      if (context_data_position == bitsPerChar-1) {
+        context_data_position = 0;
+        context_data.push(getCharFromInt(context_data_val));
+        context_data_val = 0;
+      } else {
+        context_data_position++;
+      }
+      value = value >> 1;
+    }
+
+    // Flush the last char
+    while (true) {
+      context_data_val = (context_data_val << 1);
+      if (context_data_position == bitsPerChar-1) {
+        context_data.push(getCharFromInt(context_data_val));
+        break;
+      }
+      else context_data_position++;
+    }
+    return context_data.join('');
+  },
+
+  decompress: function (compressed) {
+    if (compressed == null) return "";
+    if (compressed == "") return null;
+    return LZString._decompress(compressed.length, 32768, function(index) { return compressed.charCodeAt(index); });
+  },
+
+  _decompress: function (length, resetValue, getNextValue) {
+    var dictionary = [],
+        next,
+        enlargeIn = 4,
+        dictSize = 4,
+        numBits = 3,
+        entry = "",
+        result = [],
+        i,
+        w,
+        bits, resb, maxpower, power,
+        c,
+        data = {val:getNextValue(0), position:resetValue, index:1};
+
+    for (i = 0; i < 3; i += 1) {
+      dictionary[i] = i;
+    }
+
+    bits = 0;
+    maxpower = Math.pow(2,2);
+    power=1;
+    while (power!=maxpower) {
+      resb = data.val & data.position;
+      data.position >>= 1;
+      if (data.position == 0) {
+        data.position = resetValue;
+        data.val = getNextValue(data.index++);
+      }
+      bits |= (resb>0 ? 1 : 0) * power;
+      power <<= 1;
+    }
+
+    switch (next = bits) {
+      case 0:
+          bits = 0;
+          maxpower = Math.pow(2,8);
+          power=1;
+          while (power!=maxpower) {
+            resb = data.val & data.position;
+            data.position >>= 1;
+            if (data.position == 0) {
+              data.position = resetValue;
+              data.val = getNextValue(data.index++);
+            }
+            bits |= (resb>0 ? 1 : 0) * power;
+            power <<= 1;
+          }
+        c = f(bits);
+        break;
+      case 1:
+          bits = 0;
+          maxpower = Math.pow(2,16);
+          power=1;
+          while (power!=maxpower) {
+            resb = data.val & data.position;
+            data.position >>= 1;
+            if (data.position == 0) {
+              data.position = resetValue;
+              data.val = getNextValue(data.index++);
+            }
+            bits |= (resb>0 ? 1 : 0) * power;
+            power <<= 1;
+          }
+        c = f(bits);
+        break;
+      case 2:
+        return "";
+    }
+    dictionary[3] = c;
+    w = c;
+    result.push(c);
+    while (true) {
+      if (data.index > length) {
+        return "";
+      }
+
+      bits = 0;
+      maxpower = Math.pow(2,numBits);
+      power=1;
+      while (power!=maxpower) {
+        resb = data.val & data.position;
+        data.position >>= 1;
+        if (data.position == 0) {
+          data.position = resetValue;
+          data.val = getNextValue(data.index++);
+        }
+        bits |= (resb>0 ? 1 : 0) * power;
+        power <<= 1;
+      }
+
+      switch (c = bits) {
+        case 0:
+          bits = 0;
+          maxpower = Math.pow(2,8);
+          power=1;
+          while (power!=maxpower) {
+            resb = data.val & data.position;
+            data.position >>= 1;
+            if (data.position == 0) {
+              data.position = resetValue;
+              data.val = getNextValue(data.index++);
+            }
+            bits |= (resb>0 ? 1 : 0) * power;
+            power <<= 1;
+          }
+
+          dictionary[dictSize++] = f(bits);
+          c = dictSize-1;
+          enlargeIn--;
+          break;
+        case 1:
+          bits = 0;
+          maxpower = Math.pow(2,16);
+          power=1;
+          while (power!=maxpower) {
+            resb = data.val & data.position;
+            data.position >>= 1;
+            if (data.position == 0) {
+              data.position = resetValue;
+              data.val = getNextValue(data.index++);
+            }
+            bits |= (resb>0 ? 1 : 0) * power;
+            power <<= 1;
+          }
+          dictionary[dictSize++] = f(bits);
+          c = dictSize-1;
+          enlargeIn--;
+          break;
+        case 2:
+          return result.join('');
+      }
+
+      if (enlargeIn == 0) {
+        enlargeIn = Math.pow(2, numBits);
+        numBits++;
+      }
+
+      if (dictionary[c]) {
+        entry = dictionary[c];
+      } else {
+        if (c === dictSize) {
+          entry = w + w.charAt(0);
+        } else {
+          return null;
+        }
+      }
+      result.push(entry);
+
+      // Add w+entry[0] to the dictionary.
+      dictionary[dictSize++] = w + entry.charAt(0);
+      enlargeIn--;
+
+      w = entry;
+
+      if (enlargeIn == 0) {
+        enlargeIn = Math.pow(2, numBits);
+        numBits++;
+      }
+
+    }
+  }
+};
+  return LZString;
+})();
+
+if (true) {
+  !(__WEBPACK_AMD_DEFINE_RESULT__ = (function () { return LZString; }).call(exports, __webpack_require__, exports, module),
+		__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+} else {}
+
+
+/***/ }),
+
 /***/ 1413:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -15860,6 +16367,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HomePage = void 0;
 var mithril_1 = __importDefault(__webpack_require__(1022));
+var lz_string_1 = __importDefault(__webpack_require__(1605));
 var mithril_materialized_1 = __webpack_require__(9512);
 var background_jpg_1 = __importDefault(__webpack_require__(4621));
 var services_1 = __webpack_require__(9537);
@@ -15870,8 +16378,22 @@ var HomePage = function () {
     var readerAvailable = window.File && window.FileReader && window.FileList && window.Blob;
     return {
         oninit: function (_a) {
-            var setPage = _a.attrs.actions.setPage;
+            var _b = _a.attrs.actions, setPage = _b.setPage, saveModel = _b.saveModel, changePage = _b.changePage;
             setPage(models_1.Dashboards.HOME);
+            var model = mithril_1.default.route.param('model');
+            if (!model)
+                return;
+            try {
+                var decompressed = lz_string_1.default.decompressFromEncodedURIComponent(model);
+                if (!decompressed)
+                    return;
+                var catModel = JSON.parse(decompressed);
+                saveModel(catModel);
+                changePage(models_1.Dashboards.OVERVIEW);
+            }
+            catch (err) {
+                console.error(err);
+            }
         },
         view: function (_a) {
             var _b = _a.attrs, catModel = _b.state.app.catModel, saveModel = _b.actions.saveModel;
@@ -15880,7 +16402,7 @@ var HomePage = function () {
                     mithril_1.default('.overlay.center', {
                         style: 'position: absolute; width: 100%',
                     }, [mithril_1.default('h3.white-text', 'Capability Assessment Tool (CAT)')]),
-                    mithril_1.default('img.responsive-img', { src: background_jpg_1.default }),
+                    mithril_1.default('img.responsive-img.center', { src: background_jpg_1.default }),
                     mithril_1.default('.buttons.center', { style: 'margin: 10px auto;' }, [
                         mithril_1.default(mithril_materialized_1.Button, {
                             iconName: 'clear',
@@ -15947,6 +16469,36 @@ var HomePage = function () {
                                     fileInput.click();
                                 },
                             }),
+                        mithril_1.default(mithril_materialized_1.Button, {
+                            iconName: 'link',
+                            className: 'btn-large',
+                            label: 'Permalink',
+                            onclick: function () {
+                                var permLink = document.createElement('input');
+                                document.body.appendChild(permLink);
+                                if (!permLink)
+                                    return;
+                                var compressed = lz_string_1.default.compressToEncodedURIComponent(JSON.stringify(catModel));
+                                var url = "" + window.location.href + (/\?/.test(window.location.href) ? '&' : '?') + "model=" + compressed;
+                                permLink.value = url;
+                                permLink.select();
+                                permLink.setSelectionRange(0, 999999); // For mobile devices
+                                try {
+                                    var successful = document.execCommand('copy');
+                                    if (successful)
+                                        M.toast({
+                                            html: 'Copied permanent link to clipboard.',
+                                            classes: 'yellow black-text',
+                                        });
+                                }
+                                catch (err) {
+                                    M.toast({ html: 'Failed copying link to clipboard: ' + err, classes: 'red' });
+                                }
+                                finally {
+                                    document.body.removeChild(permLink);
+                                }
+                            },
+                        }),
                     ]),
                     mithril_1.default('.section.white', mithril_1.default('.row.container.center', [
                         mithril_1.default('.row', [
@@ -16120,8 +16672,8 @@ var createStakeholderFilter = function (shs) {
         return function () { return true; };
     console.log(shs);
     return function (_a) {
-        var capabilityPartners = _a.capabilityPartners;
-        return capabilityPartners && capabilityPartners.some(function (p) { return shs.indexOf(p.partnerId) >= 0; });
+        var capabilityStakeholders = _a.capabilityStakeholders;
+        return capabilityStakeholders && capabilityStakeholders.some(function (p) { return shs.indexOf(p.stakeholderId) >= 0; });
     };
 };
 var OverviewPage = function () {
@@ -16199,12 +16751,12 @@ var OverviewPage = function () {
                             className: 'col s12',
                         }),
                     ],
-                    data.partners &&
+                    data.stakeholders &&
                         mithril_1.default(mithril_materialized_1.Select, {
                             placeholder: 'Select one or more',
                             label: 'Stakeholder',
                             checkedId: stakeholderFilter,
-                            options: data.partners.map(function (p) { return ({ id: p.id, label: p.id }); }),
+                            options: data.stakeholders.map(function (p) { return ({ id: p.id, label: p.id }); }),
                             iconName: 'person',
                             multiple: true,
                             onchange: function (f) { return update({ app: { stakeholderFilter: f } }); },
@@ -16245,9 +16797,9 @@ var OverviewPage = function () {
                                                             }),
                                                         }, mithril_1.default('.capability', [
                                                             mithril_1.default('.name', cap.label),
-                                                            mithril_1.default('.badges.right-align', mithril_1.default.trust("" + (cap.capabilityPartners &&
-                                                                cap.capabilityPartners.length > 0
-                                                                ? cap.capabilityPartners.length + "<i class=\"inline-icon material-icons\">people</i> "
+                                                            mithril_1.default('.badges.right-align', mithril_1.default.trust("" + (cap.capabilityStakeholders &&
+                                                                cap.capabilityStakeholders.length > 0
+                                                                ? cap.capabilityStakeholders.length + "<i class=\"inline-icon material-icons\">people</i> "
                                                                 : '') + (cap.shouldDevelop ? '✓' : '') + "\n                                                  " + (projectProposals.length > 0 &&
                                                                 projectProposals.filter(function (p) {
                                                                     return !p.approved &&
@@ -16296,37 +16848,39 @@ var mithril_1 = __importDefault(__webpack_require__(1022));
 var mithril_materialized_1 = __webpack_require__(9512);
 var mithril_ui_form_1 = __webpack_require__(4632);
 var models_1 = __webpack_require__(1961);
-var PreparationPage = function () { return ({
-    oninit: function (_a) {
-        var setPage = _a.attrs.actions.setPage;
-        return setPage(models_1.Dashboards.PREPARATION);
-    },
-    view: function (_a) {
-        var _b = _a.attrs, _c = _b.state.app.catModel, catModel = _c === void 0 ? { preparations: [], data: {} } : _c, saveModel = _b.actions.saveModel;
-        var _d = catModel.preparations, preparations = _d === void 0 ? [] : _d, _e = catModel.data, data = _e === void 0 ? {} : _e;
-        var prepare = preparations.filter(function (i) { return i.type === 'section'; });
-        var tabs = prepare.map(function (s, i) {
-            return ({
-                id: s.id,
-                title: i + 1 + ". " + s.label,
-                vnode: mithril_1.default(mithril_ui_form_1.LayoutForm, {
-                    form: preparations,
-                    obj: data,
-                    section: s.id,
-                    onchange: function () {
-                        console.log(JSON.stringify(catModel.data.capabilities ? catModel.data.capabilities[0] : '', null, 2));
-                        saveModel(catModel);
-                    },
-                }),
+var PreparationPage = function () {
+    return {
+        oninit: function (_a) {
+            var setPage = _a.attrs.actions.setPage;
+            return setPage(models_1.Dashboards.PREPARATION);
+        },
+        view: function (_a) {
+            var _b = _a.attrs, _c = _b.state.app.catModel, catModel = _c === void 0 ? { preparations: [], data: {} } : _c, saveModel = _b.actions.saveModel;
+            var _d = catModel.preparations, preparations = _d === void 0 ? [] : _d, _e = catModel.data, data = _e === void 0 ? {} : _e;
+            var prepare = preparations.filter(function (i) { return i.type === 'section'; });
+            var tabs = prepare.map(function (s, i) {
+                return ({
+                    id: s.id,
+                    title: i + 1 + ". " + s.label,
+                    vnode: mithril_1.default(mithril_ui_form_1.LayoutForm, {
+                        form: preparations,
+                        obj: data,
+                        section: s.id,
+                        onchange: function () {
+                            // console.log(JSON.stringify(data.capabilities ? data.capabilities : '', null, 2));
+                            saveModel(catModel);
+                        },
+                    }),
+                });
             });
-        });
-        return mithril_1.default('.row', { style: 'height: 90vh' }, [
-            mithril_1.default('.col.s12', mithril_1.default('h4', 'Preparation')),
-            mithril_1.default('.col.s12', mithril_1.default('p', mithril_1.default.trust(mithril_ui_form_1.render("_Define your organisation's goals, and your most important capabilities._", true)))),
-            mithril_1.default(mithril_materialized_1.Tabs, { tabs: tabs, tabWidth: 'fill' }),
-        ]);
-    },
-}); };
+            return mithril_1.default('.row', { style: 'height: 90vh' }, [
+                mithril_1.default('.col.s12', mithril_1.default('h4', 'Preparation')),
+                mithril_1.default('.col.s12', mithril_1.default('p', mithril_1.default.trust(mithril_ui_form_1.render("_Define your organisation's goals, and your most important capabilities._", true)))),
+                mithril_1.default(mithril_materialized_1.Tabs, { tabs: tabs, tabWidth: 'fill' }),
+            ]);
+        },
+    };
+};
 exports.PreparationPage = PreparationPage;
 
 
@@ -16954,16 +17508,16 @@ exports.assessmentModel = [
         className: 'col s12',
     },
     {
-        id: 'capabilityPartners',
-        label: 'Partners',
+        id: 'capabilityStakeholders',
+        label: 'Stakeholders',
         pageSize: 5,
         repeat: true,
         type: [
             {
-                id: 'partnerId',
-                label: 'Partner',
+                id: 'stakeholderId',
+                label: 'Stakeholder',
                 type: 'select',
-                options: 'partners',
+                options: 'stakeholders',
                 className: 'col s4 m2',
             },
             {
@@ -17094,7 +17648,7 @@ exports.defaultCapabilityModel = {
             { id: 'ST6', label: 'Training institute' },
             { id: 'ST7', label: 'Other' },
         ],
-        partners: [
+        stakeholders: [
             { id: 'NCTV', label: 'NCTV', typeId: 'ST1' },
             { id: 'IFV', label: 'IFV', typeId: 'ST2' },
         ],
@@ -17168,7 +17722,7 @@ exports.defaultCapabilityModel = {
             { id: 'CL1', categoryId: 'C2', subcategoryId: 'E3', label: 'Standardisation' },
             { id: 'CL2', categoryId: 'C2', subcategoryId: 'E3', label: 'Joint investigations' },
             { id: 'CL3', categoryId: 'C2', subcategoryId: 'E3', label: 'Create non-LEA network' },
-            { id: 'CL4', categoryId: 'C2', subcategoryId: 'E3', label: 'Partner management' },
+            { id: 'CL4', categoryId: 'C2', subcategoryId: 'E3', label: 'Stakeholder management' },
             { id: 'PP1', categoryId: 'C3', subcategoryId: 'Y1', label: 'Monitoring' },
             { id: 'PP2', categoryId: 'C3', subcategoryId: 'Y1', label: 'Trend identification' },
             { id: 'PP3', categoryId: 'C3', subcategoryId: 'Y1', label: 'Research & development' },
@@ -17338,16 +17892,16 @@ exports.developmentModel = [
         className: 'col s12',
     },
     {
-        id: 'projectPartners',
-        label: 'Partners',
+        id: 'projectStakeholders',
+        label: 'Stakeholders',
         pageSize: 5,
         repeat: true,
         type: [
             {
-                id: 'partnerId',
-                label: 'Partner',
+                id: 'stakeholderId',
+                label: 'Stakeholder',
                 type: 'select',
-                options: 'partners',
+                options: 'stakeholders',
                 className: 'col s4 m2',
             },
             {
@@ -17457,17 +18011,17 @@ exports.projectEvaluationModel = __spreadArray(__spreadArray([
     }
 ], exports.evaluationModel), [
     {
-        id: 'projectPartners',
-        label: 'Partners',
+        id: 'projectStakeholders',
+        label: 'Stakeholders',
         type: 'table',
         disabled: true,
         className: 'col m12',
         options: [
             {
-                id: 'partnerId',
-                label: 'Partner',
+                id: 'stakeholderId',
+                label: 'Stakeholder',
                 type: 'select',
-                options: 'partners',
+                options: 'stakeholders',
                 className: 'col s4 m2',
                 readonly: true,
             },
@@ -17938,14 +18492,14 @@ exports.lexicon = [
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.preparationModel = void 0;
 exports.preparationModel = [
-    { type: 'section', id: 'partners', label: 'Select partners' },
+    { type: 'section', id: 'stakeholders', label: 'Specify stakeholders' },
     {
         type: 'md',
-        label: "1. **Select your partners and specify their organizational goals.**\n2. Set the group goals that you want to achieve.\n3. Specify capability categories to organize the capabilities.\n4. Specify the capabilities that you need to achieve the group goals.",
+        label: "1. **Specify your stakeholders and specify their organizational goals.**\n2. Set the group goals that you want to achieve.\n3. Specify capability categories to organize the capabilities.\n4. Specify the capabilities that you need to achieve the group goals.",
     },
     {
-        id: 'partners',
-        label: 'Partner organisations',
+        id: 'stakeholders',
+        label: 'Stakeholder organisations',
         repeat: true,
         pageSize: 1,
         propertyFilter: 'label',
@@ -17974,7 +18528,7 @@ exports.preparationModel = [
     { type: 'section', id: 'goals', label: 'Specify group goals' },
     {
         type: 'md',
-        label: "1. Select your partners and specify their organizational goals.\n2. **Set the group goals that you want to achieve.**\n3. Specify capability categories to organize the capabilities.\n4. Specify the capabilities that you need to achieve the group goals.",
+        label: "1. Specify your stakeholders and specify their organizational goals.\n2. **Set the group goals that you want to achieve.**\n3. Specify capability categories to organize the capabilities.\n4. Specify the capabilities that you need to achieve the group goals.",
     },
     {
         id: 'mainTasks',
@@ -17991,7 +18545,7 @@ exports.preparationModel = [
     { type: 'section', id: 'categories', label: 'Specify categories' },
     {
         type: 'md',
-        label: "1. Select your partners and specify their organizational goals.\n2. Set the group goals that you want to achieve.\n3. **Specify capability categories to organize the capabilities.**\n4. Specify the capabilities that you need to achieve the group goals.",
+        label: "1. Specify your stakeholders and specify their organizational goals.\n2. Set the group goals that you want to achieve.\n3. **Specify capability categories to organize the capabilities.**\n4. Specify the capabilities that you need to achieve the group goals.",
     },
     {
         id: 'categories',
@@ -18024,7 +18578,7 @@ exports.preparationModel = [
     { type: 'section', id: 'capabilities', label: 'Specify capabilities' },
     {
         type: 'md',
-        label: "1. Select your partners and specify their organizational goals.\n2. Set the group goals that you want to achieve.\n3. Specify capability categories to organize the capabilities.\n4. **Specify the capabilities that you need to achieve the group goals.**",
+        label: "1. Specify your stakeholders and specify their organizational goals.\n2. Set the group goals that you want to achieve.\n3. Specify capability categories to organize the capabilities.\n4. **Specify the capabilities that you need to achieve the group goals.**",
     },
     {
         id: 'capabilities',
@@ -18032,7 +18586,7 @@ exports.preparationModel = [
         repeat: true,
         pageSize: 1,
         propertyFilter: 'label',
-        sortProperty: 'categoryId',
+        // sortProperty: 'categoryId',
         filterLabel: 'Filter capabilities',
         type: [
             {
@@ -18069,16 +18623,16 @@ exports.preparationModel = [
                 className: 'col s12',
             },
             {
-                id: 'capabilityPartners',
-                label: 'Partners',
+                id: 'capabilityStakeholders',
+                label: 'Stakeholders',
                 pageSize: 5,
                 repeat: true,
                 type: [
                     {
-                        id: 'partnerId',
-                        label: 'Partner',
+                        id: 'stakeholderId',
+                        label: 'Stakeholder',
                         type: 'select',
-                        options: 'partners',
+                        options: 'stakeholders',
                         className: 'col s4 m2',
                     },
                     {
@@ -18107,13 +18661,19 @@ exports.preparationModel = [
                         id: 'label',
                         label: 'Title',
                         type: 'text',
-                        className: 'col s6 m6',
+                        className: 'col s6 m4',
                     },
                     {
                         id: 'link',
                         label: 'URL',
                         type: 'url',
-                        className: 'col s3 m4',
+                        className: 'col s3 m3',
+                    },
+                    {
+                        id: 'location',
+                        label: 'Room/location',
+                        type: 'text',
+                        className: 'col s6 m3',
                     },
                 ],
                 className: 'col m12',
@@ -18133,11 +18693,11 @@ exports.preparationModel = [
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.settingsModel = void 0;
 exports.settingsModel = [
-    { id: 'partner-settings', type: 'section', label: 'Partners' },
-    { type: 'md', value: '##### Partner/stakeholder settings' },
+    { id: 'stakeholder-settings', type: 'section', label: 'Stakeholders' },
+    { type: 'md', value: '##### Stakeholder/stakeholder settings' },
     {
         id: 'stakeholderTypes',
-        label: 'Partner types',
+        label: 'Stakeholder types',
         repeat: true,
         pageSize: 1,
         propertyFilter: 'label',
