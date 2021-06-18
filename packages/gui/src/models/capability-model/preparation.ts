@@ -1,17 +1,17 @@
 import { UIForm } from 'mithril-ui-form';
 
 export const preparationModel = [
-  { type: 'section', id: 'partners', label: 'Select partners' },
+  { type: 'section', id: 'stakeholders', label: 'Specify stakeholders' },
   {
     type: 'md',
-    label: `1. **Select your partners and specify their organizational goals.**
+    label: `1. **Specify your stakeholders and specify their organizational goals.**
 2. Set the group goals that you want to achieve.
 3. Specify capability categories to organize the capabilities.
 4. Specify the capabilities that you need to achieve the group goals.`,
   },
   {
-    id: 'partners',
-    label: 'Partner organisations',
+    id: 'stakeholders',
+    label: 'Stakeholder organisations',
     repeat: true,
     pageSize: 1,
     propertyFilter: 'label',
@@ -40,7 +40,7 @@ export const preparationModel = [
   { type: 'section', id: 'goals', label: 'Specify group goals' },
   {
     type: 'md',
-    label: `1. Select your partners and specify their organizational goals.
+    label: `1. Specify your stakeholders and specify their organizational goals.
 2. **Set the group goals that you want to achieve.**
 3. Specify capability categories to organize the capabilities.
 4. Specify the capabilities that you need to achieve the group goals.`,
@@ -60,7 +60,7 @@ export const preparationModel = [
   { type: 'section', id: 'categories', label: 'Specify categories' },
   {
     type: 'md',
-    label: `1. Select your partners and specify their organizational goals.
+    label: `1. Specify your stakeholders and specify their organizational goals.
 2. Set the group goals that you want to achieve.
 3. **Specify capability categories to organize the capabilities.**
 4. Specify the capabilities that you need to achieve the group goals.`,
@@ -96,7 +96,7 @@ export const preparationModel = [
   { type: 'section', id: 'capabilities', label: 'Specify capabilities' },
   {
     type: 'md',
-    label: `1. Select your partners and specify their organizational goals.
+    label: `1. Specify your stakeholders and specify their organizational goals.
 2. Set the group goals that you want to achieve.
 3. Specify capability categories to organize the capabilities.
 4. **Specify the capabilities that you need to achieve the group goals.**`,
@@ -107,7 +107,7 @@ export const preparationModel = [
     repeat: true,
     pageSize: 1,
     propertyFilter: 'label',
-    sortProperty: 'categoryId',
+    // sortProperty: 'categoryId',
     filterLabel: 'Filter capabilities',
     type: [
       {
@@ -144,16 +144,16 @@ export const preparationModel = [
         className: 'col s12',
       },
       {
-        id: 'capabilityPartners',
-        label: 'Partners',
+        id: 'capabilityStakeholders',
+        label: 'Stakeholders',
         pageSize: 5,
         repeat: true,
         type: [
           {
-            id: 'partnerId',
-            label: 'Partner',
+            id: 'stakeholderId',
+            label: 'Stakeholder',
             type: 'select',
-            options: 'partners',
+            options: 'stakeholders',
             className: 'col s4 m2',
           },
           {
@@ -182,13 +182,19 @@ export const preparationModel = [
             id: 'label',
             label: 'Title',
             type: 'text',
-            className: 'col s6 m6',
+            className: 'col s6 m4',
           },
           {
             id: 'link',
             label: 'URL',
             type: 'url',
-            className: 'col s3 m4',
+            className: 'col s3 m3',
+          },
+          {
+            id: 'location',
+            label: 'Room/location',
+            type: 'text',
+            className: 'col s6 m3',
           },
         ],
         className: 'col m12',

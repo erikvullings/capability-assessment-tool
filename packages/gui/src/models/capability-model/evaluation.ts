@@ -51,17 +51,17 @@ export const projectEvaluationModel = [
   },
   ...evaluationModel,
   {
-    id: 'projectPartners',
-    label: 'Partners',
+    id: 'projectStakeholders',
+    label: 'Stakeholders',
     type: 'table',
     disabled: true,
     className: 'col m12',
     options: [
       {
-        id: 'partnerId',
-        label: 'Partner',
+        id: 'stakeholderId',
+        label: 'Stakeholder',
         type: 'select',
-        options: 'partners',
+        options: 'stakeholders',
         className: 'col s4 m2',
         readonly: true,
       },

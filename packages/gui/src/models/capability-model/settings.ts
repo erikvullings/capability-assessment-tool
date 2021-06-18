@@ -1,11 +1,11 @@
 import { UIForm } from 'mithril-ui-form';
 
 export const settingsModel = [
-  { id: 'partner-settings', type: 'section', label: 'Partners' },
-  { type: 'md', value: '##### Partner/stakeholder settings' },
+  { id: 'stakeholder-settings', type: 'section', label: 'Stakeholders' },
+  { type: 'md', value: '##### Stakeholder/stakeholder settings' },
   {
     id: 'stakeholderTypes',
-    label: 'Partner types',
+    label: 'Stakeholder types',
     repeat: true,
     pageSize: 1,
     propertyFilter: 'label',

@@ -29,8 +29,12 @@ const createTextFilter = (txt: string) => {
 const createStakeholderFilter = (shs: string[]) => {
   if (!shs || shs.length === 0) return () => true;
   console.log(shs);
-  return ({ capabilityPartners }: { capabilityPartners?: Array<{ partnerId: string }> }) =>
-    capabilityPartners && capabilityPartners.some((p) => shs.indexOf(p.partnerId) >= 0);
+  return ({
+    capabilityStakeholders,
+  }: {
+    capabilityStakeholders?: Array<{ stakeholderId: string }>;
+  }) =>
+    capabilityStakeholders && capabilityStakeholders.some((p) => shs.indexOf(p.stakeholderId) >= 0);
 };
 
 export const OverviewPage: MeiosisComponent = () => {
@@ -129,12 +133,12 @@ export const OverviewPage: MeiosisComponent = () => {
                   className: 'col s12',
                 }),
               ],
-              data.partners &&
+              data.stakeholders &&
                 m(Select, {
                   placeholder: 'Select one or more',
                   label: 'Stakeholder',
                   checkedId: stakeholderFilter,
-                  options: data.partners.map((p) => ({ id: p.id, label: p.id })),
+                  options: data.stakeholders.map((p) => ({ id: p.id, label: p.id })),
                   iconName: 'person',
                   multiple: true,
                   onchange: (f) => update({ app: { stakeholderFilter: f as string[] } }),
@@ -200,9 +204,9 @@ export const OverviewPage: MeiosisComponent = () => {
                                             '.badges.right-align',
                                             m.trust(
                                               `${
-                                                cap.capabilityPartners &&
-                                                cap.capabilityPartners.length > 0
-                                                  ? `${cap.capabilityPartners.length}<i class="inline-icon material-icons">people</i> `
+                                                cap.capabilityStakeholders &&
+                                                cap.capabilityStakeholders.length > 0
+                                                  ? `${cap.capabilityStakeholders.length}<i class="inline-icon material-icons">people</i> `
                                                   : ''
                                               }${cap.shouldDevelop ? '✓' : ''}
                                                   ${

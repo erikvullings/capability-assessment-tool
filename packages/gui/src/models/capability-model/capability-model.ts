@@ -13,8 +13,8 @@ export type ProjectProposal = {
   duration?: string;
   proposal?: string;
   capabilityIds?: string[];
-  projectPartners?: Array<{
-    partnerId?: string;
+  projectStakeholders?: Array<{
+    stakeholderId?: string;
     persons?: string;
   }>;
   gapAssessment?: Array<{
@@ -31,7 +31,7 @@ export type ProjectProposal = {
 };
 
 export interface ICapabilityDataModel {
-  partners?: IPartner[];
+  stakeholders?: IStakeholder[];
   categories?: ICategory[];
   capabilities?: ICapability[];
   projectProposals?: Array<ProjectProposal>;
@@ -73,13 +73,13 @@ export interface ICapability extends ILabelled {
   subcategoryId: string;
   desc?: string;
   goal?: string;
-  capabilityPartners?: Array<{ partnerId: string; goal?: string }>;
-  documentation?: Array<{ documentId?: string; label?: string; url?: string }>;
+  capabilityStakeholders?: Array<{ stakeholderId: string; goal?: string }>;
+  documentation?: Array<{ documentId?: string; label?: string; url?: string; location?: string }>;
   assessmentId?: string;
   shouldDevelop?: boolean;
 }
 
-export interface IPartner extends ILabelled {
+export interface IStakeholder extends ILabelled {
   typeId: string;
 }
 
@@ -104,7 +104,7 @@ export const defaultCapabilityModel = {
       { id: 'ST6', label: 'Training institute' },
       { id: 'ST7', label: 'Other' },
     ],
-    partners: [
+    stakeholders: [
       { id: 'NCTV', label: 'NCTV', typeId: 'ST1' },
       { id: 'IFV', label: 'IFV', typeId: 'ST2' },
     ],
@@ -178,7 +178,7 @@ export const defaultCapabilityModel = {
       { id: 'CL1', categoryId: 'C2', subcategoryId: 'E3', label: 'Standardisation' },
       { id: 'CL2', categoryId: 'C2', subcategoryId: 'E3', label: 'Joint investigations' },
       { id: 'CL3', categoryId: 'C2', subcategoryId: 'E3', label: 'Create non-LEA network' },
-      { id: 'CL4', categoryId: 'C2', subcategoryId: 'E3', label: 'Partner management' },
+      { id: 'CL4', categoryId: 'C2', subcategoryId: 'E3', label: 'Stakeholder management' },
       { id: 'PP1', categoryId: 'C3', subcategoryId: 'Y1', label: 'Monitoring' },
       { id: 'PP2', categoryId: 'C3', subcategoryId: 'Y1', label: 'Trend identification' },
       { id: 'PP3', categoryId: 'C3', subcategoryId: 'Y1', label: 'Research & development' },

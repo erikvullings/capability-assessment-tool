@@ -9,16 +9,16 @@ export const assessmentModel = [
     className: 'col s12',
   },
   {
-    id: 'capabilityPartners',
-    label: 'Partners',
+    id: 'capabilityStakeholders',
+    label: 'Stakeholders',
     pageSize: 5,
     repeat: true,
     type: [
       {
-        id: 'partnerId',
-        label: 'Partner',
+        id: 'stakeholderId',
+        label: 'Stakeholder',
         type: 'select',
-        options: 'partners',
+        options: 'stakeholders',
         className: 'col s4 m2',
       },
       {
