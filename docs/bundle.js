@@ -16408,10 +16408,7 @@ var HomePage = function () {
                             iconName: 'clear',
                             className: 'btn-large',
                             label: 'Clear',
-                            onclick: function () {
-                                saveModel(capability_model_1.defaultCapabilityModel);
-                                services_1.dashboardSvc.switchTo(models_1.Dashboards.PREPARATION);
-                            },
+                            modalId: 'clearAll',
                         }),
                         typeof catModel.version === 'number' &&
                             mithril_1.default(mithril_materialized_1.Button, {
@@ -16519,6 +16516,22 @@ var HomePage = function () {
                             ])),
                         ]),
                     ])),
+                    mithril_1.default(mithril_materialized_1.ModalPanel, {
+                        id: 'clearAll',
+                        title: 'Do you really want to delete everything?',
+                        description: 'Are you sure that you want to delete your model?',
+                        buttons: [
+                            {
+                                label: 'Yes',
+                                iconName: 'delete',
+                                onclick: function () {
+                                    saveModel(capability_model_1.defaultCapabilityModel);
+                                    services_1.dashboardSvc.switchTo(models_1.Dashboards.PREPARATION);
+                                },
+                            },
+                            { label: 'No', iconName: 'cancel' },
+                        ],
+                    }),
                 ]),
             ];
         },
