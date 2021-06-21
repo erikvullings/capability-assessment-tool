@@ -1,6 +1,6 @@
 import m from 'mithril';
 import lz from 'lz-string';
-import { Button, Icon } from 'mithril-materialized';
+import { Button, Icon, ModalPanel } from 'mithril-materialized';
 import background from '../assets/background.jpg';
 import { dashboardSvc, MeiosisComponent } from '../services';
 import { Dashboards } from '../models';
@@ -54,10 +54,7 @@ export const HomePage: MeiosisComponent = () => {
             iconName: 'clear',
             className: 'btn-large',
             label: 'Clear',
-            onclick: () => {
-              saveModel(defaultCapabilityModel);
-              dashboardSvc.switchTo(Dashboards.PREPARATION);
-            },
+            modalId: 'clearAll',
           }),
           typeof catModel.version === 'number' &&
             m(Button, {
@@ -188,6 +185,22 @@ export const HomePage: MeiosisComponent = () => {
             ]),
           ])
         ),
+        m(ModalPanel, {
+          id: 'clearAll',
+          title: 'Do you really want to delete everything?',
+          description: 'Are you sure that you want to delete your model?',
+          buttons: [
+            {
+              label: 'Yes',
+              iconName: 'delete',
+              onclick: () => {
+                saveModel(defaultCapabilityModel);
+                dashboardSvc.switchTo(Dashboards.PREPARATION);
+              },
+            },
+            { label: 'No', iconName: 'cancel' },
+          ],
+        }),
       ]),
     ],
   };
