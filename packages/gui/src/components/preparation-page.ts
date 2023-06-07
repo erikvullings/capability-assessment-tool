@@ -3,6 +3,7 @@ import { ITabItem, Tabs } from 'mithril-materialized';
 import { LayoutForm, UIForm, render } from 'mithril-ui-form';
 import { Dashboards, ICapabilityModel } from '../models';
 import { MeiosisComponent } from '../services';
+import { t } from 'mithriljs-i18n';
 
 export const PreparationPage: MeiosisComponent = () => {
   return {
@@ -14,7 +15,7 @@ export const PreparationPage: MeiosisComponent = () => {
     view: ({
       attrs: {
         state: {
-          app: { catModel = { preparations: [], data: {} } as ICapabilityModel },
+          app: { catModel = { preparations: [], data: {} } as Partial<ICapabilityModel> },
         },
         actions: { saveModel },
       },
@@ -39,19 +40,8 @@ export const PreparationPage: MeiosisComponent = () => {
           } as ITabItem)
       );
       return m('.row', { style: 'height: 90vh' }, [
-        m('.col.s12', m('h4', 'Preparation')),
-        m(
-          '.col.s12',
-          m(
-            'p',
-            m.trust(
-              render(
-                `_Define your organisation's goals, and your most important capabilities._`,
-                true
-              )
-            )
-          )
-        ),
+        m('.col.s12', m('h4', t('preparation'))),
+        m('.col.s12', m('p', m.trust(render(t('prep_content'), true)))),
         m(Tabs, { tabs, tabWidth: 'fill' }),
       ]);
     },

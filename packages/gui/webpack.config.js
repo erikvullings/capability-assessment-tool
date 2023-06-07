@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = (env) => {
@@ -25,7 +25,8 @@ module.exports = (env) => {
     devServer: {
       liveReload: true,
       port: 3388,
-      contentBase: './dist',
+      static: 'public',
+      // contentBase: './dist',
     },
     plugins: [
       new Dotenv(),
@@ -86,10 +87,10 @@ module.exports = (env) => {
           },
         ],
       }),
-      new MiniCssExtractPlugin({
-        filename: isProduction ? '[name].[contenthash].css' : '[name].css',
-        chunkFilename: isProduction ? '[id].[contenthash].css' : '[id].css',
-      }),
+      // new MiniCssExtractPlugin({
+      //   filename: isProduction ? '[name].[contenthash].css' : '[name].css',
+      //   chunkFilename: isProduction ? '[id].[contenthash].css' : '[id].css',
+      // }),
     ],
     module: {
       rules: [
@@ -110,10 +111,10 @@ module.exports = (env) => {
           test: /\.(woff|woff2|eot|ttf|otf)$/i,
           type: 'asset/resource',
         },
-        {
-          test: /\.css$/,
-          use: [MiniCssExtractPlugin.loader, 'css-loader'],
-        },
+        // {
+        //   test: /\.css$/,
+        //   use: [MiniCssExtractPlugin.loader, 'css-loader'],
+        // },
         // {
         //   test: /\.(csv|tsv)$/i,
         //   use: ['csv-loader'],

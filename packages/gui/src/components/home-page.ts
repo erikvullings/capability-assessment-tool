@@ -2,13 +2,14 @@ import m from 'mithril';
 import lz from 'lz-string';
 import { Button, Icon, ModalPanel } from 'mithril-materialized';
 import background from '../assets/background.jpg';
-import { dashboardSvc, MeiosisComponent } from '../services';
+import { routingSvc, MeiosisComponent } from '../services';
 import { Dashboards } from '../models';
-import { formatDate } from '../utils';
+import { DutchFlag, EnglishFlag, formatDate } from '../utils';
 import {
   defaultCapabilityModel,
   ICapabilityModel,
 } from '../models/capability-model/capability-model';
+import { i18n, t } from 'mithriljs-i18n';
 
 export const HomePage: MeiosisComponent = () => {
   const readerAvailable = window.File && window.FileReader && window.FileList && window.Blob;
@@ -37,7 +38,7 @@ export const HomePage: MeiosisComponent = () => {
         state: {
           app: { catModel },
         },
-        actions: { saveModel },
+        actions: { saveModel, setLanguage },
       },
     }) => [
       m('div', { style: 'position: relative;' }, [
@@ -50,26 +51,62 @@ export const HomePage: MeiosisComponent = () => {
         ),
         m('img.responsive-img.center', { src: background }),
         m('.buttons.center', { style: 'margin: 10px auto;' }, [
+          [
+            [
+              m(
+                '.language-option',
+                {
+                  onclick: () => setLanguage('nl'),
+                },
+                [
+                  m('img', {
+                    src: DutchFlag,
+                    alt: 'Nederlands',
+                    title: 'Nederlands',
+                    disabled: i18n.currentLocale === 'nl',
+                    class: i18n.currentLocale === 'nl' ? 'disabled-image' : 'clickable',
+                  }),
+                  m('span', 'Nederlands'),
+                ]
+              ),
+              m(
+                '.language-option',
+                {
+                  onclick: () => setLanguage('en'),
+                },
+                [
+                  m('img', {
+                    src: EnglishFlag,
+                    alt: 'English',
+                    title: 'English',
+                    disabled: i18n.currentLocale === 'en',
+                    class: i18n.currentLocale === 'en' ? 'disabled-image' : 'clickable',
+                  }),
+                  m('span', 'English'),
+                ]
+              ),
+            ],
+          ],
           m(Button, {
             iconName: 'clear',
             className: 'btn-large',
-            label: 'Clear',
+            label: t('clear'),
             modalId: 'clearAll',
           }),
           typeof catModel.version === 'number' &&
             m(Button, {
               iconName: 'edit',
               className: 'btn-large',
-              label: 'Continue',
+              label: t('continue'),
               onclick: () => {
-                dashboardSvc.switchTo(Dashboards.OVERVIEW);
+                routingSvc.switchTo(Dashboards.OVERVIEW);
               },
             }),
           m('a#downloadAnchorElem', { style: 'display:none' }),
           m(Button, {
             iconName: 'download',
             className: 'btn-large',
-            label: 'Download',
+            label: t('download'),
             onclick: () => {
               const dlAnchorElem = document.getElementById('downloadAnchorElem');
               if (!dlAnchorElem) return;
@@ -85,12 +122,12 @@ export const HomePage: MeiosisComponent = () => {
               dlAnchorElem.click();
             },
           }),
-          m('input#selectFiles[type=file]', { style: 'display:none' }),
+          m('input#selectFiles[type=file][accept=.json]', { style: 'display:none' }),
           readerAvailable &&
             m(Button, {
               iconName: 'upload',
               className: 'btn-large',
-              label: 'Upload',
+              label: t('upload'),
               onclick: () => {
                 const fileInput = document.getElementById('selectFiles') as HTMLInputElement;
                 fileInput.onchange = () => {
@@ -110,7 +147,7 @@ export const HomePage: MeiosisComponent = () => {
                   };
                   const data = files && files.item(0);
                   data && reader.readAsText(data);
-                  dashboardSvc.switchTo(Dashboards.OVERVIEW);
+                  routingSvc.switchTo(Dashboards.OVERVIEW);
                 };
                 fileInput.click();
               },
@@ -118,7 +155,7 @@ export const HomePage: MeiosisComponent = () => {
           m(Button, {
             iconName: 'link',
             className: 'btn-large',
-            label: 'Permalink',
+            label: t('permalink'),
             onclick: () => {
               const permLink = document.createElement('input') as HTMLInputElement;
               document.body.appendChild(permLink);
@@ -153,33 +190,24 @@ export const HomePage: MeiosisComponent = () => {
                 '.col.s12.m4',
                 m('.icon-block', [
                   m('.center', m(Icon, { iconName: 'dashboard' })),
-                  m('h5.center', 'Prepare'),
-                  m(
-                    'p.light',
-                    'Create or select the capabilities that are important for your organisations.'
-                  ),
+                  m('h5.center', t('prepare')),
+                  m('p.light', t('prepare_content')),
                 ])
               ),
               m(
                 '.col.s12.m4',
                 m('.icon-block', [
                   m('.center', m(Icon, { iconName: 'flash_on' })),
-                  m('h5.center', 'Assess'),
-                  m(
-                    'p.light',
-                    `Determine for each capability how important it is, and your current performance, so you can prioritise and focus on the ones you really need.`
-                  ),
+                  m('h5.center', t('assess')),
+                  m('p.light', t('assess_content')),
                 ])
               ),
               m(
                 '.col.s12.m4',
                 m('.icon-block', [
                   m('.center', m(Icon, { iconName: 'group' })),
-                  m('h5.center', 'Develop'),
-                  m(
-                    'p.light',
-                    'Start working on developing your capabilities, alone or with other organisations, and create your roadmap.'
-                  ),
+                  m('h5.center', t('develop')),
+                  m('p.light', t('develop_content')),
                 ])
               ),
             ]),
@@ -191,14 +219,14 @@ export const HomePage: MeiosisComponent = () => {
           description: 'Are you sure that you want to delete your model?',
           buttons: [
             {
-              label: 'Yes',
+              label: t('yes'),
               iconName: 'delete',
               onclick: () => {
                 saveModel(defaultCapabilityModel);
-                dashboardSvc.switchTo(Dashboards.PREPARATION);
+                routingSvc.switchTo(Dashboards.PREPARATION);
               },
             },
-            { label: 'No', iconName: 'cancel' },
+            { label: t('no'), iconName: 'cancel' },
           ],
         }),
       ]),
