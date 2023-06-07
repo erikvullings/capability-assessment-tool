@@ -21321,7 +21321,7 @@ module.exports = __webpack_require__.p + "80cf8449fb59eb0a3e40.svg";
 /******/ 	
 /******/ 	/* webpack/runtime/publicPath */
 /******/ 	(() => {
-/******/ 		__webpack_require__.p = "https://erikvullings.github.io/capability-assessment-tool/";
+/******/ 		__webpack_require__.p = "https://tno.github.io/cat/";
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/jsonp chunk loading */

@@ -8,9 +8,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 module.exports = (env) => {
   const isProduction = env.production;
   const outputPath = path.resolve(__dirname, isProduction ? '../../docs' : 'dist');
-  const publicPath = isProduction
-    ? 'https://erikvullings.github.io/capability-assessment-tool/'
-    : '/';
+  const publicPath = isProduction ? 'https://tno.github.io/cat/' : '/';
 
   console.log(
     `Running in ${
@@ -49,7 +47,7 @@ module.exports = (env) => {
           {
             attributes: {
               property: 'og:url',
-              content: 'https://erikvullings.github.io/capability-assessment-tool/',
+              content: 'https://tno.github.io/cat/',
             },
           },
           {
